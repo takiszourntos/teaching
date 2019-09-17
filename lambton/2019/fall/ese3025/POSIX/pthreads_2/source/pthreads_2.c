@@ -17,7 +17,7 @@
  */
 int		num_ints=0;		// current number of integers entered by user
 int		done=0;			// flag indicating completion of user data entry
-float 	average=0.0;	// global storage for the average
+float	average=0.0;	// global storage for the average
 
 /*
  *	function to display the set of numbers periodically
@@ -51,7 +51,7 @@ void 	disp_avg(float x)
  */
 void	*avg_thread(void *arr)
 {
-	int 	*x = (int *) arr;	// cast the passed data to integer type
+	int		*x = (int *) arr;	// cast the passed data to integer type
 	int		sum;				// storage for the sum
 
 	while (done==0)
@@ -76,8 +76,8 @@ void	*avg_thread(void *arr)
  */
 void	*bubb_sort_thread(void *arr)
 {
-	int 	*x = (int *) arr;	// cast the passed data to integer type
-	int 	swaps; 				// a flag indicating if a swap has occurred (if none occur, this set is sorted)
+	int		*x = (int *) arr;	// cast the passed data to integer type
+	int		swaps; 				// a flag indicating if a swap has occurred (if none occur, this set is sorted)
 	int		temp;
 
 	//while (num_ints != MAXINTS)
@@ -107,9 +107,9 @@ void	*bubb_sort_thread(void *arr)
 
 int main()
 {
-    pthread_t 	thread_calc_1;	// our handle for the averaging thread
-	pthread_t	thread_calc_2;	// our handle for the sorting thread
-    int 		set[MAXINTS]; 	// storage for our numbers
+	pthread_t	thread_calc_1;	// our handle for the averaging thread
+    pthread_t	thread_calc_2;	// our handle for the sorting thread
+    int			set[MAXINTS]; 	// storage for our numbers
 
 
     // initialize set to zero
