@@ -17,6 +17,12 @@ The following is a comprehensive list with links for recommended software and ha
         $ sudo apt install git <br>
     Please obtain a github.com account and create respositories for your assignments and projects corresponding to each class you are taking.
     
-4) 
+4) BeagleBone Black Kit <br>
+    Here is a link on digikey.ca for the parts that you will need: http://www.digikey.ca/short/pf1w9f
+    
+5) Exploring Beaglebone: Tools and Techniques for Building with Embedded Linux (Second Edition), by Derek Molloy
+    Here is a link: https://www.amazon.ca/Exploring-BeagleBone-Techniques-Building-Embedded-ebook/dp/B07MMVV65W
+    
+6) 
         
     
