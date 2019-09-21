@@ -21,8 +21,9 @@ The following is a comprehensive list with links for recommended software and ha
     Here is a link on digikey.ca for the parts that you will need: http://www.digikey.ca/short/pf1w9f
     
 5) Exploring Beaglebone: Tools and Techniques for Building with Embedded Linux (Second Edition), by Derek Molloy
-    Here is a link: https://www.amazon.ca/Exploring-BeagleBone-Techniques-Building-Embedded-ebook/dp/B07MMVV65W
+    Link: https://www.amazon.ca/Exploring-BeagleBone-Techniques-Building-Embedded-ebook/dp/B07MMVV65W
     
-6) 
+6) LPCXPresso LPC1769 Eval Kit <br>
+    Link: (https://www.digikey.ca/product-detail/en/embedded-artists/EAX00242/EAX00242-ND/5725751)
         
     
