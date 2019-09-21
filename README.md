@@ -29,6 +29,7 @@ The following is a comprehensive list with links for recommended software and ha
 7) Basic Electronic Parts for Prototyping:
     - SparkFun Beginner's Parts Kit (https://elmwoodelectronics.ca/products/13973)
     - a basic toolkit (like this one https://elmwoodelectronics.ca/products/ladyadas-electronics-toolkit or this one https://elmwoodelectronics.ca/products/14681);
-   
-        
+    - a large breadboard (like this one: https://elmwoodelectronics.ca/products/12614)
     
+8) MCUXpresso IDE 
+    Available from the NXP web site (you have to register): https://www.nxp.com/
