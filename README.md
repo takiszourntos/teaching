@@ -2,7 +2,7 @@
 material for my students
 
 ## TOOLKIT FOR EMBEDDED SYSTEMS
-===============================
+========================================
 
 The following is a comprehensive list with links for recommended software and hardware tools needed for all terms in the program.
 
@@ -14,6 +14,9 @@ The following is a comprehensive list with links for recommended software and ha
     
 3) Git <br>
     Install at the Linux prompt using the command: <br>
-        $ sudo apt install git
+        $ sudo apt install git <br>
+    Please obtain a github.com account and create respositories for your assignments and projects corresponding to each class you are taking.
+    
+4) 
         
     
