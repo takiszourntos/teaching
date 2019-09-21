@@ -27,7 +27,8 @@ The following is a comprehensive list with links for recommended software and ha
     Link: (https://www.digikey.ca/product-detail/en/embedded-artists/EAX00242/EAX00242-ND/5725751)
 
 7) Basic Electronic Parts for Prototyping:
-    - SparkFun Beginner's Kit (https://elmwoodelectronics.ca/products/13973)
-    - Basic toolkit (https://elmwoodelectronics.ca/products/ladyadas-electronics-toolkit or https://elmwoodelectronics.ca/products/14681)
+    - SparkFun Beginner's Parts Kit (https://elmwoodelectronics.ca/products/13973)
+    - a basic toolkit (like this one https://elmwoodelectronics.ca/products/ladyadas-electronics-toolkit or this one https://elmwoodelectronics.ca/products/14681);
+   
         
     
