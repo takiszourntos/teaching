@@ -2,7 +2,7 @@
 material for my students
 
 ## TOOLKIT FOR EMBEDDED SYSTEMS
-========================================
+================================================
 
 The following is a comprehensive list with links for recommended software and hardware tools needed for all terms in the program.
 
