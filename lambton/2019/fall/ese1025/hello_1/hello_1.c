@@ -29,7 +29,7 @@ int main()
 	/* ask questions */
 	printf("\nI hope you do not mind answering some questions!\n");
 	printf("\nDo you have any pets? (Y or N): ");
-	scanf(" %c", &pets);
+	scanf(" %c", &pets); /* leading space in format tells scanf() to ignore white space */
 	printf("\nOn a scale from 1 to 10, how would rate your mood today? (1=very sad, 10=very happy): ");
 	scanf("%d", &mood);
 
