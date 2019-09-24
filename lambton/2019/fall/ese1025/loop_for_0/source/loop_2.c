@@ -1,5 +1,5 @@
 /*
- * loop_1.c
+ * loop_2.c
  *
  *  Created on: Sep. 23, 2019
  *      Author: takis
@@ -10,17 +10,11 @@
 int main(void)
 {
 	char d;
-	int x;
-
-	x = 7;
 	d = '*';
 
-	printf("\n\n");
-	do
+	for (int x = 7; x != 0; --x)
 	{
-		printf("%c",d);
-		--x;
-	} while (x != 0);
-
+		printf("%c", d);
+	}
 	return 0;
 }
