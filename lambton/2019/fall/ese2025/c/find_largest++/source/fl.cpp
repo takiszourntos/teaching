@@ -36,4 +36,7 @@ int main()
 		cout << myarr[j] << " ";
 	}
 	cout << endl;
+
+	/* exit happily */
+	return 0;
 }
