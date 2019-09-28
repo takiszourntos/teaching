@@ -15,8 +15,8 @@
 /*
  * 	global variables
  */
-int		num_ints=0;		// current number of integers entered by user
-int		done=0;			// flag indicating completion of user data entry
+int	num_ints=0;	// current number of integers entered by user
+int	done=0;		// flag indicating completion of user data entry
 float	average=0.0;	// global storage for the average
 
 /*
@@ -77,7 +77,7 @@ void	*avg_thread(void *arr)
 void	*bubb_sort_thread(void *arr)
 {
 	int		*x = (int *) arr;	// cast the passed data to integer type
-	int		swaps; 				// a flag indicating if a swap has occurred (if none occur, this set is sorted)
+	int		swaps; 			// a flag indicating if a swap has occurred (if none occur, this set is sorted)
 	int		temp;
 
 	//while (num_ints != MAXINTS)
