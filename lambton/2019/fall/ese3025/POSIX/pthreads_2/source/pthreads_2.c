@@ -107,9 +107,9 @@ void	*bubb_sort_thread(void *arr)
 
 int main()
 {
-	pthread_t	thread_calc_1;	// our handle for the averaging thread
+    pthread_t	thread_calc_1;	// our handle for the averaging thread
     pthread_t	thread_calc_2;	// our handle for the sorting thread
-    int			set[MAXINTS]; 	// storage for our numbers
+    int		set[MAXINTS]; 	// storage for our numbers
 
 
     // initialize set to zero
