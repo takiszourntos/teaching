@@ -72,12 +72,20 @@ int main()
 	/*
 	 *  VECTOR OPERATIONS
 	 */
+		/* set the vector elements */
 		for (size_t i = 0; i != N; ++i)
 		{
 			gsl_vector_set(a, i, fib(i)); /* set element i of vector a to Fibonacci number i */
 			gsl_vector_set(b, i, gsl_ran_flat(r,-1.0,+1.0)); /* set element of vector b to random number */
-			gsl_vector_add(c, a); /* c += a */
-			gsl_vector_add(c, b); /* c += b */
+		}
+
+		/* c = a + b */
+		gsl_vector_add(c, a); /* c += a */
+		gsl_vector_add(c, b); /* c += b */
+
+		/* print results */
+		for (size_t i = 0; i != N; ++i)
+		{
 			printf("i=%d, a(i)=%f, b(i)=%f, c(i)=%f\n", i,
 				gsl_vector_get(a, i),
 				gsl_vector_get(b, i),
