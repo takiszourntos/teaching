@@ -8,9 +8,8 @@
     
 3) point Eclipse to the gsl and gslcblas libraries
 
-4) alternatively, you can use these commands for compiling and linking from the command line:
-    $ gcc -Wall -I/usr/include -c yourprog.c
-    $ gcc -L/usr/include yourprog.o -lgsl -lgslcblas -lm
-   which produces a default executable (a.out)
-   where I have assumed installation of the GSL in /usr/include (your installation directory may be different)
+4) alternatively, you can use these commands for compiling and linking from the command line: <br>
+    $ gcc -Wall -I/usr/include -c yourprog.c <br>
+    $ gcc -L/usr/include yourprog.o -lgsl -lgslcblas -lm <br>
+   which produces a default executable (a.out), and I have assumed installation of the GSL in /usr/include (your installation directory may be different)
    
