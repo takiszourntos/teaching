@@ -1,4 +1,4 @@
-# GNU Scientific Library
+# GNU Scientific Library --- a C-oriented alternative to Matlab (for firmware projects)
 
 1) please install using the command:
     $ sudo apt install libgsl-dev
