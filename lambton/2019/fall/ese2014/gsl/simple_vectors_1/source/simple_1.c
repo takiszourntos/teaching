@@ -5,22 +5,36 @@
  *      Author: takis
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <gsl/gsl_vector_double.h> /* using double precision */
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
+/*
+ * standard includes
+ */
+	#include <stdio.h>
+	#include <stdlib.h>
+/*
+ *  includes for GSL components
+ *  	- use double precision
+ */
+	#include <gsl/gsl_vector_double.h>
+	#include <gsl/gsl_matrix_double.h>
+	#include <gsl/gsl_rng.h>
+	#include <gsl/gsl_randist.h>
 
-/* simple Fibonancci sequence generator, using recursion */
+/*
+ * FUNCTIONS
+ */
+
+/*
+ * simple Fibonacci sequence generator function, using recursion
+ * */
 size_t fib(size_t k)
 {
 	if (k==0)
 	{
-		return 1;
+		return 0;
 	}
 	else if (k==1)
 	{
-		return 2;
+		return 1;
 	}
 	else /* k > 2 */
 	{
@@ -30,38 +44,64 @@ size_t fib(size_t k)
 
 int main()
 {
-	/* parameters */
-		/* vectors */
+	/*
+	 * INITIALIZE PARAMETERS
+	 */
+		/* vectors parameters */
 		size_t		N=10; /* index type, vector sizes */
 		gsl_vector *a = gsl_vector_alloc(N); /* allocate vector from heap of size N */
 		gsl_vector *b = gsl_vector_alloc(N); /* allocate vector from heap of size N */
 		gsl_vector *c = gsl_vector_calloc(N); /* allocate vector of size N but initialize entries to zero */
 
-		/* random numbers */
+		/* random number generator parameters */
 		const gsl_rng_type *T;
 		gsl_rng *r; /* handle for our random number generator */
 
-	/* set up random number generation */
-	gsl_rng_env_setup();
-	T = gsl_rng_default;
-	r = gsl_rng_alloc(T);
+		/* matrix parameters */
+		gsl_matrix *A = gsl_matrix_alloc(N,N);
+		gsl_matrix *B = gsl_matrix_alloc(N,N);
+		gsl_matrix *C = gsl_matrix_calloc(N,N);
 
-	/* initialize vectors */
-	for (size_t i = 0; i != N; ++i)
-	{
-		gsl_vector_set(a, i, fib(i)); /* set element i of vector a to Fibonacci number i */
-		gsl_vector_set(b, i, gsl_ran_flat(r, -1.0, +1.0));
-//		gsl_vector_set(b, i, 1.0);
-		gsl_vector_add(c, a); /* c += a */
-		gsl_vector_add(c, b); /* c += b */
-		printf("i=%d, a(i)=%f, b(i)=%f, c(i)=%f\n", i,
-													gsl_vector_get(a, i),
-													gsl_vector_get(b, i),
-													gsl_vector_get(c, i));
-	}
+	/*
+	 * SET UP RANDOM NUMBER GENERATION
+	 */
+		gsl_rng_env_setup();
+		T = gsl_rng_default;
+		r = gsl_rng_alloc(T);
+
+	/*
+	 *  VECTOR OPERATIONS
+	 */
+		for (size_t i = 0; i != N; ++i)
+		{
+			gsl_vector_set(a, i, fib(i)); /* set element i of vector a to Fibonacci number i */
+			gsl_vector_set(b, i, gsl_ran_flat(r,-1.0,+1.0)); /* set element of vector b to random number */
+			gsl_vector_add(c, a); /* c += a */
+			gsl_vector_add(c, b); /* c += b */
+			printf("i=%d, a(i)=%f, b(i)=%f, c(i)=%f\n", i,
+				gsl_vector_get(a, i),
+				gsl_vector_get(b, i),
+				gsl_vector_get(c, i));
+		}
+
+	/*
+	 *	MATRIX OPERATIONS - your homework!! :)
+	 */
+		/* fill A with first N*N Fibonacci numbers, starting with row 1 (cols 1-10), then row 2, etc. */
+
+		/* fill B with N*N random numbers, uniformly distributed over the interval (-100, 100) */
+
+		/* make C the product of A and B */
+
+		/* print the results */
+
+
 	/* de-allocate memory */
 	gsl_vector_free(a);
 	gsl_vector_free(b);
 	gsl_vector_free(c);
+	gsl_matrix_free(A);
+	gsl_matrix_free(B);
+	gsl_matrix_free(C);
 	return EXIT_SUCCESS;
 }
