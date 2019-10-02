@@ -36,7 +36,7 @@ size_t fib(size_t k)
 	{
 		return 1;
 	}
-	else /* k > 2 */
+	else /* k >= 2 */
 	{
 		return fib(k-1) + fib(k-2);
 	}
