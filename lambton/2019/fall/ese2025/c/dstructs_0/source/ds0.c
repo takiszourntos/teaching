@@ -52,15 +52,17 @@ int main()
 	paddr_info = &addr_info_B;
 	paddr_info -> house_num = 1211U; /* using shorthand notation */
 
-	/* access the array */
-	unsigned int first_num;
+	/* access the array, search for first non-zero address */
+	unsigned int first_num=addr_users[0].house_num;
+	unsigned int next;
 	size_t	i;
-	for (i=0; i != NUM_USERS; ++i)
+	for (i=1; i != NUM_USERS; ++i)
 	{
-		if ((first_num = addr_users[i].house_num)==0)
+		next = addr_users[i].house_num;
+		if ( next != 0)
 		{
-			first_num = addr_users[1].house_num;
-			++i;
+			first_num = next;
+			break; /* like setting i to a value >= NUM_USERS */
 		}
 	}
 	return 0;
