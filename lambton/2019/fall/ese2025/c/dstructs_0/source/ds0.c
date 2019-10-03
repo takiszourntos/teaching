@@ -15,7 +15,7 @@
 struct addr
 {
 	char			name[30];
-	unsigned int 	house_num;
+	unsigned int 		house_num;
 	char			street[30];
 	char 			city[20];
 	char 			province[4];
@@ -28,17 +28,17 @@ typedef	struct 		addr addr_t; /* typedef declaration based on struct */
  * declare variables based on this struct -- which looks better?
  */
 struct	addr		addr_info_A; /* one way of declaring */
-addr_t				addr_info_B; /* a slightly simpler way of declaring */
+addr_t			addr_info_B; /* a slightly simpler way of declaring */
 
 /*
  * declare a pointer to the structure type
  */
-addr_t				*paddr_info;
+addr_t			*paddr_info;
 
 /*
  * declare an array of structure elements
  */
-addr_t				addr_users[NUM_USERS];
+addr_t			addr_users[NUM_USERS];
 
 int main()
 {
