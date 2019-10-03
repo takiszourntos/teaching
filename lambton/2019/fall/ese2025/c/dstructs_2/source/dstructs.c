@@ -1,24 +1,20 @@
 /*
- * ds1.c
+ * dstructs.c
  *
  *  Created on: Oct. 3, 2019
- *      Author: takis
+ *      Author: takiss
  */
 
 #include <stdlib.h>
+#include "dstructs.h"
 
 /*
- * define a linked list node structure
- */
-struct linkedList
-{
-	int		data;
-	struct 	linkedList *pNext;
-};
-typedef struct linkedList ll_t;
-
-/*
- * define basic functions
+ * createNode():
+ *
+ * 		creates a node of type ll_t from the heap, and returns
+ * 		a pointer to this newly created node; sets the node's own
+ * 	    pNext pointer to NULL
+ *
  */
 ll_t*	createNode()
 {
@@ -26,7 +22,7 @@ ll_t*	createNode()
     ll_t 	*node;
 
     /* allocate the node from heap */
-    node = 	(ll_t *) malloc(sizeof(ll_t));
+    node = 	(ll_t *) malloc(sizeof(struct linkedList));
 
     /* make next point to NULL */
     node -> pNext = NULL;//
@@ -35,6 +31,14 @@ ll_t*	createNode()
     return 	node;
 }
 
+/*
+ * addNode():
+ *
+ * 		adds a new node (with node->data = value) to the bottom/back
+ * 		of the list referenced by the pointer, head;
+ * 		if head==NULL, a new list is created
+ *
+ */
 ll_t* 	addNode(ll_t* head, int value)
 {
 	/* create two node pointers */
@@ -61,10 +65,5 @@ ll_t* 	addNode(ll_t* head, int value)
         p -> pNext = node;
     }
     return head;
-}
-
-int main()
-{
-	return 0;
 }
 
