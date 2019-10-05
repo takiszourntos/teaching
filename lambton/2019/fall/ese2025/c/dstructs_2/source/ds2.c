@@ -15,14 +15,15 @@
 int main()
 {
 	int loadarr[N] = { 23, 46, 227, 81, 32,
-				       17,  9,  26, 25, 22  };
+			   17,  9,  26, 25, 22  };
 
 	/* create a linked list from loadarr data */
 	ll_t* mylisthead;
 	mylisthead = (ll_t *) malloc(sizeof(ll_t));
+	mylisthead -> data = loadarr[0];
 	mylisthead -> pNext = NULL;
 
-	size_t i = 0;
+	size_t i = 1;
 	while (i != N)
 	{
 		addNode(mylisthead, loadarr[i]);
