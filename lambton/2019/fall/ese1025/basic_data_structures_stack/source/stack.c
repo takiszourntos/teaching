@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define	L		1024
+#define	L	1024
 #define	TRUE	1U
 #define	FALSE	0U
 
@@ -17,7 +17,7 @@
 */
 struct	stack_struct
 {
-	int		data[L];
+	int	data[L];
 	size_t 	top;
 };
 typedef struct stack_struct	stack_t;
@@ -73,7 +73,7 @@ int main()
 	stack.top = 0;
 
 	int loadarr[10] = {52, -29, 36, 1154, 72,
-						0, 68, 44, 33, 59};
+			    0, 68, 44, 33, 59};
 
 	/* load stack */
 	size_t	i;
@@ -96,5 +96,5 @@ int main()
 	/* test error function */
 	x = pop(&stack); /* comment this out to avoid error */
 
-	return 0;
+	return EXIT_SUCCESS;
 }
