@@ -34,3 +34,5 @@ The following is a comprehensive list with links for recommended software and ha
     
 8) MCUXpresso IDE 
     Available from the NXP web site (you have to register): https://www.nxp.com/
+    
+9) Quartus (Intel), Xilinx ISE Webpack (https://www.xilinx.com/products/design-tools/ise-design-suite.html)
