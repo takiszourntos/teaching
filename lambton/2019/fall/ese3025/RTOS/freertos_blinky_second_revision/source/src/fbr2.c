@@ -63,12 +63,10 @@ static void vLEDTaskRed(void *pvParameters)
 
 	while (1)
 	{
-		//Board_LED_Set(col, true);
+		Board_LED_Set(col, true);
 		vTaskDelayUntil(&xLastWakeTime, numticks-10);
-		vTaskDelay(0);
-		//Board_LED_Set(col, false);
+		Board_LED_Set(col, false);
 		vTaskDelayUntil(&xLastWakeTime, (numticks << 1));
-		vTaskDelay(0);
 	}
 }
 
@@ -85,9 +83,9 @@ static void vLEDTaskGreen(void *pvParameters)
 	while (1)
 	{
 		vTaskDelayUntil(&xLastWakeTime, numticks);
-		//Board_LED_Set(col, true);
+		Board_LED_Set(col, true);
 		vTaskDelayUntil(&xLastWakeTime, numticks-10);
-		//Board_LED_Set(col, false);
+		Board_LED_Set(col, false);
 		vTaskDelayUntil(&xLastWakeTime, numticks);
 	}
 }
@@ -98,16 +96,16 @@ static void vLEDTaskBlue(void *pvParameters)
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
 	palette_t		col = colourCS -> colour;
-	portTickType	numticks = colourCS -> delayTicks;
+	portTickType	numticks = 1000; // colourCS -> delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 
 	while (1)
 	{
 		vTaskDelayUntil(&xLastWakeTime, (numticks << 1));
-		//Board_LED_Set(col, true);
+		Board_LED_Set(col, true);
 		vTaskDelayUntil(&xLastWakeTime, numticks-10);
-		//Board_LED_Set(col, false);
+		Board_LED_Set(col, false);
 	}
 }
 
@@ -124,11 +122,11 @@ int main(void)
 	colour_t	BlueCS;
 
 	RedCS.colour = Red;
-	RedCS.delayTicks = configTICK_RATE_HZ * 2;
+	RedCS.delayTicks = 1000; // configTICK_RATE_HZ;
 	GreenCS.colour = Green;
-	GreenCS.delayTicks = configTICK_RATE_HZ * 2;
+	GreenCS.delayTicks = 1000;
 	BlueCS.colour = Blue;
-	BlueCS.delayTicks = configTICK_RATE_HZ * 2;
+	BlueCS.delayTicks = configTICK_RATE_HZ;
 
 
 	/* Red LED toggle thread */
