@@ -51,14 +51,14 @@
 #define JOYSTICK_PRESS_GPIO_BIT_NUM             17
 /* LEDs */
 	/* red LED */
-	#define LED0_GPIO_PORT_NUM              0
-	#define LED0_GPIO_BIT_NUM               22
+	#define LED0_GPIO_PORT_NUM      0
+	#define LED0_GPIO_BIT_NUM       22
 	/* green LED */
-	#define LED1_GPIO_PORT_NUM		3
-	#define LED1_GPIO_BIT_NUM		25
+	#define LED1_GPIO_PORT_NUM	    3
+	#define LED1_GPIO_BIT_NUM	    25
 	/* blue LED */
-	#define LED2_GPIO_PORT_NUM		3
-	#define LED2_GPIO_BIT_NUM		26
+	#define LED2_GPIO_PORT_NUM	    3
+	#define LED2_GPIO_BIT_NUM	    26
 
 /*****************************************************************************
  * Public types/enumerations/variables
