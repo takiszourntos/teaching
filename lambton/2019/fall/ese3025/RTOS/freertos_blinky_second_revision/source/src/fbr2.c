@@ -13,8 +13,6 @@
 #include "task.h"
 #include <stdint.h>
 
-
-
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
@@ -108,7 +106,7 @@ static void vLEDTaskBlue(void *pvParameters)
 	{
 		vTaskDelayUntil(&xLastWakeTime, (numticks << 1));
 		Board_LED_Set(col, true);
-		vTaskDelayUntil(&xLastWakeTime, numticks-10);
+		vTaskDelayUntil(&xLastWakeTime, numticks);
 		Board_LED_Set(col, false);
 	}
 }
@@ -127,19 +125,20 @@ int main(void)
 	LEDparams[Blue].colour = Blue;
 	LEDparams[Blue].delayTicks = configTICK_RATE_HZ;
 
+	/* initialize hardware */
 	prvSetupHardware();
 
-	/* Red LED toggle thread */
+	/* create Red LED toggle thread */
 	xTaskCreate(vLEDTaskRed, (signed char *) "vTaskLedRed",
 				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 3UL),
 				(xTaskHandle *) NULL);
 
-	/* Green LED toggle thread */
+	/* create Green LED toggle thread */
 	xTaskCreate(vLEDTaskGreen, (signed char *) "vTaskLedGreen",
 				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 2UL),
 				(xTaskHandle *) NULL);
 
-	/* Blue LED toggle thread */
+	/* create Blue LED toggle thread */
 	xTaskCreate(vLEDTaskBlue, (signed char *) "vTaskLedBlue",
 				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
