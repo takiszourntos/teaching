@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE infoList
+  SYSTEM "crt_infolist.dtd">
+<infoList vendor="NXP">
+   <info name="LPC54114J256" chip="LPC54114J256">
+      <chip>
+         <name>LPC54114J256</name>
+         <family>LPC5411x</family>
+         <vendor>NXP</vendor>
+         <memory id="Flash" type="Flash" size="256" is_ro="true" can_program="true"/>
+         <memory id="RAM" type="RAM" size="192"/>
+         <memoryInstance id="PROGRAM_FLASH" derived_from="Flash" location="0x00000000" size="0x00040000"
+                         driver="LPC5411x_256K.cfx"/>
+         <memoryInstance id="SRAM1" derived_from="RAM" location="0x20010000" size="0x00010000"/>
+         <memoryInstance id="SRAM0" derived_from="RAM" location="0x20000000" size="0x00010000"/>
+         <memoryInstance id="SRAMX" derived_from="RAM" location="0x04000000" size="0x00008000"/>
+         <memoryInstance id="SRAM2" derived_from="RAM" location="0x20020000" size="0x00008000"/>
+         <peripherals coreId="cm0plus_LPC54114J256">
+            <peripheralInstance id="SYSCON" derived_from="SYSCON" location="0x40000000"/>
+            <peripheralInstance id="IOCON" derived_from="IOCON" location="0x40001000"/>
+            <peripheralInstance id="GINT0" derived_from="GINT0" location="0x40002000"/>
+            <peripheralInstance id="GINT1" derived_from="GINT0" location="0x40003000"/>
+            <peripheralInstance id="PINT" derived_from="PINT" location="0x40004000"/>
+            <peripheralInstance id="INPUTMUX" derived_from="INPUTMUX" location="0x40005000"/>
+            <peripheralInstance id="CTIMER0" derived_from="CTIMER0" location="0x40008000"/>
+            <peripheralInstance id="CTIMER1" derived_from="CTIMER0" location="0x40009000"/>
+            <peripheralInstance id="CTIMER2" derived_from="CTIMER0" location="0x40028000"/>
+            <peripheralInstance id="CTIMER3" derived_from="CTIMER0" location="0x40048000"/>
+            <peripheralInstance id="CTIMER4" derived_from="CTIMER0" location="0x40049000"/>
+            <peripheralInstance id="WWDT" derived_from="WWDT" location="0x4000C000"/>
+            <peripheralInstance id="MRT0" derived_from="MRT0" location="0x4000D000"/>
+            <peripheralInstance id="UTICK0" derived_from="UTICK0" location="0x4000E000"/>
+            <peripheralInstance id="RTC" derived_from="RTC" location="0x4002C000"/>
+            <peripheralInstance id="ASYNC-SYSCON" derived_from="ASYNC-SYSCON" location="0x40040000"/>
+            <peripheralInstance id="SPIFI0" derived_from="SPIFI0" location="0x40080000"/>
+            <peripheralInstance id="DMA0" derived_from="DMA0" location="0x40082000"/>
+            <peripheralInstance id="USB0" derived_from="USB0" location="0x40084000"/>
+            <peripheralInstance id="SCT0" derived_from="SCT0" location="0x40085000"/>
+            <peripheralInstance id="FLEXCOMM0" derived_from="FLEXCOMM0" location="0x40086000"/>
+            <peripheralInstance id="FLEXCOMM1" derived_from="FLEXCOMM0" location="0x40087000"/>
+            <peripheralInstance id="FLEXCOMM2" derived_from="FLEXCOMM0" location="0x40088000"/>
+            <peripheralInstance id="FLEXCOMM3" derived_from="FLEXCOMM0" location="0x40089000"/>
+            <peripheralInstance id="FLEXCOMM4" derived_from="FLEXCOMM0" location="0x4008A000"/>
+            <peripheralInstance id="FLEXCOMM5" derived_from="FLEXCOMM0" location="0x40096000"/>
+            <peripheralInstance id="FLEXCOMM6" derived_from="FLEXCOMM0" location="0x40097000"/>
+            <peripheralInstance id="FLEXCOMM7" derived_from="FLEXCOMM0" location="0x40098000"/>
+            <peripheralInstance id="I2C0" derived_from="I2C0" location="0x40086000"/>
+            <peripheralInstance id="I2C1" derived_from="I2C0" location="0x40087000"/>
+            <peripheralInstance id="I2C2" derived_from="I2C0" location="0x40088000"/>
+            <peripheralInstance id="I2C3" derived_from="I2C0" location="0x40089000"/>
+            <peripheralInstance id="I2C4" derived_from="I2C0" location="0x4008A000"/>
+            <peripheralInstance id="I2C5" derived_from="I2C0" location="0x40096000"/>
+            <peripheralInstance id="I2C6" derived_from="I2C0" location="0x40097000"/>
+            <peripheralInstance id="I2C7" derived_from="I2C0" location="0x40098000"/>
+            <peripheralInstance id="SPI0" derived_from="SPI0" location="0x40086000"/>
+            <peripheralInstance id="SPI1" derived_from="SPI0" location="0x40087000"/>
+            <peripheralInstance id="SPI2" derived_from="SPI0" location="0x40088000"/>
+            <peripheralInstance id="SPI3" derived_from="SPI0" location="0x40089000"/>
+            <peripheralInstance id="SPI4" derived_from="SPI0" location="0x4008A000"/>
+            <peripheralInstance id="SPI5" derived_from="SPI0" location="0x40096000"/>
+            <peripheralInstance id="SPI6" derived_from="SPI0" location="0x40097000"/>
+            <peripheralInstance id="SPI7" derived_from="SPI0" location="0x40098000"/>
+            <peripheralInstance id="USART0" derived_from="USART0" location="0x40086000"/>
+            <peripheralInstance id="USART1" derived_from="USART0" location="0x40087000"/>
+            <peripheralInstance id="USART2" derived_from="USART0" location="0x40088000"/>
+            <peripheralInstance id="USART3" derived_from="USART0" location="0x40089000"/>
+            <peripheralInstance id="USART4" derived_from="USART0" location="0x4008A000"/>
+            <peripheralInstance id="USART5" derived_from="USART0" location="0x40096000"/>
+            <peripheralInstance id="USART6" derived_from="USART0" location="0x40097000"/>
+            <peripheralInstance id="USART7" derived_from="USART0" location="0x40098000"/>
+            <peripheralInstance id="MAILBOX" derived_from="MAILBOX" location="0x4008B000"/>
+            <peripheralInstance id="GPIO" derived_from="GPIO" location="0x4008C000"/>
+            <peripheralInstance id="DMIC0" derived_from="DMIC0" location="0x40090000"/>
+            <peripheralInstance id="CRC-ENGINE" derived_from="CRC-ENGINE" location="0x40095000"/>
+            <peripheralInstance id="I2S0" derived_from="I2S0" location="0x40097000"/>
+            <peripheralInstance id="I2S1" derived_from="I2S0" location="0x40098000"/>
+            <peripheralInstance id="ADC0" derived_from="ADC0" location="0x400A0000"/>
+            <peripheralInstance id="ITM" derived_from="ITM" location="0xE0000000"/>
+            <peripheralInstance id="SystemControl" derived_from="SystemControl" location="0xE000E000"/>
+            <peripheralInstance id="SysTick" derived_from="SysTick" location="0xE000E010"/>
+            <peripheralInstance id="NVIC" derived_from="NVIC" location="0xE000E100"/>
+         </peripherals>
+         <peripherals coreId="cm4_LPC54114J256">
+            <peripheralInstance id="SYSCON" derived_from="SYSCON" location="0x40000000"/>
+            <peripheralInstance id="IOCON" derived_from="IOCON" location="0x40001000"/>
+            <peripheralInstance id="GINT0" derived_from="GINT0" location="0x40002000"/>
+            <peripheralInstance id="GINT1" derived_from="GINT0" location="0x40003000"/>
+            <peripheralInstance id="PINT" derived_from="PINT" location="0x40004000"/>
+            <peripheralInstance id="INPUTMUX" derived_from="INPUTMUX" location="0x40005000"/>
+            <peripheralInstance id="CTIMER0" derived_from="CTIMER0" location="0x40008000"/>
+            <peripheralInstance id="CTIMER1" derived_from="CTIMER0" location="0x40009000"/>
+            <peripheralInstance id="CTIMER2" derived_from="CTIMER0" location="0x40028000"/>
+            <peripheralInstance id="CTIMER3" derived_from="CTIMER0" location="0x40048000"/>
+            <peripheralInstance id="CTIMER4" derived_from="CTIMER0" location="0x40049000"/>
+            <peripheralInstance id="WWDT" derived_from="WWDT" location="0x4000C000"/>
+            <peripheralInstance id="MRT0" derived_from="MRT0" location="0x4000D000"/>
+            <peripheralInstance id="UTICK0" derived_from="UTICK0" location="0x4000E000"/>
+            <peripheralInstance id="RTC" derived_from="RTC" location="0x4002C000"/>
+            <peripheralInstance id="ASYNC-SYSCON" derived_from="ASYNC-SYSCON" location="0x40040000"/>
+            <peripheralInstance id="SPIFI0" derived_from="SPIFI0" location="0x40080000"/>
+            <peripheralInstance id="DMA0" derived_from="DMA0" location="0x40082000"/>
+            <peripheralInstance id="USB0" derived_from="USB0" location="0x40084000"/>
+            <peripheralInstance id="SCT0" derived_from="SCT0" location="0x40085000"/>
+            <peripheralInstance id="FLEXCOMM0" derived_from="FLEXCOMM0" location="0x40086000"/>
+            <peripheralInstance id="FLEXCOMM1" derived_from="FLEXCOMM0" location="0x40087000"/>
+            <peripheralInstance id="FLEXCOMM2" derived_from="FLEXCOMM0" location="0x40088000"/>
+            <peripheralInstance id="FLEXCOMM3" derived_from="FLEXCOMM0" location="0x40089000"/>
+            <peripheralInstance id="FLEXCOMM4" derived_from="FLEXCOMM0" location="0x4008A000"/>
+            <peripheralInstance id="FLEXCOMM5" derived_from="FLEXCOMM0" location="0x40096000"/>
+            <peripheralInstance id="FLEXCOMM6" derived_from="FLEXCOMM0" location="0x40097000"/>
+            <peripheralInstance id="FLEXCOMM7" derived_from="FLEXCOMM0" location="0x40098000"/>
+            <peripheralInstance id="I2C0" derived_from="I2C0" location="0x40086000"/>
+            <peripheralInstance id="I2C1" derived_from="I2C0" location="0x40087000"/>
+            <peripheralInstance id="I2C2" derived_from="I2C0" location="0x40088000"/>
+            <peripheralInstance id="I2C3" derived_from="I2C0" location="0x40089000"/>
+            <peripheralInstance id="I2C4" derived_from="I2C0" location="0x4008A000"/>
+            <peripheralInstance id="I2C5" derived_from="I2C0" location="0x40096000"/>
+            <peripheralInstance id="I2C6" derived_from="I2C0" location="0x40097000"/>
+            <peripheralInstance id="I2C7" derived_from="I2C0" location="0x40098000"/>
+            <peripheralInstance id="SPI0" derived_from="SPI0" location="0x40086000"/>
+            <peripheralInstance id="SPI1" derived_from="SPI0" location="0x40087000"/>
+            <peripheralInstance id="SPI2" derived_from="SPI0" location="0x40088000"/>
+            <peripheralInstance id="SPI3" derived_from="SPI0" location="0x40089000"/>
+            <peripheralInstance id="SPI4" derived_from="SPI0" location="0x4008A000"/>
+            <peripheralInstance id="SPI5" derived_from="SPI0" location="0x40096000"/>
+            <peripheralInstance id="SPI6" derived_from="SPI0" location="0x40097000"/>
+            <peripheralInstance id="SPI7" derived_from="SPI0" location="0x40098000"/>
+            <peripheralInstance id="USART0" derived_from="USART0" location="0x40086000"/>
+            <peripheralInstance id="USART1" derived_from="USART0" location="0x40087000"/>
+            <peripheralInstance id="USART2" derived_from="USART0" location="0x40088000"/>
+            <peripheralInstance id="USART3" derived_from="USART0" location="0x40089000"/>
+            <peripheralInstance id="USART4" derived_from="USART0" location="0x4008A000"/>
+            <peripheralInstance id="USART5" derived_from="USART0" location="0x40096000"/>
+            <peripheralInstance id="USART6" derived_from="USART0" location="0x40097000"/>
+            <peripheralInstance id="USART7" derived_from="USART0" location="0x40098000"/>
+            <peripheralInstance id="MAILBOX" derived_from="MAILBOX" location="0x4008B000"/>
+            <peripheralInstance id="GPIO" derived_from="GPIO" location="0x4008C000"/>
+            <peripheralInstance id="DMIC0" derived_from="DMIC0" location="0x40090000"/>
+            <peripheralInstance id="CRC-ENGINE" derived_from="CRC-ENGINE" location="0x40095000"/>
+            <peripheralInstance id="I2S0" derived_from="I2S0" location="0x40097000"/>
+            <peripheralInstance id="I2S1" derived_from="I2S0" location="0x40098000"/>
+            <peripheralInstance id="ADC0" derived_from="ADC0" location="0x400A0000"/>
+            <peripheralInstance id="ITM" derived_from="ITM" location="0xE0000000"/>
+            <peripheralInstance id="SystemControl" derived_from="SystemControl" location="0xE000E000"/>
+            <peripheralInstance id="SysTick" derived_from="SysTick" location="0xE000E010"/>
+            <peripheralInstance id="NVIC" derived_from="NVIC" location="0xE000E100"/>
+         </peripherals>
+      </chip>
+      <processor>
+         <name gcc_name="cortex-m4">Cortex-M4</name>
+         <family>Cortex-M</family>
+      </processor>
+      <processor>
+         <name gcc_name="cortex-m0plus">Cortex-M0+</name>
+         <family>Cortex-M</family>
+      </processor>
+      <link href="LPC54114_cm0plus_internal_peripheral.xml" cores="cm0plus_LPC54114J256"/>
+      <link href="LPC54114_cm4_internal_peripheral.xml" cores="cm4_LPC54114J256"/>
+   </info>
+</infoList>

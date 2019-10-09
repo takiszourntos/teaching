@@ -14,6 +14,7 @@
 #include <stdint.h>
 
 
+
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
@@ -34,6 +35,9 @@ struct colourStruct
 	portTickType delayTicks;
 };
 typedef struct colourStruct colour_t;
+
+colour_t	LEDparams[3];
+
 /*****************************************************************************
  * Private functions
  ****************************************************************************/
@@ -56,15 +60,15 @@ static void vLEDTaskRed(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS -> colour;
-	portTickType	numticks = colourCS -> delayTicks;
+	palette_t		col = colourCS[Red].colour;
+	portTickType	numticks = colourCS[Red].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 
 	while (1)
 	{
 		Board_LED_Set(col, true);
-		vTaskDelayUntil(&xLastWakeTime, numticks-10);
+		vTaskDelayUntil(&xLastWakeTime, numticks);
 		Board_LED_Set(col, false);
 		vTaskDelayUntil(&xLastWakeTime, (numticks << 1));
 	}
@@ -75,8 +79,8 @@ static void vLEDTaskGreen(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS -> colour;
-	portTickType	numticks = colourCS -> delayTicks;
+	palette_t		col = colourCS[Green].colour;
+	portTickType	numticks = colourCS[Green].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 
@@ -84,7 +88,7 @@ static void vLEDTaskGreen(void *pvParameters)
 	{
 		vTaskDelayUntil(&xLastWakeTime, numticks);
 		Board_LED_Set(col, true);
-		vTaskDelayUntil(&xLastWakeTime, numticks-10);
+		vTaskDelayUntil(&xLastWakeTime, numticks);
 		Board_LED_Set(col, false);
 		vTaskDelayUntil(&xLastWakeTime, numticks);
 	}
@@ -95,8 +99,8 @@ static void vLEDTaskBlue(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS -> colour;
-	portTickType	numticks = 1000; // colourCS -> delayTicks;
+	palette_t		col = colourCS[Blue].colour;
+	portTickType	numticks = colourCS[Blue].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 
@@ -115,33 +119,29 @@ static void vLEDTaskBlue(void *pvParameters)
 
 int main(void)
 {
+	/* initialize LED parameters */
+	LEDparams[Red].colour = Red;
+	LEDparams[Red].delayTicks = configTICK_RATE_HZ;
+	LEDparams[Green].colour = Green;
+	LEDparams[Green].delayTicks = configTICK_RATE_HZ;
+	LEDparams[Blue].colour = Blue;
+	LEDparams[Blue].delayTicks = configTICK_RATE_HZ;
+
 	prvSetupHardware();
-
-	colour_t	RedCS;
-	colour_t	GreenCS;
-	colour_t	BlueCS;
-
-	RedCS.colour = Red;
-	RedCS.delayTicks = 1000; // configTICK_RATE_HZ;
-	GreenCS.colour = Green;
-	GreenCS.delayTicks = 1000;
-	BlueCS.colour = Blue;
-	BlueCS.delayTicks = configTICK_RATE_HZ;
-
 
 	/* Red LED toggle thread */
 	xTaskCreate(vLEDTaskRed, (signed char *) "vTaskLedRed",
-				configMINIMAL_STACK_SIZE, &RedCS, (tskIDLE_PRIORITY + 3UL),
+				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 3UL),
 				(xTaskHandle *) NULL);
 
 	/* Green LED toggle thread */
 	xTaskCreate(vLEDTaskGreen, (signed char *) "vTaskLedGreen",
-				configMINIMAL_STACK_SIZE, &GreenCS, (tskIDLE_PRIORITY + 2UL),
+				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 2UL),
 				(xTaskHandle *) NULL);
 
 	/* Blue LED toggle thread */
 	xTaskCreate(vLEDTaskBlue, (signed char *) "vTaskLedBlue",
-				configMINIMAL_STACK_SIZE, &BlueCS, (tskIDLE_PRIORITY + 1UL),
+				configMINIMAL_STACK_SIZE, LEDparams, (tskIDLE_PRIORITY + 1UL),
 				(xTaskHandle *) NULL);
 
 	/* Start the scheduler */
