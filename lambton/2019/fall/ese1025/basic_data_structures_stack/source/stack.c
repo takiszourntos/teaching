@@ -61,8 +61,7 @@ int pop(stack_t* s)
 	}
 	else
 	{
-		(s->top)--;
-		return (*s).data[s->top];
+		return (*s).data[--(s->top)];
 	}
 }
 
