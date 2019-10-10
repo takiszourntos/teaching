@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define	L	1024
+#define	L		1024
 #define	TRUE	1U
 #define	FALSE	0U
 
@@ -17,7 +17,7 @@
 */
 struct	stack_struct
 {
-	int	data[L];
+	int		data[L];
 	size_t 	top;
 };
 typedef struct stack_struct	stack_t;
@@ -45,7 +45,7 @@ bool_t	stack_empty(stack_t* s)
 void push(stack_t* s, int x)
 {
 	s -> data[ (s->top)++ ] = x; /* equivalent to: s -> data [(s->top)] = x; (s->top)++; */
-				     /* also equivalent to: (s->top)++; s -> data [(s->top)-1] = x; */
+				     	 	 	 /* also equivalent to: (s->top)++; s -> data [(s->top)-1] = x; */
 	return;
 }
 
@@ -61,7 +61,7 @@ int pop(stack_t* s)
 	}
 	else
 	{
-		return (*s).data[--(s->top)];
+		return (*s).data[--(s->top)]; /* could also write: (s->data)[--(s->top)]; */
 	}
 }
 
@@ -93,7 +93,7 @@ int main()
 	}
 
 	/* test error function */
-	x = pop(&stack); /* comment this out to avoid error */
+	//x = pop(&stack); /* comment this out to avoid error */
 
 	return EXIT_SUCCESS;
 }
