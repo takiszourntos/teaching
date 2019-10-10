@@ -44,8 +44,8 @@ bool_t	stack_empty(stack_t* s)
  */
 void push(stack_t* s, int x)
 {
-	++(s->top);
-	s -> data[ (s->top) - 1 ] = x;
+	s -> data[ (s->top)++ ] = x; /* equivalent to: s -> data [(s->top)] = x; (s->top)++; */
+				     /* also equivalent to: (s->top)++; s -> data [(s->top)-1] = x; */
 	return;
 }
 
