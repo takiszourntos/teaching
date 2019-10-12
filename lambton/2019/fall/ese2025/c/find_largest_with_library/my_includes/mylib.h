@@ -1,3 +1,5 @@
+#ifndef MY_INCLUDES_MYLIB_H_
+#define MY_INCLUDES_MYLIB_H_
 /*
  * mylib.h
  *
@@ -5,8 +7,6 @@
  *      Author: takis
  */
 
-#ifndef MY_INCLUDES_MYLIB_H_
-#define MY_INCLUDES_MYLIB_H_
 
 /*
  * this amazing function finds the largest element of an array
