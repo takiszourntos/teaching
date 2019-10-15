@@ -87,9 +87,9 @@ int main()
 		for (size_t i = 0; i != N; ++i)
 		{
 			printf("i=%d, a(i)=%f, b(i)=%f, c(i)=%f\n", i,
-				gsl_vector_get(a, i),
-				gsl_vector_get(b, i),
-				gsl_vector_get(c, i));
+			gsl_vector_get(a, i),
+			gsl_vector_get(b, i),
+			gsl_vector_get(c, i));
 		}
 
 	/*
