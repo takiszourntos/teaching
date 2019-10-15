@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define	L		1024
+#define	L	1024
 #define	TRUE	1U
 #define	FALSE	0U
 
