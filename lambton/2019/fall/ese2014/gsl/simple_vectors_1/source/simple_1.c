@@ -142,6 +142,13 @@ int main()
 
 
 		/* print the results */
+		embt_print_vector(a);
+		embt_print_vector(b);
+		embt_print_vector(c);
+		embt_print_matrix(A);
+		embt_print_matrix(B);
+		embt_print_matrix(C);
+
 
 
 	/* de-allocate memory */
