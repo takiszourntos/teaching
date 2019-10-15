@@ -17,7 +17,7 @@
 */
 struct	stack_struct
 {
-	int		data[L];
+	int	data[L];
 	size_t 	top;
 };
 typedef struct stack_struct	stack_t;
