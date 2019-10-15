@@ -42,6 +42,30 @@ size_t fib(size_t k)
 	}
 }
 
+gsl_matrix *embt_mm(const gsl_matrix *U, const gsl_matrix *V, size_t N)
+{
+	gsl_matrix *W = gsl_matrix_alloc(N,N);
+	double dp;
+	double uk,vk;
+
+	for (size_t i=0; i != N; ++i)
+	{
+		for (size_t j=0; j != N; ++j)
+		{
+			/* compute element (i,j) of W */
+			dp = 0;
+			for (size_t k=0; k != N; ++k)
+			{
+				uk = gsl_matrix_get(U,i,k);
+				vk = gsl_matrix_get(V,k,j);
+				dp += uk*vk;
+			}
+			gsl_matrix_set(W,i,j,dp);
+		}
+	}
+	return W;
+}
+
 int main()
 {
 	/*
@@ -96,10 +120,26 @@ int main()
 	 *	MATRIX OPERATIONS - your homework!! :)
 	 */
 		/* fill A with first N*N Fibonacci numbers, starting with row 1 (cols 1-10), then row 2, etc. */
+		for (size_t i=0; i != N; ++i)
+		{
+			for (size_t j = 0; j != N; ++j)
+			{
+				gsl_matrix_set(A, i, j, (double) fib(j+i*N));
+			}
+		}
 
 		/* fill B with N*N random numbers, uniformly distributed over the interval (-100, 100) */
+		for (size_t i=0; i != N; ++i)
+		{
+			for (size_t j = 0; j != N; ++j)
+			{
+				gsl_matrix_set(B, i, j, gsl_ran_flat(r,-100.0,+100.0));
+			}
+		}
 
 		/* make C the product of A and B */
+		C = embt_mm(A,B,N);
+
 
 		/* print the results */
 
