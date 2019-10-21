@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE infoList
+  SYSTEM "crt_infolist.dtd">
+<infoList vendor="NXP">
+   <info name="LPC54114J256" chip="LPC54114J256">
+      <chip>
+         <name>LPC54114J256</name>
+         <family>LPC5411x</family>
+         <vendor>NXP</vendor>
+         <memory id="Flash" type="Flash" size="256" is_ro="true" can_program="true"/>
+         <memory id="RAM" type="RAM" size="192"/>
+         <memoryInstance id="PROGRAM_FLASH" derived_from="Flash" location="0x00000000" size="0x00040000"
+                         driver="LPC5411x_256K.cfx"/>
+         <memoryInstance id="SRAM1" derived_from="RAM" location="0x20010000" size="0x00010000"/>
+         <memoryInstance id="SRAM0" derived_from="RAM" location="0x20000000" size="0x00010000"/>
+         <memoryInstance id="SRAMX" derived_from="RAM" location="0x04000000" size="0x00008000"/>
+         <memoryInstance id="SRAM2" derived_from="RAM" location="0x20020000" size="0x00008000"/>
+      </chip>
+      <processor>
+         <name gcc_name="cortex-m4">Cortex-M4</name>
+         <family>Cortex-M</family>
+      </processor>
+      <processor>
+         <name gcc_name="cortex-m0plus">Cortex-M0+</name>
+         <family>Cortex-M</family>
+      </processor>
+   </info>
+</infoList>
