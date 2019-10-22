@@ -1,4 +1,4 @@
  
-# ESE2025 MCUXpresso Workspace
+# ESE2014 MCUXpresso Workspace
 
-where ESE2025 places all their work related to MCUXpresso IDE
+where ESE2014 places all their work related to MCUXpresso IDE
