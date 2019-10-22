@@ -1,0 +1,15 @@
+14:30:02 **** Incremental Build of configuration Debug for project functions_0 ****
+make all 
+Building file: ../source/avgmed.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"source/avgmed.d" -MT"source/avgmed.o" -o "source/avgmed.o" "../source/avgmed.c"
+Finished building: ../source/avgmed.c
+ 
+Building target: functions_0
+Invoking: GCC C Linker
+gcc  -o "functions_0"  ./source/avgmed.o   
+Finished building target: functions_0
+ 
+14:30:08 **** Incremental Build of configuration Debug for project functions_0 ****
+make all 
+make: Nothing to be done for 'all'.

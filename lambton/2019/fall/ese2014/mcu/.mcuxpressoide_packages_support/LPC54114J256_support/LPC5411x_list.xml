@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chips chipVendor="NXP" family="LPC5411x">
+   <chip name="LPC54114J256" flash=""/>
+</chips>
