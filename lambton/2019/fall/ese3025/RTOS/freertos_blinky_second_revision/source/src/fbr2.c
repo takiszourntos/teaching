@@ -58,7 +58,7 @@ static void vLEDTaskRed(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS[Red].colour;
+	palette_t	col = colourCS[Red].colour;
 	portTickType	numticks = colourCS[Red].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
@@ -77,7 +77,7 @@ static void vLEDTaskGreen(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS[Green].colour;
+	palette_t	col = colourCS[Green].colour;
 	portTickType	numticks = colourCS[Green].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
@@ -97,7 +97,7 @@ static void vLEDTaskBlue(void *pvParameters)
 {
 	colour_t *colourCS;
 	colourCS = (colour_t *) pvParameters;
-	palette_t		col = colourCS[Blue].colour;
+	palette_t	col = colourCS[Blue].colour;
 	portTickType	numticks = colourCS[Blue].delayTicks;
 	portTickType	xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
