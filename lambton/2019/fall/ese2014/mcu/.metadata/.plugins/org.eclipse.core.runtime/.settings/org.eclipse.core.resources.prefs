@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
+pathvariable.SDK_LPC_RESOURCES=/usr/local/mcuxpressoide-10.3.1_2233/ide/plugins/com.nxp.mcuxpresso.core.datamodels.resources_10.3.0.201810041206/override
 version=1
