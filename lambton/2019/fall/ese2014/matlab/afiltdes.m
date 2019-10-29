@@ -5,7 +5,6 @@
 %
 clear all;
 close all;
-pack;
 
 % Butterworth
 N=3; % order 
