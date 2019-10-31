@@ -16,8 +16,8 @@
 
 
 /*
- * transmitter function: as a thread, it send a new elements to a queue after a delay,
- *   sending a maximum of 2*Lq elements before quitting
+ * transmitter function: as a thread, it sends new elements to a queue after a delay,
+ *   sending a defined total number of elements before quitting
  */
 void	*funcTx(void *pds)
 {
