@@ -84,13 +84,13 @@ void	*funcRx(void *pds)
 int main()
 {
     pthread_t 	thread_sender;	// our handle for the averaging thread
-	pthread_t	thread_receiver;	// our handle for the sorting thread
+    pthread_t	thread_receiver;	// our handle for the sorting thread
 
-	/* define and initialize main queue, qm */
-	queue_t qm;
-	qm.head = 0;
-	qm.tail = 0;
-	queue_t *pqm = &qm;
+    /* define and initialize main queue, qm */
+    queue_t qm;
+    qm.head = 0;
+    qm.tail = 0;
+    queue_t *pqm = &qm;
 
     /* create threads */
     if(pthread_create(&thread_sender, NULL, &funcTx, (void *) pqm)!=0)
