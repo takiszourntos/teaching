@@ -51,24 +51,24 @@ void enqueue(queue_t *pq, qrec_t d)
  */
 qrec_t* dequeue(queue_t *pq)
 {
-	/* allocate memory from heap to store retrieved record */
-	qrec_t *d = malloc(sizeof(qrec_t));
-	size_t i_old = pq->head; /* index to old record at the head */
+    /* allocate memory from heap to store retrieved record */
+    qrec_t *d = malloc(sizeof(qrec_t));
+    size_t i_old = pq->head; /* index to old record at the head */
 
-	/* retrieve the data at the head */
-	d->x = (pq->data)[i_old].x;
-	d->y = (pq->data)[i_old].y;
-	d->key = (pq->data)[i_old].key;
+    /* retrieve the data at the head */
+    d->x = (pq->data)[i_old].x;
+    d->y = (pq->data)[i_old].y;
+    d->key = (pq->data)[i_old].key;
 
-	/* update head pointer */
-	if (i_old == Lq)
-	{
-		pq->head = 1;
-	}
-	else
-	{
-		++(pq->head);
-	}
+    /* update head pointer */
+    if (i_old == Lq)
+    {
+	pq->head = 1;
+    }
+    else
+    {
+	++(pq->head);
+    }
     return d;
 }
 
