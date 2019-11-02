@@ -52,7 +52,7 @@
 
 /* Red LED */
 	#define LED0_GPIO_PORT_NUM                  0
-	#define LED0_GPIO_BIT_NUM                   2
+	#define LED0_GPIO_BIT_NUM                   22
 
 /* Green LED (newly added - 11/01/2019) */
 	#define	LED1_GPIO_PORT_NUM                  3
@@ -146,7 +146,15 @@ void Board_UARTPutSTR(char *str)
 /* Sets the state of a board LED to on or off */
 void Board_LED_Set(uint8_t LEDNumber, bool On)
 {
-	bool actualOn = !On;
+	bool actualOn=!On; /* BUG fix: they got it flipped */
+//	if (On==false)
+//	{
+//		actualOn = true;
+//	}
+//	else
+//	{
+//		actualOn = false;
+//	}
 
 	/* There is only one LED -- WRONG! There are actually THREE 11/01/2019 */
 	if (LEDNumber == 0)
@@ -181,7 +189,7 @@ bool Board_LED_Test(uint8_t LEDNumber)
 		Chip_GPIO_ReadPortBit(LPC_GPIO, LED2_GPIO_PORT_NUM, LED2_GPIO_BIT_NUM);
 	}
 
-	return state;
+	return !state; // BUG Fix: returns the opposite now
 }
 
 void Board_LED_Toggle(uint8_t LEDNumber)

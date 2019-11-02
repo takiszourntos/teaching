@@ -16,33 +16,94 @@
 #endif
 #endif
 
+#define TICKRATE_HZ1 (10)	/* 10 ticks per second */
+
 #include <cr_section_macros.h>
 
 // TODO: insert other include files here
 
 // TODO: insert other definitions and declarations here
 
-int main(void) {
+typedef enum
+{
+	Red = 0U,
+	Green = 1U,
+	Blue = 2U
+} colour_t;
 
-#if defined (__USE_LPCOPEN)
+volatile colour_t LEDoi = Red;
+volatile bool	 onPhase = true;
+
+/**
+ * @brief	Handle interrupt from SysTick timer
+ * @return	Nothing
+ */
+void SysTick_Handler(void)
+{
+	switch (LEDoi)
+	{
+		case Red:
+		{
+			if (onPhase==true)
+			{
+				Board_LED_Set(Red, true);
+			}
+			else // LED must go off
+			{
+				Board_LED_Set(Red, false);
+				LEDoi=Green;
+			}
+			onPhase = !onPhase;
+			break;
+		}
+		case Green:
+		{
+			if (onPhase==true)
+			{
+				Board_LED_Set(Green, true);
+			}
+			else // LED must go off
+			{
+				Board_LED_Set(Green, false);
+				LEDoi=Blue;
+			}
+			onPhase = !onPhase;
+			break;
+		}
+		case Blue:
+		{
+			if (onPhase==true)
+			{
+				Board_LED_Set(Blue, true);
+			}
+			else // LED must go off
+			{
+				Board_LED_Set(Blue, false);
+				LEDoi=Red;
+			}
+			onPhase = !onPhase;
+			break;
+		}
+	}
+}
+
+
+int main(void) {
     // Read clock settings and update SystemCoreClock variable
     SystemCoreClockUpdate();
-#if !defined(NO_BOARD_LIB)
-    // Set up and initialize all required blocks and
-    // functions related to the board hardware
-    Board_Init();
-    // Set the LED to the state of "On"
-    Board_LED_Set(0, true);
-#endif
-#endif
 
-    // TODO: insert code here
+    /* Turn off all LEDs before starting */
+	Board_LED_Set(0, false);
+	Board_LED_Set(1, false);
+	Board_LED_Set(2, false);
 
-    // Force the counter to be placed into memory
-    volatile static int i = 0 ;
-    // Enter an infinite loop, just incrementing a counter
-    while(1) {
-        i++ ;
-    }
-    return 0 ;
+	/* Enable and setup SysTick Timer at a periodic rate */
+	SysTick_Config(SystemCoreClock / TICKRATE_HZ1);
+
+	/* LEDs toggle in interrupt handlers */
+	while (1) {
+		__WFI();
+	}
+
+	return 0;
 }

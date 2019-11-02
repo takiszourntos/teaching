@@ -68,6 +68,9 @@ int main(void)
 	/* Generic Initialization */
 	SystemCoreClockUpdate();
 	Board_Init();
+	Board_LED_Set(0, false);
+	Board_LED_Set(1, false);
+	Board_LED_Set(2, false);
 
 	/* Enable and setup SysTick Timer at a periodic rate */
 	SysTick_Config(SystemCoreClock / TICKRATE_HZ1);
