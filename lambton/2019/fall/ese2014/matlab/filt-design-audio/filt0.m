@@ -43,6 +43,13 @@ Ysba = spec_sba*ones(size(Wrange));
     hold on; plot(Frange,20*log10(Ypbrpos),'r-', Frange,20*log10(Ypbrneg),'r-',Frange,20*log10(Ysba),'r-');
     xline(16000,'r-'); xline(20000,'r-');
     
+    % inspect phase response
+    figure; plot(Frange, Ybw_ph); grid;
+    title('Butterworth Phase Response (N=43)');
+    xlabel('freq (kHz)');
+    ylabel('phase (rad)');
+    hold on; xline(16000,'r-'); xline(20000,'r-');
+    
 %% Elliptical Design
     % design attempt
     Ne = 8;
@@ -63,6 +70,14 @@ Ysba = spec_sba*ones(size(Wrange));
     % plot specs/constraints for comparison
     hold on; plot(Frange,20*log10(Ypbrpos),'r-', Frange,20*log10(Ypbrneg),'r-',Frange,20*log10(Ysba),'r-');
     xline(16000,'r-'); xline(20000,'r-');
+
+    % inspect phase response
+    figure; plot(Frange, Ye_ph); grid;
+    title('Elliptical Phase Response (N=8)');
+    xlabel('freq (kHz)');
+    ylabel('phase (rad)');
+    hold on; xline(16000,'r-'); xline(20000,'r-');
+    
 
     
 
