@@ -146,15 +146,17 @@ void Board_UARTPutSTR(char *str)
 /* Sets the state of a board LED to on or off */
 void Board_LED_Set(uint8_t LEDNumber, bool On)
 {
-	bool actualOn=!On; /* BUG fix: they got it flipped */
-//	if (On==false)
-//	{
-//		actualOn = true;
-//	}
-//	else
-//	{
-//		actualOn = false;
-//	}
+	bool actualOn; //=!On; /* BUG fix: they got it flipped */
+	if (On==false)
+	{
+		actualOn = true;
+		//actualOn = false;
+	}
+	else
+	{
+		actualOn = false;
+		//actualOn = true;
+	}
 
 	/* There is only one LED -- WRONG! There are actually THREE 11/01/2019 */
 	if (LEDNumber == 0)
