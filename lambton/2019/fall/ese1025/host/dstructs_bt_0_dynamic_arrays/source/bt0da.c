@@ -10,7 +10,7 @@
 
 typedef int	key_t;
 
-key_t  pS[]={6,4,7,3,2,1,8,5,0,9};
+key_t  pS[]={6,4,7,3,2,1,8,5,0,9,10};
 size_t NS = sizeof(pS)/sizeof(key_t);
 
 /*
@@ -44,7 +44,7 @@ size_t find_sorted_median(key_t *pset, size_t Lset)
 
 	if (Lset != 0 )
 	{
-		i_median = Lset/2-1;
+		i_median = (Lset-1)/2;
 	}
 
 	return i_median; /* set must contain at least two elements */
