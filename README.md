@@ -24,7 +24,7 @@ The following is a comprehensive list with links for recommended software and ha
     Link: https://www.amazon.ca/Exploring-BeagleBone-Techniques-Building-Embedded-ebook/dp/B07MMVV65W
     
 6) LPCXPresso LPC1769 Eval Kit <br>
-    Link: (https://www.digikey.ca/product-detail/en/embedded-artists/EAX00242/EAX00242-ND/5725751)
+    Link: (https://www.digikey.ca/product-detail/en/embedded-artists/EAX00242/EAX00242-ND/5725751) <br>
     Link 2: (https://www.digikey.ca/product-detail/en/nxp-usa-inc/OM13085UL/568-12843-ND/5699853)
 
 7) Basic Electronic Parts for Prototyping:
