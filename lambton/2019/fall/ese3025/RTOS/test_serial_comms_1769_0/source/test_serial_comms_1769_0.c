@@ -106,9 +106,9 @@ int main(void)
 	RingBuffer_Init(&rxring, rxbuff, 1, UART_RRB_SIZE);
 	RingBuffer_Init(&txring, txbuff, 1, UART_SRB_SIZE);
 
-	/* Reset and enable FIFOs, FIFO trigger level 3 (14 chars) */
+	/* Reset and enable FIFOs, FIFO trigger level 1 (4 bytes --- need zero latency!) */
 	Chip_UART_SetupFIFOS(UART_SELECTION, (UART_FCR_FIFO_EN | UART_FCR_RX_RS |
-							UART_FCR_TX_RS | UART_FCR_TRG_LEV3));
+							UART_FCR_TX_RS | UART_FCR_TRG_LEV1));
 
 	/* Enable receive data and line status interrupt */
 	Chip_UART_IntEnable(UART_SELECTION, (UART_IER_RBRINT | UART_IER_RLSINT));
