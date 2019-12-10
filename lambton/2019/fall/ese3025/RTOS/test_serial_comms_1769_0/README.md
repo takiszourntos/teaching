@@ -13,5 +13,5 @@ USB-TTL cable YELLOW goes to LPC1769 J2-9
 USB-TTL cable GREEN is NOT CONNECTED
 
 ![](wired_connections.JPG)
-![](screenshot_transmission_from_LPC_working.JPG)
+![](screenshot_transmission_from_LPC_working_0.JPG)
 
