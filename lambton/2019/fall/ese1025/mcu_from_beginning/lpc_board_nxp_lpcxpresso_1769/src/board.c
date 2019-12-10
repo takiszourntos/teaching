@@ -51,6 +51,11 @@
 #define JOYSTICK_PRESS_GPIO_BIT_NUM             17
 #define LED0_GPIO_PORT_NUM                      0
 #define LED0_GPIO_BIT_NUM                       22
+#define LED1_GPIO_PORT_NUM                      3
+#define LED1_GPIO_BIT_NUM                       25
+#define LED2_GPIO_PORT_NUM                      3
+#define LED2_GPIO_BIT_NUM                       26
+
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -68,8 +73,12 @@ const uint32_t RTCOscRateIn = 32768;
 static void Board_LED_Init(void)
 {
 	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
-	/* Set the PIO_22 as output */
+	/* Set the P0IO_22 as output RED */
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED0_GPIO_PORT_NUM, LED0_GPIO_BIT_NUM, true);
+	/* Set the P3IO_25 as output GREEN */
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED1_GPIO_PORT_NUM, LED1_GPIO_BIT_NUM, true);
+	/* Set the P3IO_26 as output BLUE */
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED2_GPIO_PORT_NUM, LED2_GPIO_BIT_NUM, true);
 }
 
 /*****************************************************************************
@@ -130,9 +139,20 @@ void Board_UARTPutSTR(char *str)
 /* Sets the state of a board LED to on or off */
 void Board_LED_Set(uint8_t LEDNumber, bool On)
 {
+	On = !On; /* flip polarity */
+
 	/* There is only one LED */
-	if (LEDNumber == 0) {
+	if (LEDNumber == 0) /* RED LED */
+	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED0_GPIO_PORT_NUM, LED0_GPIO_BIT_NUM, On);
+	}
+	else if (LEDNumber == 1) /* GREEN LED */
+	{
+		Chip_GPIO_WritePortBit(LPC_GPIO, LED1_GPIO_PORT_NUM, LED1_GPIO_BIT_NUM, On);
+	}
+	else if (LEDNumber == 2) /* BLUE LED */
+	{
+		Chip_GPIO_WritePortBit(LPC_GPIO, LED2_GPIO_PORT_NUM, LED2_GPIO_BIT_NUM, On);
 	}
 }
 
@@ -141,18 +161,28 @@ bool Board_LED_Test(uint8_t LEDNumber)
 {
 	bool state = false;
 
-	if (LEDNumber == 0) {
+	if (LEDNumber == 0) /* RED LED */
+	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED0_GPIO_PORT_NUM, LED0_GPIO_BIT_NUM);
 	}
-
+	else if (LEDNumber == 1) /* GREEN LED */
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED1_GPIO_PORT_NUM, LED1_GPIO_BIT_NUM);
+	}
+	else if (LEDNumber == 2) /* BLUE LED */
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED2_GPIO_PORT_NUM, LED2_GPIO_BIT_NUM);
+	}
 	return state;
 }
 
 void Board_LED_Toggle(uint8_t LEDNumber)
 {
-	if (LEDNumber == 0) {
+	if ((LEDNumber == 0) || (LEDNumber == 1) || (LEDNumber == 2))   /* RED, GREEN or BLUE LED*/
+	{
 		Board_LED_Set(LEDNumber, !Board_LED_Test(LEDNumber));
 	}
+
 }
 
 /* Set up and initialize all required blocks and functions related to the

@@ -31,8 +31,11 @@ int main(void) {
     // Set up and initialize all required blocks and
     // functions related to the board hardware
     Board_Init();
-    // Set the LED to the state of "On"
-    Board_LED_Set(0, true);
+    // Clear the LEDs
+    Board_LED_Set(0, false);
+    Board_LED_Set(1, false);
+    Board_LED_Set(2, false);
+
 #endif
 #endif
 
