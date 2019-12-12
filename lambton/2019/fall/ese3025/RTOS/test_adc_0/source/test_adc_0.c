@@ -21,10 +21,11 @@ static ADC_CLOCK_SETUP_T ADCSetup;
 static volatile uint8_t Burst_Mode_Flag = 0, Interrupt_Continue_Flag;
 static volatile uint8_t ADC_Interrupt_Done_Flag, channelTC, dmaChannelNum;
 
-uint32_t DMAbuffer;
-
-bool this_shit_is_for_real=true;
+volatile bool this_shit_is_for_real=true;
 static const unsigned int dmaTransferSize=100000; /* note that dmaTransferSize/_bitRate =  number of seconds for a burst */
+
+uint32_t DMAbuffer;
+uint16_t *dmaBuffer=(uint16_t *) malloc(dmaTransferSize*sizeof(uint16_t));
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -65,7 +66,7 @@ static void App_DMA_Test(void)
 
 		/* Get the ADC value from Data register*/
 		dataADC = ADC_DR_RESULT(DMAbuffer);
-		usleep(1000);
+		delay(1000);
 	}
 	/* Disable interrupts, release DMA channel */
 	Chip_GPDMA_Stop(LPC_GPDMA, dmaChannelNum);
