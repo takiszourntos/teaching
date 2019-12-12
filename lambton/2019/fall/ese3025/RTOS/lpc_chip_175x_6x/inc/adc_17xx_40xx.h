@@ -138,7 +138,7 @@ typedef enum CHIP_ADC_START_MODE {
 typedef struct {
 	uint32_t adcRate;		/*!< ADC rate */
 	uint8_t  bitsAccuracy;	/*!< ADC bit accuracy */
-	bool     burstMode;		/*!< ADC Burt Mode */
+	bool     burstMode;		/*!< ADC Burst Mode */
 } ADC_CLOCK_SETUP_T;
 
 /**

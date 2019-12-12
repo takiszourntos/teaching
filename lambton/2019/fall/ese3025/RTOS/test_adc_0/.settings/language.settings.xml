@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project>
-	<configuration id="com.crt.advproject.config.exe.debug.1512339721" name="Debug">
+	<configuration id="com.crt.advproject.config.exe.debug.1531539459" name="Debug">
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider copy-of="extension" id="com.crt.advproject.GCCBuildCommandParser"/>
@@ -11,7 +11,7 @@
 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
 		</extension>
 	</configuration>
-	<configuration id="com.crt.advproject.config.exe.release.2134859713" name="Release">
+	<configuration id="com.crt.advproject.config.exe.release.1085541443" name="Release">
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider copy-of="extension" id="com.crt.advproject.GCCBuildCommandParser"/>
