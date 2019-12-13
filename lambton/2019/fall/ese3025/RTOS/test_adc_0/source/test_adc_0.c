@@ -13,19 +13,21 @@ typedef unsigned short int bool_t;
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
-#define _ADC_CHANNLE ADC_CH0
-#define _LPC_ADC_ID LPC_ADC
-#define _GPDMA_CONN_ADC GPDMA_CONN_ADC
+#define _ADC_CHANNLE		ADC_CH0
+#define _LPC_ADC_ID 		LPC_ADC
+#define _GPDMA_CONN_ADC 	GPDMA_CONN_ADC
+#define _LPC_ADC_ID 		LPC_ADC
+#define _LPC_ADC_IRQ 		ADC_IRQn
 
-static ADC_CLOCK_SETUP_T ADCSetup;
-static volatile uint8_t Burst_Mode_Flag = 0, Interrupt_Continue_Flag;
-static volatile uint8_t ADC_Interrupt_Done_Flag, channelTC, dmaChannelNum;
+static ADC_CLOCK_SETUP_T 	ADCSetup;
+static volatile uint8_t 	Burst_Mode_Flag = 1, Interrupt_Continue_Flag;
+static volatile uint8_t 	ADC_Interrupt_Done_Flag, channelTC, dmaChannelNum;
 
-volatile bool this_shit_is_for_real=true;
-static const unsigned int dmaTransferSize=100000; /* note that dmaTransferSize/_bitRate =  number of seconds for a burst */
+volatile bool 				this_shit_is_for_real=true;
+static const unsigned int 	dmaTransferSize=128; /* note that dmaTransferSize/_bitRate =  number of seconds for a burst */
 
 uint32_t DMAbuffer;
-uint16_t *dmaBuffer=(uint16_t *) malloc(dmaTransferSize*sizeof(uint16_t));
+uint32_t *dmaBuffer=(uint32_t *) malloc(dmaTransferSize*sizeof(uint32_t));
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -35,29 +37,18 @@ uint16_t *dmaBuffer=(uint16_t *) malloc(dmaTransferSize*sizeof(uint16_t));
  * Private functions
  ****************************************************************************/
 
-/* DMA routine for ADC example */
-static void App_DMA_Test(void)
+/* DMA routine for ADC */
+static void retrieveADCSamples(void)
 {
 	uint16_t dataADC;
 
-	/* Initialize GPDMA controller */
-	Chip_GPDMA_Init(LPC_GPDMA);
-	/* Setting GPDMA interrupt */
-	NVIC_DisableIRQ(DMA_IRQn);
-	NVIC_SetPriority(DMA_IRQn, ((0x01 << 3) | 0x01));
-	NVIC_EnableIRQ(DMA_IRQn);
-	/* Setting ADC interrupt, ADC Interrupt must be disable in DMA mode */
-	NVIC_DisableIRQ(_LPC_ADC_IRQ);
-	Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
-	/* Get the free channel for DMA transfer */
-	dmaChannelNum = Chip_GPDMA_GetFreeChannel(LPC_GPDMA, _GPDMA_CONN_ADC);
 	/* Get  adc value until get 'x' character */
 	while (this_shit_is_for_real)
 	{
 		channelTC = 0;
 		Chip_GPDMA_Transfer(LPC_GPDMA, dmaChannelNum,
 						  _GPDMA_CONN_ADC,
-						  (uint32_t) &DMAbuffer,
+						  (uint32_t) dmaBuffer,
 						  GPDMA_TRANSFERTYPE_P2M_CONTROLLER_DMA,
 						  dmaTransferSize);
 
@@ -110,15 +101,45 @@ int main(void)
 	SystemCoreClockUpdate();
 	Board_Init();
 
-	/*	Chip_IOCON_PinMux(0, 25, IOCON_ADMODE_EN, IOCON_FUNC1); */
-	/*ADC Init */
-	Chip_ADC_Init(_LPC_ADC_ID, &ADCSetup); /* default is 200-kHz @ 12-bits */
-	Chip_ADC_EnableChannel(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
-	ADCSetup.burstMode = 1;
-	Chip_ADC_SetSampleRate(_LPC_ADC_ID, &ADCSetup, _bitRate);
+	/**** ADC INITIALIZATION ****/
+		/* Basic ADC Init */
+		Chip_ADC_Init(_LPC_ADC_ID, &ADCSetup); /* default is 200-kHz @ 12-bits */
+		Chip_ADC_EnableChannel(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
+		ADCSetup.burstMode = true; /* we are processing 128-sample chunks */
+		Chip_ADC_SetSampleRate(_LPC_ADC_ID, &ADCSetup, _bitRate);
 
-	/* begin DMA transfer for ADC */
-	App_DMA_Test();
+		/* other ADC initializations */
+		Chip_GPDMA_Init(LPC_GPDMA); /* Initialize GPDMA controller */
+		/* Setting GPDMA interrupt */
+		NVIC_DisableIRQ(DMA_IRQn);
+		NVIC_SetPriority(DMA_IRQn, ((0x01 << 3) | 0x01));
+		NVIC_EnableIRQ(DMA_IRQn);
+		/* Setting ADC interrupt, ADC Interrupt must be disabled in DMA mode */
+		NVIC_DisableIRQ(_LPC_ADC_IRQ);
+
+		Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
+		/* Get the free channel for DMA transfer */
+		dmaChannelNum = Chip_GPDMA_GetFreeChannel(LPC_GPDMA, _GPDMA_CONN_ADC);
+
+	/**** DAC INITIALIZATION ****/
+		Chip_DAC_Init(LPC_DAC); /* Setup DAC pins for board and common CHIP code */
+		/* Setup DAC timeout for polled and DMA modes to 0x3FF */
+		Chip_Clock_SetPCLKDiv(SYSCTL_PCLK_DAC, SYSCTL_CLKDIV_1);
+		Chip_DAC_SetDMATimeOut(LPC_DAC, DAC_TIMEOUT);
+		/* Compute and show estimated DAC request time */
+		dacClk = Chip_Clock_GetPeripheralClockRate(SYSCTL_PCLK_DAC);
+
+
+		DEBUGOUT("DAC base clock rate = %dHz, DAC request rate = %dHz\r\n",
+			dacClk, (dacClk / DAC_TIMEOUT));
+
+		/* Enable count and DMA support */
+		Chip_DAC_ConfigDAConverterControl(LPC_DAC, DAC_CNT_ENA | DAC_DMA_ENA);
+
+	/* future coding: */
+	retrieveADCSamples();
+	dspSamples();
+	sendDACSamples();
 
 	int x;
 	while (1)
