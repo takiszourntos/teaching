@@ -90,6 +90,8 @@ int main(void)
 	{
 		Chip_ADC_Init(_LPC_ADC_ID, &ADCSetup);
 		Chip_ADC_EnableChannel(_LPC_ADC_ID, _ADC_CHANNEL, ENABLE);
+		Chip_ADC_SetSampleRate(_LPC_ADC_ID, &ADCSetup, ADC_MAX_SAMPLE_RATE /4);
+
 		NVIC_EnableIRQ(_LPC_ADC_IRQ); /* Enable ADC Interrupt */
 		Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
 		Chip_ADC_SetBurstCmd(_LPC_ADC_ID, ENABLE); /* enable Burst Mode for regular conversions */
