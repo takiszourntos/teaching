@@ -24,9 +24,17 @@
 /* DAC sample rate request time */
 #define DAC_TIMEOUT 0x3FF
 #define DAC_TICKRATE_HZ (50000)	/* 50000 ticks per second */
+#define _ADC_CHANNEL ADC_CH0
+#define _LPC_ADC_ID LPC_ADC
+#define _LPC_ADC_IRQ ADC_IRQn
 
-volatile uint32_t dacval = 0;
+volatile uint32_t dacval = 0; /* storage for DAC data register */
+volatile uint16_t adcval; /* storage for ADC data reads */
 
+static ADC_CLOCK_SETUP_T ADCSetup;
+static volatile uint8_t Burst_Mode_Flag = 0, Interrupt_Continue_Flag;
+static volatile uint8_t ADC_Interrupt_Done_Flag, channelTC, dmaChannelNum;
+uint32_t DMAbuffer;
 
 /**
  * @brief	do a DAC read using the interrupt handler for the SysTick timer
@@ -37,7 +45,24 @@ void SysTick_Handler(void)
 	Chip_DAC_UpdateValue(LPC_DAC, dacval);
 }
 
+/**
+ * @brief	ADC0 interrupt handler sub-routine
+ * @return	Nothing
+ */
+void ADC_IRQHandler(void)
+{
 
+	/* disable interrupt to process it --- no nested interrupt calls allowed */
+	NVIC_DisableIRQ(_LPC_ADC_IRQ);
+	Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNEL, DISABLE);
+
+	/* read ADC data register */
+	Chip_ADC_ReadValue(_LPC_ADC_ID, _ADC_CHANNEL, &adcval);
+
+	/* reinstate interrupt to continue */
+	NVIC_EnableIRQ(_LPC_ADC_IRQ);
+	Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNEL, ENABLE);
+}
 
 int main(void)
 {
@@ -61,14 +86,19 @@ int main(void)
 			dacClk, (dacClk / DAC_TIMEOUT)); */
 	}
 
+	/***************     ADC Initialization      **********/
+	{
+		Chip_ADC_Init(_LPC_ADC_ID, &ADCSetup);
+		Chip_ADC_EnableChannel(_LPC_ADC_ID, _ADC_CHANNEL, ENABLE);
+		NVIC_EnableIRQ(_LPC_ADC_IRQ); /* Enable ADC Interrupt */
+		Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
+		Chip_ADC_SetBurstCmd(_LPC_ADC_ID, ENABLE); /* enable Burst Mode for regular conversions */
+	}
+
 	/***************      SysTick Timer (for DAC) Initialization      ***************/
 	{
 		SysTick_Config(SystemCoreClock / DAC_TICKRATE_HZ);
 	}
-
-
-
-
 
 
 	while (!end_Flag)
