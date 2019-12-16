@@ -38,8 +38,8 @@
 
 /*
  * size() function returns the number of valid elements in the buffer,
- * 			between b.current and b.offset; size() can return a maximum
- * 			of b->K.
+ * 		between b.current and b.offset; size() can return a maximum
+ * 		of b->K.
  */
 size_t size(buffer_t *b)
 {
@@ -49,7 +49,7 @@ size_t size(buffer_t *b)
 
 /*
  * init_buffer() function initializes the buffer (b) pointers and sets the "data
- * 					depth" of the buffer (depth parameter)
+ * 		depth" of the buffer (depth parameter)
  */
 void init_buffer(buffer_t *b, size_t depth)
 {
@@ -63,9 +63,9 @@ void init_buffer(buffer_t *b, size_t depth)
 
 /*
  * enbuffer() function adds the current sample to the buffer, by updating
- * 				b->current and setting b->array[b->current] accordingly;
- * 				if the buffer size is equal to b->K, then the offset pointer
- * 				follows along, to maintain a fixed depth of valid data
+ * 		b->current and setting b->array[b->current] accordingly;
+ * 		if the buffer size is equal to b->K, then the offset pointer
+ * 		follows along, to maintain a fixed depth of valid data
  */
 void enbuffer(buffer_t *b, item_t x_n)
 {
@@ -96,7 +96,7 @@ void enbuffer(buffer_t *b, item_t x_n)
 
 /*
  * debuffer() function returns an index to the element x(n-i), which gives access to the
- * 				buffer elements x(n-i) through x(n-(K-1))
+ * 		buffer elements x(n-i) through x(n-(K-1))
  *
  */
 size_t debuffer(buffer_t* b, size_t i)
