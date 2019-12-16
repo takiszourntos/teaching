@@ -77,7 +77,7 @@ void enbuffer(buffer_t *b, item_t x_n)
 	{
 		(b->current)++;
 	}
-	b->array[b->current]=x_n; /* set the current-pointer value of the array to be x(n) */
+	(b->array)[b->current]=x_n; /* set the current-pointer value of the array to be x(n) */
 
 	if (b.size() == (b->K))
 	{
