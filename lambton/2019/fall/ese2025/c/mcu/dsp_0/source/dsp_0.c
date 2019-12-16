@@ -34,6 +34,37 @@ volatile uint16_t adcval; /* storage for ADC data reads */
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
+/* initialize data storage variables */
+buffer_t* pb_u = (buffer_t *) malloc(sizeof(buffer_t)); /* input buffer */
+buffer_t* pb_y = (buffer_t *) malloc(sizeof(buffer_t)); /* output buffer */
+
+/* filter coefficients */
+uint16_t ycoeffs[]={25,36,72};
+uint16_t ucoeffs[]={7,15};
+
+item_t dspAlgo(void)
+{
+	item_t y_n;
+
+	/* compute the next output sample */
+	item_t f1, f2, iW=0;
+	/* compute output sums */
+	for (size_t if1=debuffer(pb_y,1);if1 != pb_y->K; if1++)
+	{
+		f1 += (pb_y->array(if1))*ycoeffs[iW];
+		iW++;
+	}
+	iW = 0;
+	/* compute input sums */
+	for (size_t if2=debuffer(pb_u,0);if2 != pb_u->K; if2++)
+	{
+		f2 += (pb_u->array(if2))*ucoeffs[iW];
+		iW++;
+	}
+	y_n = f1 + f2;
+	enbuffer(pb_y,y_n)
+	return y_n;
+}
 
 /**
  * @brief	do a DAC read using the interrupt handler for the SysTick timer
@@ -41,6 +72,7 @@ static ADC_CLOCK_SETUP_T ADCSetup;
  */
 void SysTick_Handler(void)
 {
+	dacval = dspAlgo();
 	Chip_DAC_UpdateValue(LPC_DAC, dacval);
 }
 
@@ -57,6 +89,7 @@ void ADC_IRQHandler(void)
 
 	/* read ADC data register */
 	Chip_ADC_ReadValue(_LPC_ADC_ID, _ADC_CHANNEL, &adcval);
+	enbuffer(pb_u, (item_t) adcval); /* store the read ADC value */
 
 	/* reinstate interrupt to continue */
 	NVIC_EnableIRQ(_LPC_ADC_IRQ);
@@ -65,11 +98,13 @@ void ADC_IRQHandler(void)
 
 int main(void)
 {
-	buffer_t* buffer_in = (buffer_t *) malloc(sizeof(buffer_t));
-	buffer_t* buffer_out = (buffer_t *) malloc(sizeof(buffer_t));
+	/* variable initialization */
+	size_t M=2, N=3;
+	init_buffer(pb_u, M); /* need u(n), u(n-1), ..., u(n-(M-1)) : depth = M */
+	init_buffer(pb_y, N+1); /* need y(n), y(n-1), ..., y(n-N): depth = N+1 */
 
 
-
+	/* initialize hardware */
 	SystemCoreClockUpdate();
 	Board_Init();
 
@@ -114,8 +149,9 @@ int main(void)
 	}
 
 
-	while (!end_Flag)
+	while (1)
 	{
+
 	}
 
 	return 0;

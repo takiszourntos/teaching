@@ -8,18 +8,18 @@
  *
  *
  *				  index	   element
- *					0		   ?
- *					1		   ?
- *					2		   ?
- *					:          :
+ *					0		  ?
+ *					1		  ?
+ *					2		  ?
+ *					:         :
  *	  b.offset-->	      x(n-(K-1))
  *						  x(n-(K-2))
  *					:	  	  :
  *							x(n-1)
  *	  b.current-->		     x(n)
  *					:		  :
- *					L-2       ?
- *					L-1       ?
+ *				   LB-2       ?
+ *				   LB-1       ?
  *
  *
  *  Created on: Dec. 15, 2019
@@ -51,7 +51,7 @@ void init_buffer(buffer_t *b, size_t depth)
 	b->offset=0;
 	b->current=0;
 	/* initialize array values to zero */
-	for (size_t i=0; i!=L; ++i) b.array[i]=0;
+	for (size_t i=0; i!=LB; ++i) b.array[i]=0;
 	return;
 }
 
@@ -63,7 +63,7 @@ void init_buffer(buffer_t *b, size_t depth)
  */
 void enbuffer(buffer_t *b, item_t x_n)
 {
-	if ((b->current)==(L-1))
+	if ((b->current)==(LB-1))
 	{
 		b->current = 0;
 	}
@@ -76,7 +76,7 @@ void enbuffer(buffer_t *b, item_t x_n)
 	if (b.size() == (b->K))
 	{
 		/* offset must follow to keep b->size() fixed */
-		if ((b->offset) == (L-1))
+		if ((b->offset) == (LB-1))
 		{
 			b->offset=0;
 		}
