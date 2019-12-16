@@ -75,7 +75,7 @@ void enbuffer(buffer_t *b, item_t x_n)
 	}
 	else
 	{
-		b->current++;
+		(b->current)++;
 	}
 	b->array[b->current]=x_n; /* set the current-pointer value of the array to be x(n) */
 
@@ -88,7 +88,7 @@ void enbuffer(buffer_t *b, item_t x_n)
 		}
 		else
 		{
-			b->offset++;
+			(b->offset)++;
 		}
 	}
 	return;
