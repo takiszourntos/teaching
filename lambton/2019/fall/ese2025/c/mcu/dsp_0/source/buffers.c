@@ -57,7 +57,7 @@ void init_buffer(buffer_t *b, size_t depth)
 	b->offset=0;
 	b->current=0;
 	/* initialize array values to zero */
-	for (size_t i=0; i!=LB; ++i) b.array[i]=0;
+	for (size_t i=0; i!=LB; ++i) (b->array)[i]=0;
 	return;
 }
 
