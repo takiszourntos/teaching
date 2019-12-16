@@ -19,11 +19,12 @@
 #include <cr_section_macros.h>
 
 // TODO: insert other include files here
+#include "buffer.h"
 
 // TODO: insert other definitions and declarations here
 /* DAC sample rate request time */
 #define DAC_TIMEOUT 0x3FF
-#define DAC_TICKRATE_HZ (50000)	/* 50000 ticks per second */
+#define DAC_TICKRATE_HZ (50000)	/* 50000 ticks per second for DAC */
 #define _ADC_CHANNEL ADC_CH0
 #define _LPC_ADC_ID LPC_ADC
 #define _LPC_ADC_IRQ ADC_IRQn
@@ -32,9 +33,7 @@ volatile uint32_t dacval = 0; /* storage for DAC data register */
 volatile uint16_t adcval; /* storage for ADC data reads */
 
 static ADC_CLOCK_SETUP_T ADCSetup;
-static volatile uint8_t Burst_Mode_Flag = 0, Interrupt_Continue_Flag;
-static volatile uint8_t ADC_Interrupt_Done_Flag, channelTC, dmaChannelNum;
-uint32_t DMAbuffer;
+
 
 /**
  * @brief	do a DAC read using the interrupt handler for the SysTick timer
@@ -66,6 +65,11 @@ void ADC_IRQHandler(void)
 
 int main(void)
 {
+	buffer_t* buffer_in = (buffer_t *) malloc(sizeof(buffer_t));
+	buffer_t* buffer_out = (buffer_t *) malloc(sizeof(buffer_t));
+
+
+
 	SystemCoreClockUpdate();
 	Board_Init();
 
@@ -87,10 +91,17 @@ int main(void)
 	}
 
 	/***************     ADC Initialization      **********/
+	/* from the NXP LPC1769 UM:
+	 * 			"The A/D Status register allows checking the status of all A/D channels [, 0 through 7,] simultaneously.
+				The DONE and OVERRUN flags appearing in the ADDRn register for each A/D channel
+				are mirrored in ADSTAT. The interrupt flag (the logical OR of all DONE flags) is also found
+				in ADSTAT."
+				Therefore, the ADC Interrupt is issued whenever any of the ADC channels has completed a conversion.
+	*/
 	{
 		Chip_ADC_Init(_LPC_ADC_ID, &ADCSetup);
 		Chip_ADC_EnableChannel(_LPC_ADC_ID, _ADC_CHANNEL, ENABLE);
-		Chip_ADC_SetSampleRate(_LPC_ADC_ID, &ADCSetup, ADC_MAX_SAMPLE_RATE /4);
+		Chip_ADC_SetSampleRate(_LPC_ADC_ID, &ADCSetup, ADC_MAX_SAMPLE_RATE/4);
 
 		NVIC_EnableIRQ(_LPC_ADC_IRQ); /* Enable ADC Interrupt */
 		Chip_ADC_Int_SetChannelCmd(_LPC_ADC_ID, _ADC_CHANNLE, ENABLE);
