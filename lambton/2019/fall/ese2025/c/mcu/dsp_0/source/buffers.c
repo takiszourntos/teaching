@@ -7,20 +7,20 @@
  * 	time.
  *
  *
- *		 	  index	   element
+ *		 	      index	   element
  *				0		?
  *				1		?
  *				2		?
  *				.		.
  *				.		.
  *				.		.
- * b.offset-->	r		x(n-(K-1))
+ * b.offset-->			r		x(n-(K-1))
  *				r+1		x(n-(K-2))
  *				.		.
  *				.		.
  *				.		.
  *				s-1		x(n-1)
- * b.current-->	s   	x(n)
+ * b.current-->			s   		x(n)
  *				.		.
  *				.		.
  *				.		.
