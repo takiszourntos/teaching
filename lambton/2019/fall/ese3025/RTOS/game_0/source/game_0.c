@@ -19,8 +19,33 @@
 #include <cr_section_macros.h>
 
 // TODO: insert other include files here
+#include "FreeRTOS.h"
+#include "task.h"
+#include <stdlib.h>
+#include "libgameds.h"
 
 // TODO: insert other definitions and declarations here
+
+/* global variables */
+volatile	queue_t	q;
+volatile	game_t	this_game;
+ui_t		user;
+
+/*
+ * PRIVATE FUNCTIONS
+ */
+static void prvInitGame(void)
+{
+	this_game.score = 0;
+	this_game.playerID = {'A','A','A','\0'};
+	this_game.level = 1;
+	this_game.aliens = (go_t *) pvPortMalloc(MAXALIENS*sizeof(go_t));
+	this_game.poohs = (go_t *) pvPortMalloc(MAXPOOHS*sizeof(go_t));
+	this_game.expungers = (go_t *) pvPortMalloc(MAXEXPUNGERS*sizeof(go_t));
+	this_game.babies = (go_t *) pvPortMalloc(MAXBABIES*sizeof(go_t));
+	this_game.kitties = (go_t *) pvPortMalloc(MAXKITTIES*sizeof(go_t));
+	this_game.players = (go_t *) pvPortMalloc(MAXPLAYERS*sizeof(go_t));
+}
 
 int main(void) {
 
