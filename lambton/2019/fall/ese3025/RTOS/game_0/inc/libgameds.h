@@ -69,7 +69,9 @@ struct go_struct
 	uint16_t	go_level;
 	uint16_t	health;
 	bool_t		alive;
+	bool_t		active;
 	bool_t		on_screen;
+	bool_t		gameover;
 	go_coord_t	pos;
 	go_coord_t	vel;
 	go_coord_t	acc;

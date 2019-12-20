@@ -64,11 +64,11 @@ static void prvResetBoard(void)
 	taskENTER_CRITICAL();
 	{
 		prvUARTSend("C:clc"); /* command: clear console */
-		vTaskDelay(configTICKRATEHZ*5); /* wait for a few seconds */
+		vTaskDelay(configTICK_RATE_HZ*5); /* wait for a few seconds */
 		prvUARTSend("D:emad studio inc. presents: ");
-		vTaskDelay(configTICKRATEHZ*2);
+		vTaskDelay(configTICK_RATE_HZ*2);
 		prvUARTSend("D:aliens & babies : at the daycare!");
-		vTaskDelay(configTICKRATEHZ*5);
+		vTaskDelay(configTICK_RATE_HZ*5);
 	}
 	taskEXIT_CRITICAL();
 }
@@ -107,7 +107,7 @@ int main(void)
 	prvInitGame();
 
 	/* start game */
-	xTaskHandle pvRunGameTaskHandle; /* handle to supervisory task */
+	xTaskHandle pvRunGameTaskHandle; /* supervisory task handle */
 	xTaskCreate(vRunGameTask, "Supervisory Game Task", 4096,
 				single_player_mode, &pvRunGameTaskHandle, RUN_GAME_PRIORITY);
 
