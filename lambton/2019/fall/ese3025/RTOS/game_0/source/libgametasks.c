@@ -30,7 +30,7 @@ go_t* getGODefaults(go_t *pRet, char taskstring[])
 	pRet->move_right = False;
 	pRet->crouch_or_extra = False;
 	pRet->shoot_or_pooh = False;
-	pRet->numlives = 3;
+	pRet->numlives = 1;
 	pRet->interactions=NULL;
 	pRet->task=NULL;
 	pRet->taskText=taskstring;
@@ -107,6 +107,7 @@ void vRunGameTask(void *pvParams)
 	/* give birth to the player GO for this game (recall that one "game" is allocated to each human player) */
 	go_coord_t player_start_posn = {XMIDDLE, YBOTTOM};
 	this_game.player = genesisGO(this_game.player,"player",player_start_posn,0x000000);
+	this_game.player // ->numlives=3;
 
 	while (1)
 	{
