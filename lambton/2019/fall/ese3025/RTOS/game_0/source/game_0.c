@@ -1,58 +1,100 @@
 /*
 ===============================================================================
  Name        : game_0.c
- Author      : $(author)
- Version     :
- Copyright   : $(copyright)
+ Author      : Takis Zourntos
+ Version     : 0.1 beta
+ Copyright   : emad studio, inc.
  Description : main definition
 ===============================================================================
 */
 
-#if defined (__USE_LPCOPEN)
-	#if defined(NO_BOARD_LIB)
-		#include "chip.h"
-	#else
-		#include "board.h"
-	#endif
-#endif
-
+#include "chip.h"
+#include "board.h"
 #include <cr_section_macros.h>
 
 // TODO: insert other include files here
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
 #include <stdlib.h>
 #include "libgameds.h"
+#include <string.h>
 
 // TODO: insert other definitions and declarations here
 
-/* global variables */
-volatile	queue_t	q; /* UART queue */
-volatile	game_t	this_game;
-ui_t		user;
+/********************************************************************
+ * UART Comm Setup
+ ********************************************************************/
+	#define UART_SELECTION 	LPC_UART3
+	#define IRQ_SELECTION 	UART3_IRQn
+	#define HANDLER_NAME 	UART3_IRQHandler
+
+	/* Transmit and receive ring buffers */
+	STATIC RINGBUFF_T txring, rxring;
+	/* Transmit and receive ring buffer sizes */
+	#define UART_SRB_SIZE 128	/* Send */
+	#define UART_RRB_SIZE 32	/* Receive */
+	/* Transmit and receive buffers */
+	static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
 
 /********************************************************************
- *
- * PRIVATE FUNCTIONS
- *
+ * Global Variables
  ********************************************************************/
+volatile			queue_t		q; 				/* UART queue */
+ui_t				user={False, False, False, False};
+size_t				number_of_players=1;
+xSemaphoreHandle 	xGameMutex = NULL;
 
+/********************************************************************
+ * Private Functions
+ ********************************************************************/
+/*
+ *	function to handle UART Transmissions
+ */
+static void prvUARTSend(const char tx_text[])
+{
+	Chip_UART_SendRB(UART_SELECTION, &txring, tx_text, sizeof(tx_text) - 1);
+}
+/*
+ * function to display number of players
+ */
+static void prvShowNumPlayers(void)
+{
+	prvUARTSend("C:clc\r\n");
+	char numplayers_str[2]; sprintf(numplayers_str, "%d", number_of_players);
+	char mesg[40]="D:enter number of players: ";
+	strcat(mesg,numplayers_str);
+	strcat(mesg,"\r\n");
+	prvUARTSend(mesg);
+}
 /*
  * function to initialize game at very beginning
  */
 static void prvInitGame(void)
 {
-	/* new game parameters */
-	this_game.score = 0;
-	this_game.playerID="AAA";
-	this_game.level = 1;
-	/* allocate head for each GO list */
-	this_game.aliens = (go_t *) pvPortMalloc(sizeof(go_t));
-	this_game.poohs = (go_t *) pvPortMalloc(sizeof(go_t));
-	this_game.expungers = (go_t *) pvPortMalloc(sizeof(go_t));
-	this_game.babies = (go_t *) pvPortMalloc(sizeof(go_t));
-	this_game.kitties = (go_t *) pvPortMalloc(sizeof(go_t));
-	this_game.players = (go_t *) pvPortMalloc(sizeof(go_t));
+	prvShowNumPlayers();
+	/* get number of players */
+	while (user.shoot==False)
+	{
+		if (user.move_right)
+		{
+			if (number_of_players <= MAX_NUMBER_OF_PLAYERS)
+			{
+				number_of_players++;
+				prvShowNumPlayers();
+			}
+		}
+		else if (user.move_left)
+		{
+			if (number_of_players != 1)
+			{
+				number_of_players--;
+				prvShowNumPlayers();
+			}
+
+		}
+	}
+
 }
 
 /*
@@ -89,16 +131,45 @@ static void prvSetupHardware(void)
 		Board_LED_Set(0, true);
 	#endif
 	#endif
+		Board_Init();
+		Board_UART_Init(UART_SELECTION);
+		Board_LED_Set(0, false);
+
+		/* Setup UART for 115.2K8N1 */
+		Chip_UART_Init(UART_SELECTION);
+		Chip_UART_SetBaud(UART_SELECTION, 115200);
+		Chip_UART_ConfigData(UART_SELECTION, (UART_LCR_WLEN8 | UART_LCR_SBS_1BIT));
+		Chip_UART_SetupFIFOS(UART_SELECTION, (UART_FCR_FIFO_EN | UART_FCR_TRG_LEV2));
+		Chip_UART_TXEnable(UART_SELECTION);
+
+		/* Before using the ring buffers, initialize them using the ring
+		   buffer init function */
+		RingBuffer_Init(&rxring, rxbuff, 1, UART_RRB_SIZE);
+		RingBuffer_Init(&txring, txbuff, 1, UART_SRB_SIZE);
+
+		/* Reset and enable FIFOs, FIFO trigger level 1 (4 bytes --- need zero latency!) */
+		Chip_UART_SetupFIFOS(UART_SELECTION, (UART_FCR_FIFO_EN | UART_FCR_RX_RS |
+								UART_FCR_TX_RS | UART_FCR_TRG_LEV1));
+
+		/* Enable receive data and line status interrupt */
+		Chip_UART_IntEnable(UART_SELECTION, (UART_IER_RBRINT | UART_IER_RLSINT));
+
+		/* preemption = 1, sub-priority = 1 */
+		NVIC_SetPriority(IRQ_SELECTION, 1);
+		NVIC_EnableIRQ(IRQ_SELECTION);
+
+
 }
 
 /*
  *
- * MAIN FUNCTION
+ * MAIN CODE
  *
  */
 int main(void)
 {
-	char single_player_mode[30] = "single-player mode";
+	/* use a mutex to protect a player's game */
+	xGameMutex = xSemaphoreCreateMutex();
 
 	/* hardware init */
 	prvSetupHardware();
@@ -107,9 +178,12 @@ int main(void)
 	prvInitGame();
 
 	/* start game */
-	xTaskHandle pvRunGameTaskHandle; /* supervisory task handle */
-	xTaskCreate(vRunGameTask, "Supervisory Game Task", 4096,
-				single_player_mode, &pvRunGameTaskHandle, RUN_GAME_PRIORITY);
+	xTaskHandle pvRunGameTaskHandle[number_of_players-1]; /* supervisory task handle */
+	for (size_t i=0; i != number_of_players; ++i)
+	{
+		xTaskCreate(vRunGameTask, "Supervisory Game Task", 4096,
+			(void *) &i, &pvRunGameTaskHandle[i], RUN_GAME_PRIORITY);
+	}
 
 	/* relinquish control to scheduler */
 	vTaskStartScheduler();

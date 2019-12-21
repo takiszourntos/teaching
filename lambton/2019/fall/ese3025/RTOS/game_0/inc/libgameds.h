@@ -21,6 +21,7 @@
 #define	RUN_GAME_PRIORITY		3
 #define IMPACTS_TASK_PRIORITY	2
 #define GO_TASK_PRIORITY		1
+#define	MAX_NUMBER_OF_PLAYERS	4
 #define DELAY_RUN_GAME			65536
 #define	DELAY_GAME_TICK			8192
 #define THRESHOLD_COLLISION	 	16
@@ -30,6 +31,12 @@
 #define	MAX_EXPUNGERS			3
 #define MAX_BABIES				3
 #define	MAX_KITTIES				2
+#define	XLEFT					0
+#define XMIDDLE					63
+#define XRIGHT					127
+#define	YTOP					0
+#define	YMIDDLE					31
+#define YBOTTOM					63
 
 
 enum boolean {True, False} boolean_enum;
@@ -46,6 +53,15 @@ struct ui_struct
 };
 typedef struct ui_struct ui_t;
 
+/* coordinate type */
+struct go_coord_struct
+{
+	int16_t	X;
+	int16_t	Y;
+};
+typedef struct go_coord_struct go_coord_t;
+
+
 /* game record-keeping */
 struct game_struct
 {
@@ -58,7 +74,7 @@ struct game_struct
 	go_t		*expungers;
 	go_t		*babies;
 	go_t		*kitties;
-	go_t		*players;
+	go_t		*player;
 };
 typedef	struct game_struct	game_t;
 
@@ -75,6 +91,10 @@ struct go_struct
 	go_coord_t	pos;
 	go_coord_t	vel;
 	go_coord_t	acc;
+	bool_t		move_left;
+	bool_t		move_right;
+	bool_t		crouch_or_extra;
+	bool_t		shoot_or_pooh;
 	uint8_t		numlives;
 	go_list_t	*interactions;
 	xTaskHandle	task;
