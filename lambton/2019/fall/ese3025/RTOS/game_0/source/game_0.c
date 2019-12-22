@@ -104,36 +104,23 @@ static void prvResetBoard(void)
 {
 	/* send command to clear the game screen/board and wait for 5 seconds */
 	taskENTER_CRITICAL();
-	{
 		prvUARTSend("C:clc"); /* command: clear console */
 		vTaskDelay(configTICK_RATE_HZ*5); /* wait for a few seconds */
 		prvUARTSend("D:emad studio inc. presents: ");
 		vTaskDelay(configTICK_RATE_HZ*2);
 		prvUARTSend("D:aliens & babies : at the daycare!");
 		vTaskDelay(configTICK_RATE_HZ*5);
-	}
 	taskEXIT_CRITICAL();
 }
 
 /*
- * function to initialize hardware, run at the very beginning
+ * function to initialize hardware, run at the very beginning, BEFORE scheduler please
  */
 static void prvSetupHardware(void)
 {
-	#if defined (__USE_LPCOPEN)
-		// Read clock settings and update SystemCoreClock variable
 		SystemCoreClockUpdate();
-	#if !defined(NO_BOARD_LIB)
-		// Set up and initialize all required blocks and
-		// functions related to the board hardware
 		Board_Init();
-		// Set the LED to the state of "On"
-		Board_LED_Set(0, true);
-	#endif
-	#endif
-		Board_Init();
-		Board_UART_Init(UART_SELECTION);
-		Board_LED_Set(0, false);
+		Board_LED_Set(0, true);Board_LED_Set(1, true);Board_LED_Set(2, true);
 
 		/* Setup UART for 115.2K8N1 */
 		Chip_UART_Init(UART_SELECTION);
@@ -158,7 +145,9 @@ static void prvSetupHardware(void)
 		NVIC_SetPriority(IRQ_SELECTION, 1);
 		NVIC_EnableIRQ(IRQ_SELECTION);
 
+		/* set up GPIO pin interrupts for user interface */
 
+		/* set up DAC for sound effects */
 }
 
 /*
@@ -178,11 +167,10 @@ int main(void)
 	prvInitGame();
 
 	/* start game */
-	xTaskHandle pvRunGameTaskHandle[number_of_players-1]; /* supervisory task handle */
-	for (size_t i=0; i != number_of_players; ++i)
+\	for (size_t i=0; i != number_of_players; ++i)
 	{
-		xTaskCreate(vRunGameTask, "Supervisory Game Task", 4096,
-			(void *) &i, &pvRunGameTaskHandle[i], RUN_GAME_PRIORITY);
+		xTaskCreate(vRunGameTask, "Supervisory Game Task", 4*configMINIMAL_STACK_SIZE,
+			(void *) &i, NULL, RUN_GAME_PRIORITY);
 	}
 
 	/* relinquish control to scheduler */
