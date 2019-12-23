@@ -115,5 +115,21 @@ struct go_list_struct
 };
 typedef struct go_list_struct go_list_t;
 
+/*
+ * FUNCTION PROTOTYPES
+ */
+
+go_t* getGODefaults(go_t *, char *);
+
+go_t* createGONode(char *);
+
+go_t* genesisGO(go_t* , char *, go_coord_t , size_t );
+
+void prvUpdateInteractionList(go_t *, go_t *, uint16_t, bool_t, bool_t);
+
+
+
+
+
 
 #endif /* LIBGAMEDS_H_ */
