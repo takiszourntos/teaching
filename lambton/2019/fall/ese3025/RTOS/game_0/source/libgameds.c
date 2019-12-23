@@ -72,6 +72,13 @@ go_t* createGONode(char GOtype[])
 	if (strcmp(GOtype,"player")==0)
 	{
 		pNew = getGODefaults(pNew, "player task");
+		number_of_players++;
+		return pNew;
+	}
+	if (strcmp(GOtype,"aliens")==0)
+	{
+		pNew = getGODefaults(pNew, "alien task");
+		number_of_aliens++;
 		return pNew;
 	}
 }

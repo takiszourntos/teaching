@@ -83,7 +83,9 @@ void vRunGameTask(void *pvParams)
 	go_t		*pW=NULL;
 	xTaskHandle	pvImpactsTaskHandle;
 	volatile 	game_t		*this_game;
-	size_t 		player = *((size_t *) pvParams); /* human player number, up to a maximum of MAX_NUMBER_OF_PLAYERS */
+	size_t 		player = *((size_t *) pvParams); /* human player number, up to
+													a maximum of
+													MAX_NUMBER_OF_PLAYERS */
 
 	/* new game parameters */
 	this_game->score = 0;
@@ -136,16 +138,39 @@ void vRunGameTask(void *pvParams)
 				}
 		}
 		xSemaphoreGive(xGameMutex);
-	} /* end while (1)*/
+	} /* end while (1) */
 }
 
 static void vImpactsTask(void *pvParams)
 {
-	/* aliens */
-	// prvCreateTasks(this_game.aliens, vAliensTask);
-	/* babies */
-	prvCreateTasks(this_game.babies, vBabiesTask);
-	/* kitties */
-	// prvCreateTasks(this_game.kitties, vKittiesTask);
+	/* to begin with, spawn off an alien, two babies and a kitty, initially
+	 *  off screen... */
+	taskENTER_CRITICAL();
+		go_coord_t alien_start_posn = {XMIDDLE, YMIDDLE};
+		go_coord_t baby_start_posn = {XLEFT, YBOTTOM};
+		go_coord_t kitty_start_posn = {XRIGHT, YBOTTOM};
 
+		this_game->aliens = genesisGO(this_game->aliens,"alien",
+										alien_start_posn,0x00000010);
+		//this_game->player->numlives = 3; /* player starts with three lives */
+		xTaskCreate(vAliensTask, this_game->aliens->taskText,
+					256, NULL, &this_game->aliens->task, GO_TASK_PRIORITY);
+
+	taskEXIT_CRITICAL();
+
+	RAND_MAX;
+	while (1)
+	{
+		/* is it time to increase the game level? */
+
+
+		/* is it time to spawn an alien? */
+
+		/* aliens */
+		// prvCreateTasks(this_game.aliens, vAliensTask);
+		/* babies */
+		prvCreateTasks(this_game.babies, vBabiesTask);
+		/* kitties */
+		// prvCreateTasks(this_game.kitties, vKittiesTask);
+	}
 }

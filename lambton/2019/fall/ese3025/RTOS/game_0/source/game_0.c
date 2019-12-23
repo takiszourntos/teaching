@@ -42,7 +42,12 @@
  ********************************************************************/
 volatile			queue_t		q; 				/* UART queue */
 ui_t				user={False, False, False, False};
-size_t				number_of_players=1;
+size_t				number_of_players=0;
+size_t				number_of_aliens=0;
+size_t				number_of_babies=0;
+size_t				number_of_kitties=0;
+size_t				number_of_poohs=0;
+size_t				number_of_expungers=0;
 xSemaphoreHandle 	xGameMutex = NULL;
 
 /********************************************************************
@@ -150,11 +155,9 @@ static void prvSetupHardware(void)
 		/* set up DAC for sound effects */
 }
 
-/*
- *
+/********************************************************************
  * MAIN CODE
- *
- */
+ ********************************************************************/
 int main(void)
 {
 	/* use a mutex to protect a player's game */
