@@ -50,6 +50,12 @@ size_t				number_of_poohs=0;
 size_t				number_of_expungers=0;
 xSemaphoreHandle 	xGameMutex = NULL;
 
+go_ID_t				aliensID[16];
+go_ID_t				poohsID[16];
+go_ID_t				expungersID[16];
+go_ID_t				babiesID[16];
+go_ID_t				kittiesID[16];
+
 /********************************************************************
  * Private Functions
  ********************************************************************/
@@ -98,6 +104,30 @@ static void prvInitGame(void)
 			}
 
 		}
+	}
+	/* initialize GO code books */
+	for (size_t i = 0; i != MAX_GO_CODES; ++i)
+	{
+		 /* GO IDs:
+		 * 			0x0000 000q: players
+		 * 			0x0000 00q0: aliens
+		 * 			0x0000 0q00: poohs
+		 * 			0x0000 q000: expungers
+		 * 			0x000q 0000: babies
+		 * 			0x00q0 0000: kitties
+		 */
+
+		aliensID[i].code	= 0x00000000 + (i << 4);
+		poohsID[i].code		= 0x00000000 + (i << 8);
+		expungersID[i].code	= 0x00000000 + (i << 12);
+		babiesID[i].code	= 0x00000000 + (i << 16);
+		kittiesID[i].code	= 0x00000000 + (i << 20);
+
+		aliensID[i].available		= True;
+		poohsID[i].available		= True;
+		expungersID[i].available	= True;
+		babiesID[i].available		= True;
+		kittiesID[i].available		= True;
 	}
 
 }
@@ -172,8 +202,9 @@ int main(void)
 	/* start game */
 \	for (size_t i=0; i != number_of_players; ++i)
 	{
-		xTaskCreate(vRunGameTask, "Supervisory Game Task", 4*configMINIMAL_STACK_SIZE,
-			(void *) &i, NULL, RUN_GAME_PRIORITY);
+		xTaskCreate(vRunGameTask, "Supervisory Game Task",
+				4*configMINIMAL_STACK_SIZE, (void *) &i,
+				NULL, RUN_GAME_PRIORITY);
 	}
 
 	/* relinquish control to scheduler */

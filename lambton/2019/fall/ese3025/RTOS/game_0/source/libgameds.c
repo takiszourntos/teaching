@@ -72,13 +72,36 @@ go_t* createGONode(char GOtype[])
 	if (strcmp(GOtype,"player")==0)
 	{
 		pNew = getGODefaults(pNew, "player task");
-		number_of_players++;
 		return pNew;
 	}
 	if (strcmp(GOtype,"aliens")==0)
 	{
-		pNew = getGODefaults(pNew, "alien task");
+		pNew = getGODefaults(pNew, "aliens task");
 		number_of_aliens++;
+		return pNew;
+	}
+	if (strcmp(GOtype,"babies")==0)
+	{
+		pNew = getGODefaults(pNew, "babies task");
+		number_of_babies++;
+		return pNew;
+	}
+	if (strcmp(GOtype,"kitties")==0)
+	{
+		pNew = getGODefaults(pNew, "kitties task");
+		number_of_kitties++;
+		return pNew;
+	}
+	if (strcmp(GOtype,"poohs")==0)
+	{
+		pNew = getGODefaults(pNew, "poohs (bombs) task");
+		number_of_poohs++;
+		return pNew;
+	}
+	if (strcmp(GOtype,"expungers")==0)
+	{
+		pNew = getGODefaults(pNew, "expungers task");
+		number_of_expungers++;
 		return pNew;
 	}
 }

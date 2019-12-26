@@ -37,11 +37,44 @@
 #define	YTOP					0
 #define	YMIDDLE					31
 #define YBOTTOM					63
+#define LEVELUP					8192
+#define	MAX_GO_CODES			16
 
 
 enum boolean {True, False} boolean_enum;
 typedef enum boolean bool_t;
 
+enum likelihood
+	{	HighlyLikely = 0U,		// < RAND_MAX (probability \approx 1)
+		QuiteLikely = 1U, 		// < RAND_MAX / 2, prob. = 50 %
+		ModeratelyLikely = 2U, 	// < RAND_MAX / 4, prob. = 25 %
+		Maybe = 3U,				// < RAND_MAX / 8, prob. = 12.5 %
+		Unlikely = 4U,			// < RAND_MAX / 16, prob. = 6.25 %
+		QuiteUnLikely = 5U, 	// < RAND_MAX / 32, prob. = 3.125 %
+		YeahRight = 6U, 		// < RAND_MAX / 64, prob. = 1.5625 %
+	} likelihood_enum;
+typedef enum likelihood likely_t;
+
+
+/* GO ID code book */
+/*
+	 * GO IDs:
+	 * 			0x0000 000q: players
+	 * 			0x0000 00q0: aliens
+	 * 			0x0000 0q00: poohs
+	 * 			0x0000 q000: expungers
+	 * 			0x000q 0000: babies
+	 * 			0x00q0 0000: kitties
+	 *
+	 * 			where q \in {0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F}
+	 *
+	 */
+struct go_ID_struct
+{
+	uint32_t	code;
+	bool_t		available;
+};
+typedef struct go_ID_struct go_ID_t;
 
 /* user-input tracking */
 struct ui_struct
