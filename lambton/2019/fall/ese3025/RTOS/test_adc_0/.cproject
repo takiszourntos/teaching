@@ -252,4 +252,5 @@
 		<boardId>LPCXpresso1769-CD</boardId>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

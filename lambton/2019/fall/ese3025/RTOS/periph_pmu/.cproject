@@ -211,4 +211,5 @@
 &lt;/TargetConfig&gt;</projectStorage>
 	</storageModule>
 	<storageModule moduleId="com.crt.advproject"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

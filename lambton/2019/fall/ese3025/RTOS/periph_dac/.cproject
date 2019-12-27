@@ -217,4 +217,5 @@
 	</storageModule>
 	<storageModule moduleId="com.crt.advproject"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

@@ -52,7 +52,7 @@ static bool_t prvYesHappens(likely_t prob)
 }
 
 static void prvCreateGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
-						uint32_t GOIDcode)
+						go_id_t codebook, uint32_t GOIDcode)
 {
 	taskENTER_CRITICAL();
 
@@ -62,6 +62,29 @@ static void prvCreateGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
 					256, (void *) &this_game,
 					&this_game->player->task, GO_TASK_PRIORITY);
 	taskEXIT_CRITICAL();
+
+	taskENTER_CRITICAL();
+		if (prvGetGOIDCode(babiesID, &GOIDcode))
+		{
+			this_game->babies = genesisGO(this_game->babies, "baby",
+									baby_start_posn_LEFT, GOIDcode);
+			this_game->babies->numlives=1; /* each baby has ... */
+			xTaskCreate(vBabiesTask, this_game->babies->taskText,
+						256, (void *) &this_game,
+						&this_game->babies->task, GO_TASK_PRIORITY);
+		}
+		if (prvGetGOIDCode(babiesID, &GOIDcode))
+		{
+			this_game->babies = genesisGO(this_game->babies, "baby",
+										baby_start_posn_MID, GOIDcode);
+
+			this_game->babies->pNext->numlives=1; /* only one life */
+			xTaskCreate(vBabiesTask, this_game->babies->taskText,
+						256, (void *) &this_game,
+						&this_game->babies->pNext->task, GO_TASK_PRIORITY);
+		}
+	taskEXIT_CRITICAL();
+
 
 }
 
