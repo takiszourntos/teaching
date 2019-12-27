@@ -51,6 +51,20 @@ static bool_t prvYesHappens(likely_t prob)
 	}
 }
 
+static void prvCreateGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
+						uint32_t GOIDcode)
+{
+	taskENTER_CRITICAL();
+
+		this_game->player = genesisGO();
+		//this_game->player->numlives = 3; /* player starts with three lives */
+		xTaskCreate(vPlayerTask, this_game->player->taskText,
+					256, (void *) &this_game,
+					&this_game->player->task, GO_TASK_PRIORITY);
+	taskEXIT_CRITICAL();
+
+}
+
 static void prvDeleteAllTasks(game_t game)
 {
 	go_t *pW = NULL;
@@ -154,15 +168,9 @@ void vRunGameTask(void *pvParams)
 
 	/* give birth to the player GO for this game (recall that one "game"
 	 * 					is allocated to each human player) */
-	taskENTER_CRITICAL();
-		go_coord_t player_start_posn = {XMIDDLE, YBOTTOM};
-		this_game->player = genesisGO(this_game->player,"player",
-									player_start_posn,0x00000001);
-		//this_game->player->numlives = 3; /* player starts with three lives */
-		xTaskCreate(vPlayerTask, this_game->player->taskText,
-					256, (void *) &this_game,
-					&this_game->player->task, GO_TASK_PRIORITY);
-	taskEXIT_CRITICAL();
+
+	go_coord_t player_start_posn = {XMIDDLE, YBOTTOM};
+	prvCreateGO(this_game->player,"player", player_start_posn,0x00000001)
 
 	while (1)
 	{
@@ -226,7 +234,7 @@ static void vImpactsTask(void *pvParams)
 
 	taskENTER_CRITICAL();
 		go_coord_t baby_start_posn_LEFT = {XLEFT, YBOTTOM};
-		go_coord_t baby_start_posn_RIGHT = {XRIGHT, YBOTTOM};
+		go_coord_t baby_start_posn_MID = {XMIDDLE, YBOTTOM};
 		if (prvGetGOIDCode(babiesID, &GOIDcode))
 		{
 			this_game->babies = genesisGO(this_game->babies, "baby",
@@ -239,7 +247,7 @@ static void vImpactsTask(void *pvParams)
 		if (prvGetGOIDCode(babiesID, &GOIDcode))
 		{
 			this_game->babies = genesisGO(this_game->babies, "baby",
-										baby_start_posn_RIGHT, GOIDcode);
+										baby_start_posn_MID, GOIDcode);
 
 			this_game->babies->pNext->numlives=1; /* only one life */
 			xTaskCreate(vBabiesTask, this_game->babies->taskText,
@@ -247,6 +255,8 @@ static void vImpactsTask(void *pvParams)
 						&this_game->babies->pNext->task, GO_TASK_PRIORITY);
 		}
 	taskEXIT_CRITICAL();
+
+	go_t *pW=NULL; /* working pointer */
 
 	/* main loop of Impacts Task */
 	while (1)
@@ -279,35 +289,53 @@ static void vImpactsTask(void *pvParams)
 			}
 		}
 
-		/* is it time to spawn a kitty number of kitties should be
+		/* is it time to spawn a kitty? The number of kitties should be
 		 * 			(game_level + 1) */
 		if ( number_of_kitties < (this_game->game_level+1) )
 		{
-			/* a somewhat moderate probability exists of a kitty showing up */
-			if (prvYesHappens(QuiteLikely))
+			/* a some probability exists of a kitty showing up,
+			 * in which case the alien's pooh may start dropping */
+			if (prvYesHappens(Maybe))
 			{
-				if (prvGetGOIDCode(aliensID, &GOIDcode))
+				if (prvGetGOIDCode(kittiesID, &GOIDcode)) // kitties available?
 				{
-					/* spawn an alien */
+					/* spawn a kitty */
 					taskENTER_CRITICAL();
-						go_coord_t alien_start_posn = {XMIDDLE, YMIDDLE};
+						go_coord_t kitties_start_posn = {XRIGHT, YBOTTOM};
 
-						this_game->aliens = genesisGO(this_game->aliens,"alien",
-													alien_start_posn,GOIDcode);
-						this_game->aliens->numlives = 1;
-						this_game->aliens->health = 1024;
-						xTaskCreate(vAliensTask, this_game->aliens->taskText,
+						this_game->kitties = genesisGO(this_game->kitties,
+												"kitty", kitties_start_posn,
+												GOIDcode);
+						this_game->kitties->numlives = 1;
+						this_game->kitties->health = 8192;
+						xTaskCreate(vKittiesTask, this_game->kitties->taskText,
 									256, (void *) &this_game,
-									&this_game->aliens->task, GO_TASK_PRIORITY);
+									&this_game->kitties->task,
+									GO_TASK_PRIORITY);
 					taskEXIT_CRITICAL();
 				}
 			}
 		}
 
+		/* check alien proximity to kitties and expungers */
+		pW = this_game->aliens;
+		while (pW != NULL)
+		{
+			prvComputeProximities(pW, this_game->expungers);
+			prvComputeProximities(pW, this_game->kitties);
+			pW = pW->pNext;
+		}
+		/* check player proximity to poohs, kitties or babies */
+		pW = this_game->player;
+		while (pW != NULL)
+		{
+			prvComputeProximities(pW, this_game->poohs);
+			prvComputeProximities(pW, this_game->kitties);
+			prvComputeProximities(pW, this_game->babies);
+			pW = pW->pNext;
+		}
+		/* check babies for proximities to poohs */
 
-
-
-		/* aliens */
 		// prvCreateTasks(this_game.aliens, vAliensTask);
 		/* babies */
 		prvCreateTasks(this_game.babies, vBabiesTask);

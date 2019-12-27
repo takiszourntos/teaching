@@ -114,7 +114,7 @@ typedef	struct game_struct	game_t;
 /* (g)ame (o)bject record-keeping */
 struct go_struct
 {
-	size_t		ID;
+	uint32_t	ID;
 	uint16_t	go_level;
 	uint16_t	health;
 	bool_t		alive;
