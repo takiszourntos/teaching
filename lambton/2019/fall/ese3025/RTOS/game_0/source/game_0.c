@@ -128,6 +128,12 @@ static void prvInitGame(void)
 		expungersID[i].available	= True;
 		babiesID[i].available		= True;
 		kittiesID[i].available		= True;
+
+		aliensID[i].taskhandle 		= NULL;
+		poohsID[i].taskhandle		= NULL;
+		expungersID[i].taskhandle	= NULL;
+		babiesID[i].taskhandle		= NULL;
+		kittiesID[i].taskhandle		= NULL;
 	}
 
 }
@@ -149,7 +155,8 @@ static void prvResetBoard(void)
 }
 
 /*
- * function to initialize hardware, run at the very beginning, BEFORE scheduler please
+ * function to initialize hardware, run at the very beginning, BEFORE scheduler,
+ * please!
  */
 static void prvSetupHardware(void)
 {

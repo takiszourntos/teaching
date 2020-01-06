@@ -51,7 +51,7 @@ static bool_t prvYesHappens(likely_t prob)
 	}
 }
 
-static void prvCreateGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
+static void prvSpawnGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
 						go_id_t codebook, uint32_t GOIDcode)
 {
 	taskENTER_CRITICAL();
@@ -193,7 +193,7 @@ void vRunGameTask(void *pvParams)
 	 * 					is allocated to each human player) */
 
 	go_coord_t player_start_posn = {XMIDDLE, YBOTTOM};
-	prvCreateGO(this_game->player,"player", player_start_posn,0x00000001)
+	prvCreateGO(this_game->player,"player", player_start_posn,0x00000001);
 
 	while (1)
 	{
@@ -204,8 +204,10 @@ void vRunGameTask(void *pvParams)
 			if (pWplayer->active)
 			{
 				prvResetBoard();
-				prvGreetPlayer(player);
-				/* create Impacts Task to run the show */
+				prvUARTSend("D: Player %zu",player); /* prompt the player */
+				vTaskDelay(5*configTICK_RATE_HZ); /* wait 5 seconds */
+				/* create Impacts Task (with lower priority than RunGameTask())
+				 * to run the show */
 				xTaskCreate(vImpactsTask, "Impact-checking Task",
 						1024, (void *) &this_game,
 						&pvImpactsTaskHandle, IMPACTS_TASK_PRIORITY);
@@ -227,7 +229,7 @@ void vRunGameTask(void *pvParams)
 					prvUARTSend("C:clc\n");
 					prvSayGoodbye(pWplayer->ID); /* say goodbye to player,
 													get their initials */
-					vTaskDelay(configTICK_RATE_HZ*5);
+					vTaskDelay(configTICK_RATE_HZ*5); /* wait 5 seconds */
 				}
 		}
 		xSemaphoreGive(xGameMutex);
@@ -240,6 +242,18 @@ static void vImpactsTask(void *pvParams)
 	uint32_t GOIDcode;
 
 	/* to begin with, spawn off an alien and two babies... */
+	if (prvGetGOIDCode(aliensID, &GOIDcode))
+	{
+		go_coord_t alien_start_posn = {XMIDDLE, YMIDDLE};
+		go_t* pW = this_game.aliens;
+		while (pW->pNext != NULL)
+			pW=pW->pNext;
+		prvSpawnGO(pW,alien_start_posn,GOIDcode);
+
+		go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
+								go_id_t codebook, uint32_t GOIDcode)
+	}
+
 	taskENTER_CRITICAL();
 		go_coord_t alien_start_posn = {XMIDDLE, YMIDDLE};
 
