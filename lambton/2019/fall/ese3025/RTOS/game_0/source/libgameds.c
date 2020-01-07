@@ -65,43 +65,52 @@ go_t* getGODefaults(go_t *pRet, char taskstring[])
 /*
  * creates a basic GO node, with default information based on GO type
  */
-go_t* createGONode(char GOtype[])
+go_t* createDefaultGONode(uint8_t GOtype)
 {
+	/* GOtype values:
+		 * 		0 -> player
+		 * 		1 -> alien
+		 * 		2 -> poohs
+		 * 		3 -> expungers
+		 * 		4 -> babies
+		 * 		5 -> kitties
+		 */
+
 	go_t *pNew = (go_t *) pvPortMalloc(sizeof(go_t));
 
-	if (strcmp(GOtype,"player")==0)
+	if (GOtype==0) // player
 	{
 		pNew = getGODefaults(pNew, "player task");
 		return pNew;
 	}
-	if (strcmp(GOtype,"aliens")==0)
+	if (GOtype==1) // aliens
 	{
 		pNew = getGODefaults(pNew, "aliens task");
 		number_of_aliens++;
 		return pNew;
 	}
-	if (strcmp(GOtype,"babies")==0)
-	{
-		pNew = getGODefaults(pNew, "babies task");
-		number_of_babies++;
-		return pNew;
-	}
-	if (strcmp(GOtype,"kitties")==0)
-	{
-		pNew = getGODefaults(pNew, "kitties task");
-		number_of_kitties++;
-		return pNew;
-	}
-	if (strcmp(GOtype,"poohs")==0)
+	if (GOtype==2) // poohs
 	{
 		pNew = getGODefaults(pNew, "poohs (bombs) task");
 		number_of_poohs++;
 		return pNew;
 	}
-	if (strcmp(GOtype,"expungers")==0)
+	if (GOtype==3) // expungers
 	{
 		pNew = getGODefaults(pNew, "expungers task");
 		number_of_expungers++;
+		return pNew;
+	}
+	if (GOtype==4) // babies
+	{
+		pNew = getGODefaults(pNew, "babies task");
+		number_of_babies++;
+		return pNew;
+	}
+	if (GOtype==5) // kitties
+	{
+		pNew = getGODefaults(pNew, "kitties task");
+		number_of_kitties++;
 		return pNew;
 	}
 }
@@ -109,7 +118,8 @@ go_t* createGONode(char GOtype[])
 /*
  * creates a game object for the first time, adding it to the GO master list
  */
-go_t*	genesisGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord, size_t ID)
+go_t*	genesisGO(go_t* pGOHead, uint8_t GOtype, go_coord_t GOstartcoord,
+							size_t ID)
 {
 	go_t* pW=pGOHead; /* working pointer */
 
@@ -117,7 +127,7 @@ go_t*	genesisGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord, size_t ID
 	{
 		/* create the first instance of this GO */
 		//taskENTER_CRITICAL(); /* need to properly position and initialize an object before game play can resume */
-			go_t *pNode =createGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
+			go_t *pNode =createDefaultGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
 			pNode->ID = ID;
 			pNode->pos = GOstartcoord;
 		//taskEXIT_CRITICAL();
@@ -132,7 +142,7 @@ go_t*	genesisGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord, size_t ID
 		}
 		/* now add the GO there, with the proper settings */
 		//taskENTER_CRITICAL();
-			pW->pNext = createGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
+			pW->pNext = createDefaultGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
 			pW->pNext->ID = ID;
 			pW->pNext->pos = GOstartcoord;
 			pW->pNext->pPrev=pW;

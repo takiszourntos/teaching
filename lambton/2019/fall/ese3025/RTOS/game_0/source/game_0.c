@@ -40,7 +40,7 @@
 /********************************************************************
  * Global Variables
  ********************************************************************/
-volatile			queue_t		q; 				/* UART queue */
+//volatile			queue_t		q; 				/* UART queue */
 ui_t				user={False, False, False, False};
 size_t				number_of_players=0;
 size_t				number_of_aliens=0;

@@ -51,17 +51,83 @@ static bool_t prvYesHappens(likely_t prob)
 	}
 }
 
-static void prvSpawnGO(go_t* pGOHead, char GOtype[], go_coord_t GOstartcoord,
-						go_id_t codebook, uint32_t GOIDcode)
+static go_t* prvSpawnGO(game_t *this_game, go_t* pGOHead, uint8_t GOtype,
+						go_coord_t GOstartcoord, go_id_t *codebook,
+						uint32_t GOIDcode)
 {
-	taskENTER_CRITICAL();
+	/* GOtype values:
+	 * 		0 -> player
+	 * 		1 -> alien
+	 * 		2 -> poohs
+	 * 		3 -> expungers
+	 * 		4 -> babies
+	 * 		5 -> kitties
+	 */
 
-		this_game->player = genesisGO();
-		//this_game->player->numlives = 3; /* player starts with three lives */
-		xTaskCreate(vPlayerTask, this_game->player->taskText,
-					256, (void *) &this_game,
-					&this_game->player->task, GO_TASK_PRIORITY);
-	taskEXIT_CRITICAL();
+	/* initialize working pointer */
+	if (!GOtype) // player
+	{
+		if (pGOHead==NULL) // create the first player
+		{
+			taskENTER_CRITICAL();
+			go_t *pW = genesisGO(pGOHead, 0, GOstartcoord, GOIDcode); // create
+			xTaskCreate(vPlayerTask, pW->taskText,
+						256, (void *) this_game,
+						&(pW->task), GO_TASK_PRIORITY);
+			taskEXIT_CRITICAL();
+			return pW;
+		}
+	}
+	else // any other type of game object
+	{
+		if (pGOHead==NULL) // the list is empty
+		{
+			taskENTER_CRITICAL();
+			go_t *pW = genesisGO(pGOHead, GOType, GOstartcoord, GOIDCode);
+								baby_start_posn_LEFT, GOIDcode);
+			switch (GOType)
+			{
+				case 1:
+					xTaskCreate(vAliensTask, pW->taskText,
+								256, (void *) this_game,
+								&(pW->task), GO_TASK_PRIORITY);
+				case 2:
+					xTaskCreate(vPoohsTask, pW->taskText,
+								256, (void *) this_game,
+								&(pW->task), GO_TASK_PRIORITY);
+				case 3:
+					xTaskCreate(vExpungersTask, pW->taskText,
+								256, (void *) this_game,
+								&(pW->task), GO_TASK_PRIORITY);
+				case 4:
+					xTaskCreate(vBabiesTask, pW->taskText,
+								256, (void *) this_game,
+								&(pW->task), GO_TASK_PRIORITY);
+				case 5:
+					xTaskCreate(vKittiesTask, pW->taskText,
+								256, (void *) this_game,
+								&(pW->task), GO_TASK_PRIORITY);
+			}
+			taskEXIT_CRITICAL();
+			return pW;
+		}
+		else
+		{
+			/* there is already at least one element in the GO list,
+			 * so find the next available spot... */
+			go_t* pW = pGOHead;
+			while (pW->pNext != NULL)
+				pW = pW->pNext;
+			taskENTER_CRITICAL();
+			pW->pNext = genesisGO(pGOHead, GOType, GOstartcoord, GOIDCode);
+
+
+			taskEXIT_CRITICAL();
+
+		}
+	}
+
+
 
 	taskENTER_CRITICAL();
 		if (prvGetGOIDCode(babiesID, &GOIDcode))
@@ -193,7 +259,8 @@ void vRunGameTask(void *pvParams)
 	 * 					is allocated to each human player) */
 
 	go_coord_t player_start_posn = {XMIDDLE, YBOTTOM};
-	prvCreateGO(this_game->player,"player", player_start_posn,0x00000001);
+	this_game->player = prvSpawnGO(this_game, this_game->player, 0,
+							player_start_posn, NULL, 0x00000001);
 
 	while (1)
 	{
