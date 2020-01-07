@@ -181,37 +181,15 @@ static go_t* spawnGONodeandTask(game_t *this_game, go_t *pGOHead,
 						(void *) this_game, &(pNew->task), GO_TASK_PRIORITY);
 			}
 			taskEXIT_CRITICAL();
+			return pW;
 		}
 	}
-
-
-
-	taskENTER_CRITICAL();
-		if (prvGetGOIDCode(babiesID, &GOIDcode))
-		{
-			this_game->babies = addGONode(this_game->babies, "baby",
-									baby_start_posn_LEFT, GOIDcode);
-			this_game->babies->numlives=1; /* each baby has ... */
-			xTaskCreate(vBabiesTask, this_game->babies->taskText,
-						256, (void *) &this_game,
-						&this_game->babies->task, GO_TASK_PRIORITY);
-		}
-		if (prvGetGOIDCode(babiesID, &GOIDcode))
-		{
-			this_game->babies = addGONode(this_game->babies, "baby",
-										baby_start_posn_MID, GOIDcode);
-
-			this_game->babies->pNext->numlives=1; /* only one life */
-			xTaskCreate(vBabiesTask, this_game->babies->taskText,
-						256, (void *) &this_game,
-						&this_game->babies->pNext->task, GO_TASK_PRIORITY);
-		}
-	taskEXIT_CRITICAL();
-
-
 }
 
-static void prvDeleteAllTasks(game_t game)
+// FIX THIS FUNCTION TO USE A GAME POINTER INSTEAD OF A VALUE POINTER
+// AND TO USE GAME-VARIABLE CODE BOOK (INSTEAD OF DEPRECATED GLOBAL
+// CODE BOOKS)
+static void prvDeleteAllTasks(game_t *game)
 {
 	go_t *pW = NULL;
 	go_t *pTemp=NULL;
@@ -372,28 +350,34 @@ static void vImpactsTask(void *pvParams)
 	if (prvGetGOIDCode(this_game->aliensID, &GOIDcode))
 	{
 		go_coord_t alien_start_posn = {XMIDDLE, YMIDDLE};
-		spawnGONodeandTask(this_game, this_game->aliens, alien,
+		go_t *pAlien=spawnGONodeandTask(this_game, this_game->aliens, alien,
 							alien_start_posn, this_game->aliensID, GOIDcode);
+		pAlien->numlives = 1;
 	}
 	if (prvGetGOIDCode(this_game->babiesID, &GOIDcode))
 	{
 		go_coord_t baby_start_posn_LEFT = {XLEFT, YBOTTOM};
-		spawnGONodeandTask(this_game, this_game->babies, baby,
+		go_t *pBaby = spawnGONodeandTask(this_game, this_game->babies, baby,
 				baby_start_posn_LEFT, this_game->babiesID, GOIDcode);
+		pBaby->numlives = 1;
 
 	}
 	if (prvGetGOIDCode(this_game->babiesID, &GOIDcode))
 	{
 		go_coord_t baby_start_posn_MID = {XMIDDLE, YBOTTOM};
-		spawnGONodeandTask(this_game, this_game->babies, baby,
+		go_t *pBaby=spawnGONodeandTask(this_game, this_game->babies, baby,
 				baby_start_posn_MID, this_game->babiesID, GOIDcode);
+		pBaby->numlives = 1;
 	}
 
 	/* main loop of Impacts Task */
 	while (1)
 	{
 		/* simple way to set the game level */
-		this_game->game_level = this_game->score / LEVELUP;
+		this_game->game_level = this_game->score / LEVELUP; // NEED BETTER FORMULA
+
+
+		// FIX REMAINDER OF THIS TASK TO WORK WITH NEW GO CREATION FUNCTIONS
 
 		/* is it time to spawn an alien? number of aliens
 		 * should be (game_level + 1) */
