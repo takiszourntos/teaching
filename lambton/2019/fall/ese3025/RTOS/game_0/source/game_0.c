@@ -43,29 +43,13 @@
 //volatile			queue_t		q; 				/* UART queue */
 ui_t				user={False, False, False, False};
 size_t				number_of_players=0;
-size_t				number_of_aliens=0;
-size_t				number_of_babies=0;
-size_t				number_of_kitties=0;
-size_t				number_of_poohs=0;
-size_t				number_of_expungers=0;
+
 xSemaphoreHandle 	xGameMutex = NULL;
 
-go_ID_t				aliensID[16];
-go_ID_t				poohsID[16];
-go_ID_t				expungersID[16];
-go_ID_t				babiesID[16];
-go_ID_t				kittiesID[16];
 
 /********************************************************************
  * Private Functions
  ********************************************************************/
-/*
- *	function to handle UART Transmissions
- */
-static void prvUARTSend(const char tx_text[])
-{
-	Chip_UART_SendRB(UART_SELECTION, &txring, tx_text, sizeof(tx_text) - 1);
-}
 /*
  * function to display number of players
  */
@@ -79,9 +63,9 @@ static void prvShowNumPlayers(void)
 	prvUARTSend(mesg);
 }
 /*
- * function to initialize game at very beginning
+ * function to determine the number of players in the game
  */
-static void prvInitGame(void)
+static void prvGetNumberofPlayers(void)
 {
 	prvShowNumPlayers();
 	/* get number of players */
@@ -102,40 +86,15 @@ static void prvInitGame(void)
 				number_of_players--;
 				prvShowNumPlayers();
 			}
-
 		}
 	}
-	/* initialize GO code books */
-	for (size_t i = 0; i != MAX_GO_CODES; ++i)
-	{
-		 /* GO IDs:
-		 * 			0x0000 000q: players
-		 * 			0x0000 00q0: aliens
-		 * 			0x0000 0q00: poohs
-		 * 			0x0000 q000: expungers
-		 * 			0x000q 0000: babies
-		 * 			0x00q0 0000: kitties
-		 */
-
-		aliensID[i].code	= 0x00000000 + (i << 4);
-		poohsID[i].code		= 0x00000000 + (i << 8);
-		expungersID[i].code	= 0x00000000 + (i << 12);
-		babiesID[i].code	= 0x00000000 + (i << 16);
-		kittiesID[i].code	= 0x00000000 + (i << 20);
-
-		aliensID[i].available		= True;
-		poohsID[i].available		= True;
-		expungersID[i].available	= True;
-		babiesID[i].available		= True;
-		kittiesID[i].available		= True;
-
-		aliensID[i].taskhandle 		= NULL;
-		poohsID[i].taskhandle		= NULL;
-		expungersID[i].taskhandle	= NULL;
-		babiesID[i].taskhandle		= NULL;
-		kittiesID[i].taskhandle		= NULL;
-	}
-
+}
+/*
+ *	function to handle UART Transmissions
+ */
+static void prvUARTSend(const char tx_text[])
+{
+	Chip_UART_SendRB(UART_SELECTION, &txring, tx_text, sizeof(tx_text) - 1);
 }
 
 /*
@@ -203,11 +162,11 @@ int main(void)
 	/* hardware init */
 	prvSetupHardware();
 
-	/* new game init */
-	prvInitGame();
+	/* get the number of players */
+	prvGetNumberofPlayers();
 
 	/* start game */
-\	for (size_t i=0; i != number_of_players; ++i)
+	for (size_t i=0; i != number_of_players; ++i)
 	{
 		xTaskCreate(vRunGameTask, "Supervisory Game Task",
 				4*configMINIMAL_STACK_SIZE, (void *) &i,

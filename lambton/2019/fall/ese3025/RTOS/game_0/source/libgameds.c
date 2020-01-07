@@ -38,7 +38,7 @@ go_t* getGODefaults(go_t *pRet, char taskstring[])
 	 * 			where q \in {0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F}
 	 *
 	 */
-	pRet->ID		= 0x00000000UL; /* to be defined by genesisGO */
+	pRet->ID		= 0x00000000UL; /* to be defined by addGONode() */
 	pRet->go_level	= 1;
 	pRet->health 	= 256;
 	pRet->alive 	= True;
@@ -65,7 +65,7 @@ go_t* getGODefaults(go_t *pRet, char taskstring[])
 /*
  * creates a basic GO node, with default information based on GO type
  */
-go_t* createDefaultGONode(uint8_t GOtype)
+go_t* createDefaultGONode(game_t *this_game, uint8_t GOtype)
 {
 	/* GOtype values:
 		 * 		0 -> player
@@ -78,60 +78,72 @@ go_t* createDefaultGONode(uint8_t GOtype)
 
 	go_t *pNew = (go_t *) pvPortMalloc(sizeof(go_t));
 
-	if (GOtype==0) // player
+	switch (GOType)
 	{
-		pNew = getGODefaults(pNew, "player task");
-		return pNew;
-	}
-	if (GOtype==1) // aliens
-	{
-		pNew = getGODefaults(pNew, "aliens task");
-		number_of_aliens++;
-		return pNew;
-	}
-	if (GOtype==2) // poohs
-	{
-		pNew = getGODefaults(pNew, "poohs (bombs) task");
-		number_of_poohs++;
-		return pNew;
-	}
-	if (GOtype==3) // expungers
-	{
-		pNew = getGODefaults(pNew, "expungers task");
-		number_of_expungers++;
-		return pNew;
-	}
-	if (GOtype==4) // babies
-	{
-		pNew = getGODefaults(pNew, "babies task");
-		number_of_babies++;
-		return pNew;
-	}
-	if (GOtype==5) // kitties
-	{
-		pNew = getGODefaults(pNew, "kitties task");
-		number_of_kitties++;
-		return pNew;
+		case 0: // player
+		{
+			pNew = getGODefaults(pNew, "player task");
+			return pNew;
+		}
+		case 1: // aliens
+		{
+			pNew = getGODefaults(pNew, "aliens task");
+			this_game->number_of_aliens++;
+			return pNew;
+		}
+		case 2: // poohs
+		{
+			pNew = getGODefaults(pNew, "poohs (bombs) task");
+			this_game->number_of_poohs++;
+			return pNew;
+		}
+		case 3: // expungers
+		{
+			pNew = getGODefaults(pNew, "expungers task");
+			this_game->number_of_expungers++;
+			return pNew;
+		}
+		case 4: // babies
+		{
+			pNew = getGODefaults(pNew, "babies task");
+			this_game->number_of_babies++;
+			return pNew;
+		}
+		case 5: // kitties
+		{
+			pNew = getGODefaults(pNew, "kitties task");
+			this_game->number_of_kitties++;
+			return pNew;
+		}
 	}
 }
 
 /*
- * creates a game object for the first time, adding it to the GO master list
+ *
+ * creates a GO, adding it to the GO master list (e.g., this_game->aliens
+ * or this_game->babies)
+ *
  */
-go_t*	genesisGO(go_t* pGOHead, uint8_t GOtype, go_coord_t GOstartcoord,
-							size_t ID)
+go_t*	addGONode(game_t *this_game, go_t* pGOHead, uint8_t GOtype,
+					go_coord_t GOstartcoord, size_t ID)
 {
 	go_t* pW=pGOHead; /* working pointer */
 
 	if (pW==NULL)
 	{
-		/* create the first instance of this GO */
-		//taskENTER_CRITICAL(); /* need to properly position and initialize an object before game play can resume */
-			go_t *pNode =createDefaultGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
-			pNode->ID = ID;
-			pNode->pos = GOstartcoord;
-		//taskEXIT_CRITICAL();
-		return pNode;
+		/* create the first instance of this GO ...
+		/* need to properly position and initialize
+		an object before game play can resume */
+		go_t *pNode =createDefaultGONode(this_game, GOtype); /* creates a
+																GO node of
+																desired type
+																with
+																generic,
+																default
+																settings */
+		pNode->ID = ID;
+		pNode->pos = GOstartcoord;
+		pW = pNode;
 	}
 	else
 	{
@@ -141,20 +153,24 @@ go_t*	genesisGO(go_t* pGOHead, uint8_t GOtype, go_coord_t GOstartcoord,
 			pW = pW->pNext;
 		}
 		/* now add the GO there, with the proper settings */
-		//taskENTER_CRITICAL();
-			pW->pNext = createDefaultGONode(GOtype); /* creates a GO node of desired type with generic, default settings */
-			pW->pNext->ID = ID;
-			pW->pNext->pos = GOstartcoord;
-			pW->pNext->pPrev=pW;
-		//taskEXIT_CRITICAL();
+		pW->pNext = createDefaultGONode(this_game, GOtype); /* creates a GO
+															node of desired
+															type with
+															generic,
+															default
+															settings */
+		pW->pNext->ID = ID;
+		pW->pNext->pos = GOstartcoord;
+		pW->pNext->pPrev=pW;
 	}
-	return pGOHead;
+	return pW; /* return a pointer to the new element */
 }
 
 /*
  * function to edit the game "small lists" of type go_list_t
  */
-void prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance, bool_t collision, bool_t seen)
+void prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
+								bool_t collision, bool_t seen)
 {
 	go_list_t	*pW=pSub;
 	go_list_t	*ppW;

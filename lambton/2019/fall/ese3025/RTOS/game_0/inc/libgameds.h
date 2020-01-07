@@ -55,6 +55,16 @@ enum likelihood
 	} likelihood_enum;
 typedef enum likelihood likely_t;
 
+enum gotype
+	{	player = 0U,
+		alien = 1U,
+		pooh = 2U,
+		expunger = 3U,
+		baby = 4U,
+		kitty = 5U
+	};
+typedef enum gotype gotype_t;
+
 
 /* GO ID code book */
 /*
@@ -95,19 +105,33 @@ struct go_coord_struct
 typedef struct go_coord_struct go_coord_t;
 
 
-/* game record-keeping */
+/* game record-keeping for each player
+ * (we assume one player per game, right?) */
 struct game_struct
 {
 	uint32_t	score;
 	char		playerID[4];
 	uint16_t	game_level;
 	ui_t		user;
+	/* GO lists */
+	go_t		*player;
 	go_t		*aliens;
 	go_t		*poohs;
 	go_t		*expungers;
 	go_t		*babies;
 	go_t		*kitties;
-	go_t		*player;
+	/* ID code books for various GO types, other than player */
+	go_ID_t		aliensID[16];
+	go_ID_t		poohsID[16];
+	go_ID_t		expungersID[16];
+	go_ID_t		babiesID[16];
+	go_ID_t		kittiesID[16];
+	/* record keeping for number of each GO type, other than player */
+	size_t		number_of_aliens;
+	size_t		number_of_poohs;
+	size_t		number_of_expungers;
+	size_t		number_of_babies;
+	size_t		number_of_kitties;
 };
 typedef	struct game_struct	game_t;
 
@@ -151,15 +175,6 @@ typedef struct go_list_struct go_list_t;
 /*
  * FUNCTION PROTOTYPES
  */
-
-go_t* getGODefaults(go_t *, char *);
-
-go_t* createGONode(char *);
-
-go_t* genesisGO(go_t* , char *, go_coord_t , size_t );
-
-void prvUpdateInteractionList(go_t *, go_t *, uint16_t, bool_t, bool_t);
-
 
 
 
