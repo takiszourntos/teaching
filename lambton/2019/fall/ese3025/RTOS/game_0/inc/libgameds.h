@@ -39,6 +39,7 @@
 #define YBOTTOM					63
 #define LEVELUP					8192
 #define	MAX_GO_CODES			16
+#define LEVEL_UP_X				16 // determines scale of leveling up
 
 
 enum boolean {True, False} boolean_enum;

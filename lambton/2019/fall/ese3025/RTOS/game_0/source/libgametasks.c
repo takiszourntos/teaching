@@ -348,6 +348,11 @@ void vRunGameTask(void *pvParams)
 	} /* end while (1) */
 }
 
+/*
+ *
+ * Impacts Task --- the task behind all the game action!
+ *
+ */
 static void vImpactsTask(void *pvParams)
 {
 	game_t *this_game = (game_t *) pvParams;
@@ -380,17 +385,21 @@ static void vImpactsTask(void *pvParams)
 	}
 
 	/* main loop of Impacts Task */
+	uint16_t levelLambda = 0U;
+
 	while (1)
 	{
-		/* simple way to set the game level */
-		this_game->game_level = this_game->score / LEVELUP; // NEED BETTER FORMULA
+		/* simple way to set the game level,
+		 * level = log2(2*LEVEL_UP_X) */
+		levelLambda = this_game->score/(2*LEVEL_UP_X);
+		this_game->game_level = 1 << levelLambda;
 
 
 		// FIX REMAINDER OF THIS TASK TO WORK WITH NEW GO CREATION FUNCTIONS
 
 		/* is it time to spawn an alien? number of aliens
 		 * should be (game_level + 1) */
-		if ( number_of_aliens < (this_game->game_level+1) )
+		if ( this_game->number_of_aliens < (this_game->game_level+1) )
 		{
 			/* a high probability exists of an alien being created */
 			if (prvYesHappens(QuiteLikely))
