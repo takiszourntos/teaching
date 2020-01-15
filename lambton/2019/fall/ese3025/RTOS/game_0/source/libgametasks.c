@@ -75,6 +75,15 @@ static bool_t prvGetGOIDCode(go_ID_t *book, uint32_t *code)
 
 static bool_t prvYesHappens(likely_t prob)
 {
+	/*
+	    HighlyLikely = 0U,		// < RAND_MAX (probability \approx 1)
+		QuiteLikely = 1U, 		// < RAND_MAX / 2, prob. = 50 %
+		ModeratelyLikely = 2U, 	// < RAND_MAX / 4, prob. = 25 %
+		Maybe = 3U,				// < RAND_MAX / 8, prob. = 12.5 %
+		Unlikely = 4U,			// < RAND_MAX / 16, prob. = 6.25 %
+		QuiteUnLikely = 5U, 	// < RAND_MAX / 32, prob. = 3.125 %
+		YeahRight = 6U,			// < RAND_MAX / 64, prob. = 1.5625 %
+	 */
 	int r = rand(); /* pull my finger */
 	register int s = RAND_MAX;
 
