@@ -460,6 +460,11 @@ vRunGameTask (void *pvParams)
 	      }
 	  }
 
+	/*
+	 *
+	 * UPDATE THE INTERACTION LISTS
+	 *
+	 */
 	/* check alien proximity to kitties and expungers */
 	pW = this_game->aliens;
 	while (pW != NULL)
@@ -477,12 +482,12 @@ vRunGameTask (void *pvParams)
 	    prvComputeProximities (pW, this_game->babies);
 	    pW = pW->pNext;
 	  }
-	/* check babies for proximities to poohs */
-
-	// prvCreateTasks(this_game.aliens, vAliensTask);
-	/* babies */
-	prvCreateTasks (this_game.babies, vBabiesTask);
-	/* kitties */
-	// prvCreateTasks(this_game.kitties, vKittiesTask);
+	/* check babies for proximity to poohs */
+	pW = this_game->babies;
+	while (pW != NULL)
+	  {
+	    prvComputeProximities (pW, this_game->poohs);
+	    pW = pW->pNext;
+	  }
       }
   }
