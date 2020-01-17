@@ -164,7 +164,7 @@ typedef struct go_struct go_t;
 
 struct go_list_struct
 {
-	size_t		ID;
+	uint32_t	ID;
 	uint16_t	distance;
 	bool_t		seen;
 	bool_t		collision;

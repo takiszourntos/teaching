@@ -125,7 +125,7 @@ go_t* createDefaultGONode(game_t *this_game, uint8_t GOtype)
  *
  */
 go_t*	addGONode(game_t *this_game, go_t* pGOHead, uint8_t GOtype,
-					go_coord_t GOstartcoord, size_t ID)
+					go_coord_t GOstartcoord, uint32_t ID)
 {
 	go_t* pW=pGOHead; /* working pointer */
 
@@ -134,7 +134,7 @@ go_t*	addGONode(game_t *this_game, go_t* pGOHead, uint8_t GOtype,
 		/* create the first instance of this GO ...
 		/* need to properly position and initialize
 		an object before game play can resume */
-		go_t *pNode =createDefaultGONode(this_game, GOtype); /* creates a
+		go_t *pNode = createDefaultGONode(this_game, GOtype); /* creates a
 																GO node of
 																desired type
 																with
