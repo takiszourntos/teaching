@@ -81,10 +81,10 @@ prvYesHappens (likely_t prob)
    HighlyLikely = 0U,		// < RAND_MAX (probability \approx 1)
    QuiteLikely = 1U, 		// < RAND_MAX / 2, prob. = 50 %
    ModeratelyLikely = 2U, 	// < RAND_MAX / 4, prob. = 25 %
-   Maybe = 3U,				// < RAND_MAX / 8, prob. = 12.5 %
-   Unlikely = 4U,			// < RAND_MAX / 16, prob. = 6.25 %
-   QuiteUnLikely = 5U, 	// < RAND_MAX / 32, prob. = 3.125 %
-   YeahRight = 6U,			// < RAND_MAX / 64, prob. = 1.5625 %
+   Maybe = 3U,			// < RAND_MAX / 8, prob. = 12.5 %
+   Unlikely = 4U,		// < RAND_MAX / 16, prob. = 6.25 %
+   QuiteUnLikely = 5U, 		// < RAND_MAX / 32, prob. = 3.125 %
+   YeahRight = 6U,		// < RAND_MAX / 64, prob. = 1.5625 %
    */
   int r = rand (); /* pull my finger */
   register int s = RAND_MAX;
@@ -284,9 +284,7 @@ vRunGameTask (void *pvParams)
   go_t *pW = NULL;
   xTaskHandle pvImpactsTaskHandle;
   volatile game_t *this_game = (game_t *) pvPortMalloc (sizeof(game_t));
-  size_t player = *((size_t *) pvParams); /* human player number, up to
-   a maximum of
-   MAX_NUMBER_OF_PLAYERS */
+  size_t player = *((size_t *) pvParams); /* the human player */
   /* new game parameters */
   this_game->score = 0;
   this_game->playerID = "AAA";
@@ -301,9 +299,10 @@ vRunGameTask (void *pvParams)
   /* initialize code books and record-keeping variables */
   prvInitGame (this_game);
 
-  /* give birth to the player GO for this game (recall that one "game"
-   * 					is allocated to each human player) */
-
+  /*
+   * give birth to the player GO for this game
+   * (recall that one "game"is allocated to each human player)
+   */
   go_coord_t player_start_posn =
     { XMIDDLE, YBOTTOM };
   this_game->player = spawnGONodeandTask (this_game, this_game->player, 0,
@@ -313,15 +312,17 @@ vRunGameTask (void *pvParams)
     {
       xSemaphoreTake (xGameMutex, portMAX_DELAY);
 	{
-	  go_t *pWplayer = this_game->player; /* point to this
-	   game's player */
+	  go_t *pWplayer = this_game->player; // point to this game's player
 	  if (pWplayer->active)
 	    {
 	      prvResetBoard ();
-	      prvUARTSend ("D: Player %zu", player); /* prompt the player */
-	      vTaskDelay (5 * configTICK_RATE_HZ); /* wait 5 seconds */
-	      /* create Impacts Task (with lower priority than RunGameTask())
-	       * to run the show */
+	      prvUARTSend ("D: Player %zu", player); // prompt the player
+	      vTaskDelay (5 * configTICK_RATE_HZ); // wait 5 seconds
+
+	      /*
+	       * create ImpactsTask (with lower priority than RunGameTask())
+	       * to run the show
+	       */
 	      xTaskCreate(vImpactsTask, "Impact-checking Task", 1024,
 			  (void * ) &this_game, &pvImpactsTaskHandle,
 			  IMPACTS_TASK_PRIORITY);
@@ -329,9 +330,7 @@ vRunGameTask (void *pvParams)
 	      /* keep running until player loses life */
 	      while ((pWplayer->alive))
 		{
-		  vTaskDelay (DELAY_RUN_GAME); /* relinquish control of game
-		   to tasks just created for a
-		   period of time */
+		  vTaskDelay (DELAY_RUN_GAME); // relinquish control of game
 		}
 	      /* player died, update status */
 	      if ((--(pWplayer->numlives)) == 0)
@@ -372,6 +371,7 @@ vRunGameTask (void *pvParams)
 					   alien_start_posn,
 					   this_game->aliensID, GOIDcode);
 	pAlien->numlives = 1;
+	pAlien->health = 1024;
       }
     if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
       {
@@ -381,7 +381,7 @@ vRunGameTask (void *pvParams)
 					  baby_start_posn_LEFT,
 					  this_game->babiesID, GOIDcode);
 	pBaby->numlives = 1;
-
+	pBaby->health = 128;
       }
     if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
       {
@@ -391,6 +391,7 @@ vRunGameTask (void *pvParams)
 					  baby_start_posn_MID,
 					  this_game->babiesID, GOIDcode);
 	pBaby->numlives = 1;
+	pBaby->health = 128;
       }
 
     /* main loop of Impacts Task */
@@ -399,15 +400,17 @@ vRunGameTask (void *pvParams)
     while (1)
       {
 
-	/* simple way to set the game level,
-	 * level = log2(2*LEVEL_UP_X) */
+	/*
+	 * simple way to set the game level:
+	 * 	level = log2(2*LEVEL_UP_X) = 1 + log2(LEVEL_UP_X)
+	 */
 	levelLambda = this_game->score / (2 * LEVEL_UP_X);
 	this_game->game_level = 1 << levelLambda;
 
-	// FIX REMAINDER OF THIS TASK TO WORK WITH NEW GO CREATION FUNCTIONS
-
-	/* is it time to spawn an alien? number of aliens
-	 * should be (game_level + 1) */
+	/*
+	 * is it time to spawn an alien? number of aliens
+	 * should be (game_level + 1)
+	 */
 	if (this_game->number_of_aliens < (this_game->game_level + 1))
 	  {
 	    /* a high probability exists of an alien being created */
@@ -425,13 +428,16 @@ vRunGameTask (void *pvParams)
 						       this_game->aliensID,
 						       GOIDcode);
 		    pAlien->numlives = 1;
+		    pAlien->health = 1024;
 		  }
 	      }
 	  }
 
-	/* is it time to spawn a kitty? The number of kitties should be
-	 * 			(game_level + 1) */
-	if (this_game->number_of_kitties < (this_game->game_level + 1))
+	/*
+	 * is it time to spawn a kitty? The number of kitties should be
+	 * (game_level)
+	 */
+	if (this_game->number_of_kitties < (this_game->game_level))
 	  {
 	    /* a some probability exists of a kitty showing up,
 	     * in which case the alien's pooh may start dropping */
@@ -440,19 +446,16 @@ vRunGameTask (void *pvParams)
 		if (prvGetGOIDCode (kittiesID, &GOIDcode)) // kitties available?
 		  {
 		    /* spawn a kitty */
-		    taskENTER_CRITICAL();
 		    go_coord_t kitties_start_posn =
 		      { XRIGHT, YBOTTOM };
-
-		    this_game->kitties = addGONode (this_game->kitties, "kitty",
-						    kitties_start_posn,
-						    GOIDcode);
-		    this_game->kitties->numlives = 1;
-		    this_game->kitties->health = 8192;
-		    xTaskCreate(vKittiesTask, this_game->kitties->taskText, 256,
-				(void * ) &this_game, &this_game->kitties->task,
-				GO_TASK_PRIORITY);
-		    taskEXIT_CRITICAL();
+		    go_t *pKitty = spawnGONodeandTask (this_game,
+						       this_game->kitties,
+						       kitty,
+						       kitties_start_posn,
+						       this_game->kittiesID,
+						       GOIDcode);
+		    pKitty->numlives = 9;
+		    pKitty->health = 8192;
 		  }
 	      }
 	  }
