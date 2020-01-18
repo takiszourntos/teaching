@@ -19,27 +19,27 @@
 #include "libgameds.h"
 
 #define	RUN_GAME_PRIORITY		3
-#define IMPACTS_TASK_PRIORITY	2
+#define IMPACTS_TASK_PRIORITY		2
 #define GO_TASK_PRIORITY		1
-#define	MAX_NUMBER_OF_PLAYERS	4
+#define	MAX_NUMBER_OF_PLAYERS		4
 #define DELAY_RUN_GAME			65536
 #define	DELAY_GAME_TICK			8192
 #define THRESHOLD_COLLISION	 	16
 #define THRESHOLD_SEEN			32
-#define MAX_ALIENS				3
-#define MAX_POOHS				9
+#define MAX_ALIENS			3
+#define MAX_POOHS			9
 #define	MAX_EXPUNGERS			3
-#define MAX_BABIES				3
-#define	MAX_KITTIES				2
-#define	XLEFT					0
-#define XMIDDLE					63
-#define XRIGHT					127
-#define	YTOP					0
-#define	YMIDDLE					31
-#define YBOTTOM					63
-#define LEVELUP					8192
+#define MAX_BABIES			3
+#define	MAX_KITTIES			2
+#define	XLEFT				0
+#define XMIDDLE				63
+#define XRIGHT				127
+#define	YTOP				0
+#define	YMIDDLE				31
+#define YBOTTOM				63
+#define LEVELUP				8192
 #define	MAX_GO_CODES			16
-#define LEVEL_UP_X				16 // determines scale of leveling up
+#define LEVEL_UP_X			256 // determines scale of leveling up
 
 enum boolean
 {
@@ -50,12 +50,12 @@ typedef enum boolean bool_t;
 enum likelihood
 {
   HighlyLikely = 0U,		// < RAND_MAX (probability \approx 1)
-  QuiteLikely = 1U, 		// < RAND_MAX / 2, prob. = 50 %
-  ModeratelyLikely = 2U, 	// < RAND_MAX / 4, prob. = 25 %
-  Maybe = 3U,				// < RAND_MAX / 8, prob. = 12.5 %
-  Unlikely = 4U,			// < RAND_MAX / 16, prob. = 6.25 %
-  QuiteUnLikely = 5U, 	// < RAND_MAX / 32, prob. = 3.125 %
-  YeahRight = 6U, 		// < RAND_MAX / 64, prob. = 1.5625 %
+  QuiteLikely = 1U,		// < RAND_MAX / 2, prob. = 50 %
+  ModeratelyLikely = 2U,	// < RAND_MAX / 4, prob. = 25 %
+  Maybe = 3U,			// < RAND_MAX / 8, prob. = 12.5 %
+  Unlikely = 4U,		// < RAND_MAX / 16, prob. = 6.25 %
+  QuiteUnLikely = 5U, 		// < RAND_MAX / 32, prob. = 3.125 %
+  YeahRight = 6U,		// < RAND_MAX / 64, prob. = 1.5625 %
 } likelihood_enum;
 typedef enum likelihood likely_t;
 

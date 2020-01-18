@@ -377,7 +377,7 @@ vImpactsTask (void *pvParams)
     }
 
   /* main loop of Impacts Task */
-  uint16_t levelLambda = 0U;
+  uint8_t levelLambda = 0U;
 
   while (1)
     {
