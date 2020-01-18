@@ -118,7 +118,7 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
    * 		5 -> kitties
    */
   /* initialize working pointer */
-  if (!GOtype) // player
+  if (!GOtype) // if it's a player we're creating then
     {
       if (pGOHead == NULL) // list is empty, create the first player
 	{
@@ -130,34 +130,13 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
 	  return pW;
 	}
     }
-  else // any other type of game object
+  else // any type of game object (GO) other than a player GO
     {
+      taskENTER_CRITICAL();
       if (pGOHead == NULL) // the list is empty
 	{
-	  taskENTER_CRITICAL();
-	  go_t *pW = addGONode (pGOHead, GOType, GOstartcoord, GOIDCode);
-	  baby_start_posn_LEFT, GOIDcode
-	  );
-	  switch (GOType)
-	    {
-	    case 1:
-	      xTaskCreate(vAliensTask, pW->taskText, 256, (void * ) this_game,
-			  &(pW->task), GO_TASK_PRIORITY);
-	    case 2:
-	      xTaskCreate(vPoohsTask, pW->taskText, 256, (void * ) this_game,
-			  &(pW->task), GO_TASK_PRIORITY);
-	    case 3:
-	      xTaskCreate(vExpungersTask, pW->taskText, 256,
-			  (void * ) this_game, &(pW->task), GO_TASK_PRIORITY);
-	    case 4:
-	      xTaskCreate(vBabiesTask, pW->taskText, 256, (void * ) this_game,
-			  &(pW->task), GO_TASK_PRIORITY);
-	    case 5:
-	      xTaskCreate(vKittiesTask, pW->taskText, 256, (void * ) this_game,
-			  &(pW->task), GO_TASK_PRIORITY);
-	    }
-	  taskEXIT_CRITICAL();
-	  return pW;
+	  go_t *pW = addGONode (this_game, pGOHead, GOType, GOstartcoord,
+				GOIDCode); // working ptr points to new node
 	}
       else
 	{
@@ -165,31 +144,34 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
 	   * so find the next available spot... */
 	  go_t* pW = pGOHead;
 	  while (pW->pNext != NULL)
-	    pW = pW->pNext;
-	  taskENTER_CRITICAL();
-	  go_t* pNew = addGONode (pGOHead, GOType, GOstartcoord, GOIDCode);
-	  pW->pNext = pNew;
-	  switch (GOType)
 	    {
-	    case 1:
-	      xTaskCreate(vAliensTask, pNew->taskText, 256, (void * ) this_game,
-			  &(pNew->task), GO_TASK_PRIORITY);
-	    case 2:
-	      xTaskCreate(vPoohsTask, pNew->taskText, 256, (void * ) this_game,
-			  &(pNew->task), GO_TASK_PRIORITY);
-	    case 3:
-	      xTaskCreate(vExpungersTask, pNew->taskText, 256,
-			  (void * ) this_game, &(pNew->task), GO_TASK_PRIORITY);
-	    case 4:
-	      xTaskCreate(vBabiesTask, pNew->taskText, 256, (void * ) this_game,
-			  &(pNew->task), GO_TASK_PRIORITY);
-	    case 5:
-	      xTaskCreate(vKittiesTask, pNew->taskText, 256,
-			  (void * ) this_game, &(pNew->task), GO_TASK_PRIORITY);
+	      pW = pW->pNext;
 	    }
-	  taskEXIT_CRITICAL();
-	  return pW;
+	  go_t* pNew = addGONode (this_game, pGOHead, GOType, GOstartcoord,
+				  GOIDCode);
+	  pW->pNext = pNew;
+	  pW = pNew; // make working ptr point to new node
 	}
+      switch (GOType)
+	{
+	case 1:
+	  xTaskCreate(vAliensTask, pW->taskText, 256, (void * ) this_game,
+		      &(pW->task), GO_TASK_PRIORITY);
+	case 2:
+	  xTaskCreate(vPoohsTask, pW->taskText, 256, (void * ) this_game,
+		      &(pW->task), GO_TASK_PRIORITY);
+	case 3:
+	  xTaskCreate(vExpungersTask, pW->taskText, 256, (void * ) this_game,
+		      &(pW->task), GO_TASK_PRIORITY);
+	case 4:
+	  xTaskCreate(vBabiesTask, pW->taskText, 256, (void * ) this_game,
+		      &(pW->task), GO_TASK_PRIORITY);
+	case 5:
+	  xTaskCreate(vKittiesTask, pW->taskText, 256, (void * ) this_game,
+		      &(pW->task), GO_TASK_PRIORITY);
+	}
+      taskEXIT_CRITICAL();
+      return pW;
     }
 }
 
@@ -348,146 +330,145 @@ vRunGameTask (void *pvParams)
 	  xSemaphoreGive (xGameMutex);
 	} /* end while (1) */
     }
+}
+/*
+ *
+ * Impacts Task --- the task behind all the game action!
+ *
+ */
+void
+vImpactsTask (void *pvParams)
+{
+  game_t *this_game = (game_t *) pvParams;
+  uint32_t GOIDcode;
 
   /*
-   *
-   * Impacts Task --- the task behind all the game action!
-   *
+   * to begin with, spawn off an alien and two babies...
    */
-  static void
-  vImpactsTask (void *pvParams)
-  {
-    game_t *this_game = (game_t *) pvParams;
-    uint32_t GOIDcode;
+  if (prvGetGOIDCode (this_game->aliensID, &GOIDcode))
+    {
+      go_coord_t alien_start_posn =
+	{ XMIDDLE, YMIDDLE };
+      go_t *pAlien = spawnGONodeandTask (this_game, this_game->aliens, alien,
+					 alien_start_posn, this_game->aliensID,
+					 GOIDcode);
+      pAlien->numlives = 1;
+      pAlien->health = 1024;
+    }
+  if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
+    {
+      go_coord_t baby_start_posn_LEFT =
+	{ XLEFT, YBOTTOM };
+      go_t *pBaby = spawnGONodeandTask (this_game, this_game->babies, baby,
+					baby_start_posn_LEFT,
+					this_game->babiesID, GOIDcode);
+      pBaby->numlives = 1;
+      pBaby->health = 128;
+    }
+  if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
+    {
+      go_coord_t baby_start_posn_MID =
+	{ XMIDDLE, YBOTTOM };
+      go_t *pBaby = spawnGONodeandTask (this_game, this_game->babies, baby,
+					baby_start_posn_MID,
+					this_game->babiesID, GOIDcode);
+      pBaby->numlives = 1;
+      pBaby->health = 128;
+    }
 
-    /*
-     * to begin with, spawn off an alien and two babies...
-     */
-    if (prvGetGOIDCode (this_game->aliensID, &GOIDcode))
-      {
-	go_coord_t alien_start_posn =
-	  { XMIDDLE, YMIDDLE };
-	go_t *pAlien = spawnGONodeandTask (this_game, this_game->aliens, alien,
-					   alien_start_posn,
-					   this_game->aliensID, GOIDcode);
-	pAlien->numlives = 1;
-	pAlien->health = 1024;
-      }
-    if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
-      {
-	go_coord_t baby_start_posn_LEFT =
-	  { XLEFT, YBOTTOM };
-	go_t *pBaby = spawnGONodeandTask (this_game, this_game->babies, baby,
-					  baby_start_posn_LEFT,
-					  this_game->babiesID, GOIDcode);
-	pBaby->numlives = 1;
-	pBaby->health = 128;
-      }
-    if (prvGetGOIDCode (this_game->babiesID, &GOIDcode))
-      {
-	go_coord_t baby_start_posn_MID =
-	  { XMIDDLE, YBOTTOM };
-	go_t *pBaby = spawnGONodeandTask (this_game, this_game->babies, baby,
-					  baby_start_posn_MID,
-					  this_game->babiesID, GOIDcode);
-	pBaby->numlives = 1;
-	pBaby->health = 128;
-      }
+  /* main loop of Impacts Task */
+  uint16_t levelLambda = 0U;
 
-    /* main loop of Impacts Task */
-    uint16_t levelLambda = 0U;
+  while (1)
+    {
 
-    while (1)
-      {
+      /*
+       * simple way to set the game level:
+       * 	level = log2(2*LEVEL_UP_X) = 1 + log2(LEVEL_UP_X)
+       */
+      levelLambda = this_game->score / (2 * LEVEL_UP_X);
+      this_game->game_level = 1 << levelLambda;
 
-	/*
-	 * simple way to set the game level:
-	 * 	level = log2(2*LEVEL_UP_X) = 1 + log2(LEVEL_UP_X)
-	 */
-	levelLambda = this_game->score / (2 * LEVEL_UP_X);
-	this_game->game_level = 1 << levelLambda;
+      /*
+       * is it time to spawn an alien? number of aliens
+       * should be (game_level + 1)
+       */
+      if (this_game->number_of_aliens < (this_game->game_level + 1))
+	{
+	  /* a high probability exists of an alien being created */
+	  if (prvYesHappens (QuiteLikely))
+	    {
+	      if (prvGetGOIDCode (aliensID, &GOIDcode)) /* is there room for
+	       another alien */
+		{
+		  /* spawn an alien */
+		  go_coord_t alien_start_posn =
+		    { XMIDDLE, YMIDDLE };
+		  go_t *pAlien = spawnGONodeandTask (this_game,
+						     this_game->aliens, alien,
+						     alien_start_posn,
+						     this_game->aliensID,
+						     GOIDcode);
+		  pAlien->numlives = 1;
+		  pAlien->health = 1024;
+		}
+	    }
+	}
 
-	/*
-	 * is it time to spawn an alien? number of aliens
-	 * should be (game_level + 1)
-	 */
-	if (this_game->number_of_aliens < (this_game->game_level + 1))
-	  {
-	    /* a high probability exists of an alien being created */
-	    if (prvYesHappens (QuiteLikely))
-	      {
-		if (prvGetGOIDCode (aliensID, &GOIDcode)) /* is there room for
-		 another alien */
-		  {
-		    /* spawn an alien */
-		    go_coord_t alien_start_posn =
-		      { XMIDDLE, YMIDDLE };
-		    go_t *pAlien = spawnGONodeandTask (this_game,
-						       this_game->aliens, alien,
-						       alien_start_posn,
-						       this_game->aliensID,
-						       GOIDcode);
-		    pAlien->numlives = 1;
-		    pAlien->health = 1024;
-		  }
-	      }
-	  }
+      /*
+       * is it time to spawn a kitty? The number of kitties should be
+       * (game_level)
+       */
+      if (this_game->number_of_kitties < (this_game->game_level))
+	{
+	  /* a some probability exists of a kitty showing up,
+	   * in which case the alien's pooh may start dropping */
+	  if (prvYesHappens (Maybe))
+	    {
+	      if (prvGetGOIDCode (kittiesID, &GOIDcode)) // kitties available?
+		{
+		  /* spawn a kitty */
+		  go_coord_t kitties_start_posn =
+		    { XRIGHT, YBOTTOM };
+		  go_t *pKitty = spawnGONodeandTask (this_game,
+						     this_game->kitties, kitty,
+						     kitties_start_posn,
+						     this_game->kittiesID,
+						     GOIDcode);
+		  pKitty->numlives = 9;
+		  pKitty->health = 8192;
+		}
+	    }
+	}
 
-	/*
-	 * is it time to spawn a kitty? The number of kitties should be
-	 * (game_level)
-	 */
-	if (this_game->number_of_kitties < (this_game->game_level))
-	  {
-	    /* a some probability exists of a kitty showing up,
-	     * in which case the alien's pooh may start dropping */
-	    if (prvYesHappens (Maybe))
-	      {
-		if (prvGetGOIDCode (kittiesID, &GOIDcode)) // kitties available?
-		  {
-		    /* spawn a kitty */
-		    go_coord_t kitties_start_posn =
-		      { XRIGHT, YBOTTOM };
-		    go_t *pKitty = spawnGONodeandTask (this_game,
-						       this_game->kitties,
-						       kitty,
-						       kitties_start_posn,
-						       this_game->kittiesID,
-						       GOIDcode);
-		    pKitty->numlives = 9;
-		    pKitty->health = 8192;
-		  }
-	      }
-	  }
-
-	/*
-	 *
-	 * UPDATE THE INTERACTION LISTS
-	 *
-	 */
-	/* check alien proximity to kitties and expungers */
-	pW = this_game->aliens;
-	while (pW != NULL)
-	  {
-	    prvComputeProximities (pW, this_game->expungers);
-	    prvComputeProximities (pW, this_game->kitties);
-	    pW = pW->pNext;
-	  }
-	/* check player proximity to poohs, kitties or babies */
-	pW = this_game->player;
-	while (pW != NULL)
-	  {
-	    prvComputeProximities (pW, this_game->poohs);
-	    prvComputeProximities (pW, this_game->kitties);
-	    prvComputeProximities (pW, this_game->babies);
-	    pW = pW->pNext;
-	  }
-	/* check babies for proximity to poohs */
-	pW = this_game->babies;
-	while (pW != NULL)
-	  {
-	    prvComputeProximities (pW, this_game->poohs);
-	    pW = pW->pNext;
-	  }
-      }
-  }
+      /*
+       *
+       * UPDATE THE INTERACTION LISTS
+       *
+       */
+      /* check alien proximity to kitties and expungers */
+      pW = this_game->aliens;
+      while (pW != NULL)
+	{
+	  prvComputeProximities (pW, this_game->expungers);
+	  prvComputeProximities (pW, this_game->kitties);
+	  pW = pW->pNext;
+	}
+      /* check player proximity to poohs, kitties or babies */
+      pW = this_game->player;
+      while (pW != NULL)
+	{
+	  prvComputeProximities (pW, this_game->poohs);
+	  prvComputeProximities (pW, this_game->kitties);
+	  prvComputeProximities (pW, this_game->babies);
+	  pW = pW->pNext;
+	}
+      /* check babies for proximity to poohs */
+      pW = this_game->babies;
+      while (pW != NULL)
+	{
+	  prvComputeProximities (pW, this_game->poohs);
+	  pW = pW->pNext;
+	}
+    }
+}
