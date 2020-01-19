@@ -55,6 +55,7 @@ prvInitGame (game_t *this_game)
 
   return;
 }
+
 static bool_t
 prvGetGOIDCode (go_ID_t *book, uint32_t *code)
 {
@@ -107,9 +108,10 @@ prvYesHappens (likely_t prob)
  * differences
  *
  */
-uint16_t uiCompareGODistance(go_coord_t A, go_coord_t B)
+uint16_t
+uiCompareGODistance (go_coord_t A, go_coord_t B)
 {
-  return abs(A.X-B.X) + abs(A.Y-B.Y);
+  return abs (A.X - B.X) + abs (A.Y - B.Y);
 }
 
 /*
@@ -118,15 +120,15 @@ uint16_t uiCompareGODistance(go_coord_t A, go_coord_t B)
  *
  */
 static void
-prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
-			 bool_t collision, bool_t seen)
+prvUpdateInteractionList (go_t *pSub, go_t *pObj, uint16_t distance,
+			  bool_t collision, bool_t seen)
 {
   go_list_t *pW = pSub->interactions;
   go_list_t *ppW;
   uint32_t objID = pObj->ID;
 
   /* look for obj in sub's interaction list */
-  bool_t found=0;
+  bool_t found = 0;
   while (pW != NULL)
     {
       ppW = pW;
@@ -140,7 +142,7 @@ prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
   if (!found)
     {
       /* add node to interaction list */
-      go_list_t *pNew = (go_list_t *) pvPortMalloc(sizeof(go_list_t));
+      go_list_t *pNew = (go_list_t *) pvPortMalloc (sizeof(go_list_t));
       pNew->ID = objID;
       pNew->distance = distance;
       pNew->seen = seen;
@@ -162,7 +164,7 @@ prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
 	      /* remove the node */
 	      ppW->pNext = pW->pNext;
 	      (pW->pNext)->pPrev = ppW;
-	      pvPortFree((void *) pW);
+	      pvPortFree ((void *) pW);
 	    }
 	  else
 	    {
@@ -181,31 +183,31 @@ prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
  *
  */
 static void
-prvComputeProximities(go_t* pSubject, go_t* pObject)
+prvComputeProximities (go_t* pSubject, go_t* pObject)
 {
-  go_t		*pW=pObject; /* working pointer */
-  go_list_t	*pWI=pSubject->interactions;
+  go_t *pW = pObject; /* working pointer */
+  go_list_t *pWI = pSubject->interactions;
 
   uint16_t distance;
 
   while (pW != NULL)
     {
       /* is pObject in contact or seen? */
-      distance = uiCompareGODistance(pSubject->pos, pObject->pos);
+      distance = uiCompareGODistance (pSubject->pos, pObject->pos);
       if (distance <= THRESHOLD_COLLISION)
 	{
 	  /* object and subject are in contact */
-	  prvUpdateInteractionList(pSubject,pObject,distance,1,1);
+	  prvUpdateInteractionList (pSubject, pObject, distance, 1, 1);
 	}
       else if (distance <= THRESHOLD_SEEN)
 	{
 	  /* no contact, but object seen by subject */
-	  prvUpdateInteractionList(pSubject,pObject,distance,0,1);
+	  prvUpdateInteractionList (pSubject, pObject, distance, 0, 1);
 	}
       else
 	{
 	  /* no interaction between subject and object, consider removal */
-	  prvUpdateInteractionList(pSubject,pObject,distance,0,0);
+	  prvUpdateInteractionList (pSubject, pObject, distance, 0, 0);
 	}
       pW = pW->pNext;
     }
@@ -290,13 +292,13 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
 // AND TO USE GAME-VARIABLE CODE BOOK (INSTEAD OF DEPRECATED GLOBAL
 // CODE BOOKS)
 static void
-prvDeleteAllTasks (game_t *game)
+prvDeleteAllTasks (game_t *this_game)
 {
   go_t *pW = NULL;
   go_t *pTemp = NULL;
 
   /* eradicate aliens */
-  pW = game.aliens;
+  pW = this_game->aliens;
   while (pW != NULL)
     {
       vTaskDelete (pW->task);
@@ -305,7 +307,7 @@ prvDeleteAllTasks (game_t *game)
       pW = pTemp; /* move on to the next one */
     }
   /* eradicate poohs */
-  pW = game.poohs;
+  pW = this_game->poohs;
   while (pW != NULL)
     {
       vTaskDelete (pW->task);
@@ -314,7 +316,7 @@ prvDeleteAllTasks (game_t *game)
       pW = pTemp;
     }
   /* eradicate babies */
-  pW = game.babies;
+  pW = this_game->babies;
   while (pW != NULL)
     {
       vTaskDelete (pW->task);
@@ -323,7 +325,7 @@ prvDeleteAllTasks (game_t *game)
       pW = pTemp;
     }
   /* eradicate kitties */
-  pW = game.kitties;
+  pW = this_game->kitties;
   while (pW != NULL)
     {
       vTaskDelete (pW->task);
@@ -332,7 +334,7 @@ prvDeleteAllTasks (game_t *game)
       pW = pTemp;
     }
   /* eradicate expungers */
-  pW = game.expungers;
+  pW = this_game->expungers;
   while (pW != NULL)
     {
       vTaskDelete (pW->task);
@@ -351,13 +353,12 @@ prvDeleteAllTasks (game_t *game)
        * 			0x000q 0000: babies
        * 			0x00q0 0000: kitties
        */
-      aliensID[i].available = True;
-      poohsID[i].available = True;
-      expungersID[i].available = True;
-      babiesID[i].available = True;
-      kittiesID[i].available = True;
+      this_game->aliensID[i].available = True;
+      this_game->poohsID[i].available = True;
+      this_game->expungersID[i].available = True;
+      this_game->babiesID[i].available = True;
+      this_game->kittiesID[i].available = True;
     }
-
 }
 
 void
