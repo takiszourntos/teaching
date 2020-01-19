@@ -102,8 +102,77 @@ prvYesHappens (likely_t prob)
 
 /*
  *
+ * function provides an integer-friendly l1 metric,
+ * namely, the sum of the absolute values of the element-wise
+ * differences
+ *
  */
+uint16_t uiCompareGODistance(go_coord_t A, go_coord_t B)
+{
+  return abs(A.X-B.X) + abs(A.Y-B.Y);
+}
 
+/*
+ *
+ * function updates GO interaction list of subject
+ *
+ */
+static void
+prvUpdateInteractionList(go_t *pSub, go_t *pObj, uint16_t distance,
+			 bool_t collision, bool_t seen)
+{
+  go_list_t *pW = pSub->interactions;
+  go_list_t *ppW;
+  uint32_t objID = pObj->ID;
+
+  /* look for obj in sub's interaction list */
+  bool_t found=0;
+  while (pW != NULL)
+    {
+      ppW = pW;
+      if (pW->ID == objID)
+	{
+	  found = 1;
+	  break;
+	}
+      pW = pW->pNext;
+    }
+  if (!found)
+    {
+      /* add node to interaction list */
+      go_list_t *pNew = (go_list_t *) pvPortMalloc(sizeof(go_list_t));
+      pNew->ID = objID;
+      pNew->distance = distance;
+      pNew->seen = seen;
+      pNew->collision = collision;
+      pNew->pNext = NULL;
+      pNew->pPrev = ppW;
+      ppW->pNext = pNew;
+    }
+  else
+    {
+      /* object is already on the interaction list, update status:
+       * 	- if already in collision, must remain so;
+       * 	- if unseen, and not in collision, remove from list.
+       */
+      if (!pW->collision)
+	{
+	  if (!seen && !collision)
+	    {
+	      /* remove the node */
+	      ppW->pNext = pW->pNext;
+	      (pW->pNext)->pPrev = ppW;
+	      pvPortFree((void *) pW);
+	    }
+	  else
+	    {
+	      /* update parameters */
+	      pW->seen = seen;
+	      pW->collision = collision;
+	    }
+	}
+    }
+} /* end of prvUpdateInteractionList() */
 
 /*
  *
