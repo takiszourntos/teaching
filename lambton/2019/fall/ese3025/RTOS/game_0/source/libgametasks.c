@@ -102,6 +102,11 @@ prvYesHappens (likely_t prob)
 
 /*
  *
+ */
+
+
+/*
+ *
  * function computes determines the "relationship" between subject and object
  * GOs
  *
