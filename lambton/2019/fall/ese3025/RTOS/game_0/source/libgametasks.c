@@ -101,6 +101,43 @@ prvYesHappens (likely_t prob)
 }
 
 /*
+ *
+ * function computes determines the "relationship" between subject and object
+ * GOs
+ *
+ */
+static void
+prvComputeProximities(go_t* pSubject, go_t* pObject)
+{
+  go_t		*pW=pObject; /* working pointer */
+  go_list_t	*pWI=pSubject->interactions;
+
+  uint16_t distance;
+
+  while (pW != NULL)
+    {
+      /* is pObject in contact or seen? */
+      distance = uiCompareGODistance(pSubject->pos, pObject->pos);
+      if (distance <= THRESHOLD_COLLISION)
+	{
+	  /* object and subject are in contact */
+	  prvUpdateInteractionList(pSubject,pObject,distance,1,1);
+	}
+      else if (distance <= THRESHOLD_SEEN)
+	{
+	  /* no contact, but object seen by subject */
+	  prvUpdateInteractionList(pSubject,pObject,distance,0,1);
+	}
+      else
+	{
+	  /* no interaction between subject and object, consider removal */
+	  prvUpdateInteractionList(pSubject,pObject,distance,0,0);
+	}
+      pW = pW->pNext;
+    }
+}
+
+/*
  * Uses addGONode() to create a GO list element, then applies xTaskCreate()
  * to generate the behaviour for that GO
  */
