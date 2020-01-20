@@ -13,7 +13,9 @@
 
 /*************************************************************************
  *
- * Private Functions (invite only)
+ *
+ * PRIVATE FUNCTIONS
+ *
  *
  *************************************************************************/
 /*
@@ -214,6 +216,83 @@ prvComputeProximities (go_t* pSubject, go_t* pObject)
 }
 
 /*
+ *
+ * function deletes all GO nodes, terminates all GO tasks and
+ * releases all GO ID codes
+ *
+ */
+static void
+prvDeleteAllTasks (game_t *this_game)
+{
+  go_t *pW = NULL;
+  go_t *pTemp = NULL;
+
+  /* eradicate aliens */
+  pW = this_game->aliens;
+  while (pW != NULL)
+    {
+      vTaskDelete (pW->task);
+      pTemp = pW->pNext; /* save the pointer to the next GO node */
+      vPortFree (pW); /* delete current GO node */
+      pW = pTemp; /* move on to the next one */
+    }
+  /* eradicate poohs */
+  pW = this_game->poohs;
+  while (pW != NULL)
+    {
+      vTaskDelete (pW->task);
+      pTemp = pW->pNext;
+      vPortFree (pW);
+      pW = pTemp;
+    }
+  /* eradicate babies */
+  pW = this_game->babies;
+  while (pW != NULL)
+    {
+      vTaskDelete (pW->task);
+      pTemp = pW->pNext;
+      vPortFree (pW);
+      pW = pTemp;
+    }
+  /* eradicate kitties */
+  pW = this_game->kitties;
+  while (pW != NULL)
+    {
+      vTaskDelete (pW->task);
+      pTemp = pW->pNext;
+      vPortFree (pW);
+      pW = pTemp;
+    }
+  /* eradicate expungers */
+  pW = this_game->expungers;
+  while (pW != NULL)
+    {
+      vTaskDelete (pW->task);
+      pTemp = pW->pNext;
+      vPortFree (pW);
+      pW = pTemp;
+    }
+  /* free all codes from GO code book */
+  for (size_t i = 0; i != MAX_GO_CODES; ++i)
+    {
+      /* GO IDs:
+       * 			0x0000 000q: players
+       * 			0x0000 00q0: aliens
+       * 			0x0000 0q00: poohs
+       * 			0x0000 q000: expungers
+       * 			0x000q 0000: babies
+       * 			0x00q0 0000: kitties
+       */
+      this_game->aliensID[i].available = True;
+      this_game->poohsID[i].available = True;
+      this_game->expungersID[i].available = True;
+      this_game->babiesID[i].available = True;
+      this_game->kittiesID[i].available = True;
+    }
+}
+
+
+/*
  * Uses addGONode() to create a GO list element, then applies xTaskCreate()
  * to generate the behaviour for that GO
  */
@@ -288,83 +367,25 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
     }
 }
 
-// FIX THIS FUNCTION TO USE A GAME POINTER INSTEAD OF A VALUE POINTER
-// AND TO USE GAME-VARIABLE CODE BOOK (INSTEAD OF DEPRECATED GLOBAL
-// CODE BOOKS)
-static void
-prvDeleteAllTasks (game_t *this_game)
-{
-  go_t *pW = NULL;
-  go_t *pTemp = NULL;
 
-  /* eradicate aliens */
-  pW = this_game->aliens;
-  while (pW != NULL)
-    {
-      vTaskDelete (pW->task);
-      pTemp = pW->pNext; /* save the pointer to the next GO node */
-      vPortFree (pW); /* delete current GO node */
-      pW = pTemp; /* move on to the next one */
-    }
-  /* eradicate poohs */
-  pW = this_game->poohs;
-  while (pW != NULL)
-    {
-      vTaskDelete (pW->task);
-      pTemp = pW->pNext;
-      vPortFree (pW);
-      pW = pTemp;
-    }
-  /* eradicate babies */
-  pW = this_game->babies;
-  while (pW != NULL)
-    {
-      vTaskDelete (pW->task);
-      pTemp = pW->pNext;
-      vPortFree (pW);
-      pW = pTemp;
-    }
-  /* eradicate kitties */
-  pW = this_game->kitties;
-  while (pW != NULL)
-    {
-      vTaskDelete (pW->task);
-      pTemp = pW->pNext;
-      vPortFree (pW);
-      pW = pTemp;
-    }
-  /* eradicate expungers */
-  pW = this_game->expungers;
-  while (pW != NULL)
-    {
-      vTaskDelete (pW->task);
-      pTemp = pW->pNext;
-      vPortFree (pW);
-      pW = pTemp;
-    }
-  /* free all codes from GO code book */
-  for (size_t i = 0; i != MAX_GO_CODES; ++i)
-    {
-      /* GO IDs:
-       * 			0x0000 000q: players
-       * 			0x0000 00q0: aliens
-       * 			0x0000 0q00: poohs
-       * 			0x0000 q000: expungers
-       * 			0x000q 0000: babies
-       * 			0x00q0 0000: kitties
-       */
-      this_game->aliensID[i].available = True;
-      this_game->poohsID[i].available = True;
-      this_game->expungersID[i].available = True;
-      this_game->babiesID[i].available = True;
-      this_game->kittiesID[i].available = True;
-    }
-}
+/****************************************************************************
+ *
+ *
+ * PUBLIC FUNCTIONS
+ *
+ *
+ ****************************************************************************/
 
 void
 vPlayerTask (void *pvParams)
 {
-  //
+  game_t *this_game = (game_t *) pvParams;
+
+  // check for extermination
+
+  // update state
+
+
 }
 
 /*
