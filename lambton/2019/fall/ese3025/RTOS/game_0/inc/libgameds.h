@@ -43,8 +43,7 @@
 
 enum boolean
 {
-  False = 0U,
-  True = 1U
+  False = 0U, True = 1U
 } boolean_enum;
 typedef enum boolean bool_t;
 
