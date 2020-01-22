@@ -136,16 +136,9 @@ addGONode (game_t *this_game, go_t* pGOHead, uint8_t GOtype,
 
   if (pW == NULL)
     {
-      /* create the first instance of this GO ...
-       /* need to properly position and initialize
-       an object before game play can resume */
-      go_t *pNode = createDefaultGONode (this_game, GOtype); /* creates a
-       GO node of
-       desired type
-       with
-       generic,
-       default
-       settings */
+      /* create the first instance of this GO ... need to properly position and
+       * initialize an object before game play can resume */
+      go_t *pNode = createDefaultGONode (this_game, GOtype); // default settings
       pNode->ID = ID;
       pNode->pos = GOstartcoord;
       pW = pNode;
@@ -158,12 +151,7 @@ addGONode (game_t *this_game, go_t* pGOHead, uint8_t GOtype,
 	  pW = pW->pNext;
 	}
       /* now add the GO there, with the proper settings */
-      pW->pNext = createDefaultGONode (this_game, GOtype); /* creates a GO
-       node of desired
-       type with
-       generic,
-       default
-       settings */
+      pW->pNext = createDefaultGONode (this_game, GOtype); // default settings
       pW->pNext->ID = ID;
       pW->pNext->pos = GOstartcoord;
       pW->pNext->pPrev = pW;

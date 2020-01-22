@@ -77,6 +77,13 @@ prvGetGOIDCode (go_ID_t *book, uint32_t *code)
   return code_found;
 }
 
+/*
+ *
+ * function determines if an event happens, based on how likely it is...
+ * the likelihood is passed in as a parameter
+ *
+ */
+
 static bool_t
 prvYesHappens (likely_t prob)
 {
@@ -387,83 +394,6 @@ vPlayerTask (void *pvParams)
 
 
 }
-
-/*
- *
- * High-level supervisory task for each game (one game for each human player)
- *
- */
-void
-vRunGameTask (void *pvParams)
-{
-  go_t *pW = NULL;
-  xTaskHandle pvImpactsTaskHandle;
-  volatile game_t *this_game = (game_t *) pvPortMalloc (sizeof(game_t));
-  size_t player = *((size_t *) pvParams); /* the human player */
-  /* new game parameters */
-  this_game->score = 0;
-  this_game->playerID = "AAA";
-  this_game->level = 1;
-  /* initialize GO lists */
-  this_game->aliens = NULL;
-  this_game->poohs = NULL;
-  this_game->expungers = NULL;
-  this_game->babies = NULL;
-  this_game->kitties = NULL;
-  this_game->player = NULL;
-  /* initialize code books and record-keeping variables */
-  prvInitGame (this_game);
-
-  /*
-   * give birth to the player GO for this game
-   * (recall that one "game"is allocated to each human player)
-   */
-  go_coord_t player_start_posn =
-    { XMIDDLE, YBOTTOM };
-  this_game->player = spawnGONodeandTask (this_game, this_game->player, 0,
-					  player_start_posn, NULL, 0x00000001);
-
-  while (1)
-    {
-      xSemaphoreTake (xGameMutex, portMAX_DELAY);
-	{
-	  go_t *pWplayer = this_game->player; // point to this game's player
-	  if (pWplayer->active)
-	    {
-	      prvResetBoard ();
-	      prvUARTSend ("D: Player %zu", player); // prompt the player
-	      vTaskDelay (5 * configTICK_RATE_HZ); // wait 5 seconds
-
-	      /*
-	       * create ImpactsTask (with lower priority than RunGameTask())
-	       * to run the show
-	       */
-	      xTaskCreate(vImpactsTask, "Impact-checking Task", 1024,
-			  (void * ) &this_game, &pvImpactsTaskHandle,
-			  IMPACTS_TASK_PRIORITY);
-
-	      /* keep running until player loses life */
-	      while ((pWplayer->alive))
-		{
-		  vTaskDelay (DELAY_RUN_GAME); // relinquish control of game
-		}
-	      /* player died, update status */
-	      if ((--(pWplayer->numlives)) == 0)
-		{
-		  pWplayer->gameover = True;
-		  vTaskDelete (pvImpactsTaskHandle);
-		  prvDeleteAllTasks (this_game);
-		  /* inform player */
-		  prvUARTSend ("C:clc\n");
-		  prvSayGoodbye (pWplayer->ID); /* say goodbye to player,
-		   get their initials */
-		  vTaskDelay (configTICK_RATE_HZ * 5); /* wait 5 seconds */
-		}
-	    }
-	  xSemaphoreGive (xGameMutex);
-	} /* end while (1) */
-    }
-}
 /*
  *
  * Impacts Task --- the task behind all the game action!
@@ -603,5 +533,88 @@ vImpactsTask (void *pvParams)
 	  prvComputeProximities (pW, this_game->poohs);
 	  pW = pW->pNext;
 	}
+    }
+}
+
+/*
+ *
+ * High-level supervisory task for each game (one game for each human player)
+ *
+ */
+void
+vRunGameTask (void *pvParams)
+{
+  /* variables */
+  size_t player = *((size_t *) pvParams); // the human player
+  go_t *pW = NULL;
+  xTaskHandle pvImpactsTaskHandle;
+
+  /* this entire game is stored in the following local variable: */
+  game_t *this_game = (game_t *) pvPortMalloc (sizeof(game_t));
+
+  /* set some of this game's parameters, just to get us started */
+  this_game->score = 0;
+  for (size_t i=0; i != 3; ++i)
+    this_game->playerID[i]='A';
+  this_game->playerID[3]='\0';
+  this_game->level = 1;
+  /* initialize GO lists */
+  this_game->aliens = NULL;
+  this_game->poohs = NULL;
+  this_game->expungers = NULL;
+  this_game->babies = NULL;
+  this_game->kitties = NULL;
+  this_game->player = NULL;
+  /* initialize code books and record-keeping variables */
+  prvInitGame (this_game);
+
+  /*
+   * give birth to the player GO for this game
+   * (recall that one "game"is allocated to each human player)
+   */
+  go_coord_t player_start_posn =
+    { XMIDDLE, YBOTTOM };
+  this_game->player = spawnGONodeandTask (this_game, this_game->player, 0,
+					  player_start_posn, NULL, 0x00000001);
+
+  while (1)
+    {
+      xSemaphoreTake (xGameMutex, portMAX_DELAY);
+	{
+	  go_t *pWplayer = this_game->player; // point to this game's player
+	  if (pWplayer->active)
+	    {
+	      prvResetBoard ();
+	      prvUARTSend ("D: Player %zu", player); // prompt the player
+	      vTaskDelay (5 * configTICK_RATE_HZ); // wait 5 seconds
+
+	      /*
+	       * create ImpactsTask (with lower priority than RunGameTask())
+	       * to run the show
+	       */
+	      xTaskCreate(vImpactsTask, "Impact-checking Task", 1024,
+			  (void * ) &this_game, &pvImpactsTaskHandle,
+			  IMPACTS_TASK_PRIORITY);
+
+	      /* keep running until player loses life */
+	      while ((pWplayer->alive))
+		{
+		  vTaskDelay (DELAY_RUN_GAME); // relinquish control of game
+		}
+	      /* player died, update status */
+	      if ((--(pWplayer->numlives)) == 0)
+		{
+		  pWplayer->gameover = True;
+		  vTaskDelete (pvImpactsTaskHandle);
+		  prvDeleteAllTasks (this_game);
+		  /* inform player */
+		  prvUARTSend ("C:clc\n");
+		  prvSayGoodbye (pWplayer->ID); /* say goodbye to player,
+		   get their initials */
+		  vTaskDelay (configTICK_RATE_HZ * 5); /* wait 5 seconds */
+		}
+	    }
+	  xSemaphoreGive (xGameMutex);
+	} /* end while (1) */
     }
 }
