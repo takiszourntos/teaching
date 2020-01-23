@@ -136,15 +136,16 @@ typedef struct game_struct game_t;
 /* (g)ame (o)bject record-keeping */
 struct go_struct
 {
+  gotype_t kind;
   uint32_t ID;
-  uint16_t go_level;
-  uint16_t health;
-  bool_t alive;
+  uint16_t go_level; // can only be altered by the vImpactsTask()!
+  uint16_t health; // can only be altered by the vImpactsTask()!
+  bool_t alive; // can only be altered by the vImpactsTask()!
   bool_t active;
-  bool_t on_screen;
-  bool_t gameover;
+  bool_t gameover; // can only be altered by the vImpactsTask()!
   go_coord_t pos;
-  go_coord_t vel;
+  go_coord_t des_vel; // character's desired velocity, checked by vImpactsTask()
+  bool_t can_move; // whether GO is allowed to move; (re)set by vImpactsTask()
   go_coord_t acc;
   bool_t move_left;
   bool_t move_right;
@@ -161,6 +162,7 @@ typedef struct go_struct go_t;
 
 struct go_list_struct
 {
+  gotype_t kind;
   uint32_t ID;
   uint16_t distance;
   bool_t seen;

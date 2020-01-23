@@ -352,19 +352,19 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
 	}
       switch (GOType)
 	{
-	case 1:
+	case alien:
 	  xTaskCreate(vAliensTask, pW->taskText, 256, (void * ) this_game,
 		      &(pW->task), GO_TASK_PRIORITY);
-	case 2:
+	case pooh:
 	  xTaskCreate(vPoohsTask, pW->taskText, 256, (void * ) this_game,
 		      &(pW->task), GO_TASK_PRIORITY);
-	case 3:
+	case expunger:
 	  xTaskCreate(vExpungersTask, pW->taskText, 256, (void * ) this_game,
 		      &(pW->task), GO_TASK_PRIORITY);
-	case 4:
+	case baby:
 	  xTaskCreate(vBabiesTask, pW->taskText, 256, (void * ) this_game,
 		      &(pW->task), GO_TASK_PRIORITY);
-	case 5:
+	case kitty:
 	  xTaskCreate(vKittiesTask, pW->taskText, 256, (void * ) this_game,
 		      &(pW->task), GO_TASK_PRIORITY);
 	}
@@ -528,6 +528,51 @@ vImpactsTask (void *pvParams)
       while (pW != NULL)
 	{
 	  prvComputeProximities (pW, this_game->poohs);
+	  pW = pW->pNext;
+	}
+
+      /*
+       *
+       * IMPOSE COLLISION INTERACTIONS (characters have no say here!)
+       *
+       * 	- aliens:
+       * 		- die from enough expunger strikes
+       * 	- players:
+       * 		- killed from contact with poohs
+       * 	- babies:
+       * 		- vapourized from contact with poohs
+       * 	- kitties:
+       * 		- essentially impervious, but have negative health
+       * 		effects from pooh contact
+       *
+       */
+
+      /* impose expunger strikes on aliens */
+      pW = this_game->aliens;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, expunger);
+	  pW = pW->pNext;
+	}
+      /* impose pooh strikes on player(s) */
+      pW = this_game->player;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, pooh);
+	  pW = pW->pNext;
+	}
+      /* impose pooh strikes on babies */
+      pW = this_game->babies;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, pooh);
+	  pW = pW->pNext;
+	}
+      /* impose pooh strikes on kitties */
+      pW = this_game->kitties;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, pooh);
 	  pW = pW->pNext;
 	}
     }
