@@ -48,7 +48,7 @@ getGODefaults (go_t *pRet, char taskstring[])
   pRet->pos.Y = 0;
   pRet->des_vel.X = 0;
   pRet->des_vel.Y = 0;
-  pRet->can_move=True;
+  pRet->can_move = True;
   pRet->acc.X = 0;
   pRet->acc.Y = 0;
   pRet->move_left = False;

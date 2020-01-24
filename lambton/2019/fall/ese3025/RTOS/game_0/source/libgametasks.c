@@ -373,6 +373,19 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
     }
 }
 
+/*
+ *
+ * function called by vImpactsTask() to impose specific collision-type or
+ * limit-induced interactions
+ *
+ */
+static void
+prvImposeConstraints (go_t *pSub, gotype_t pObjInt)
+{
+  /* */
+
+}
+
 /****************************************************************************
  *
  *
@@ -533,7 +546,7 @@ vImpactsTask (void *pvParams)
 
       /*
        *
-       * IMPOSE COLLISION INTERACTIONS (characters have no say here!)
+       * IMPOSE COLLISION/LIMIT INTERACTIONS (characters have no say here!)
        *
        * 	- aliens:
        * 		- die from enough expunger strikes
@@ -544,21 +557,25 @@ vImpactsTask (void *pvParams)
        * 	- kitties:
        * 		- essentially impervious, but have negative health
        * 		effects from pooh contact
+       * 	- poohs:
+       * 		- hit the ground
+       * 	- expungers:
+       * 		- reach the ceiling
        *
        */
 
-      /* impose expunger strikes on aliens */
-      pW = this_game->aliens;
-      while (pW != NULL)
-	{
-	  prvImposeConstraints (pW, expunger);
-	  pW = pW->pNext;
-	}
       /* impose pooh strikes on player(s) */
       pW = this_game->player;
       while (pW != NULL)
 	{
 	  prvImposeConstraints (pW, pooh);
+	  pW = pW->pNext;
+	}
+      /* impose expunger strikes on aliens */
+      pW = this_game->aliens;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, expunger);
 	  pW = pW->pNext;
 	}
       /* impose pooh strikes on babies */
@@ -573,6 +590,20 @@ vImpactsTask (void *pvParams)
       while (pW != NULL)
 	{
 	  prvImposeConstraints (pW, pooh);
+	  pW = pW->pNext;
+	}
+      /* check if pooh has hit the ground */
+      pW = this_game->poohs;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, other);
+	  pW = pW->pNext;
+	}
+      /* check if expunger has reached the ceiling */
+      pW = this_game->expungers;
+      while (pW != NULL)
+	{
+	  prvImposeConstraints (pW, other);
 	  pW = pW->pNext;
 	}
     }

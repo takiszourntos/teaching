@@ -61,7 +61,13 @@ typedef enum likelihood likely_t;
 
 enum gotype
 {
-  player = 0U, alien = 1U, pooh = 2U, expunger = 3U, baby = 4U, kitty = 5U
+  player = 0U,
+  alien = 1U,
+  pooh = 2U,
+  expunger = 3U,
+  baby = 4U,
+  kitty = 5U,
+  other = 99U
 };
 typedef enum gotype gotype_t;
 
