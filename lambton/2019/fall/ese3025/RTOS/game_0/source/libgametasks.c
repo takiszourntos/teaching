@@ -380,9 +380,48 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
  *
  */
 static void
-prvImposeConstraints (go_t *pSub, gotype_t pObjInt)
+prvImposeConstraints (go_t *pSub, gotype_t objInt)
 {
-  /* */
+  /* check for an interaction with an object of GO type ObjInt */
+  go_t *pW = pSub;
+  gotype_t subInt = pW->kind; // subject's kind
+  go_list_t *pWi = pW->interactions;
+  while (pW != NULL)
+    {
+      /* perform checks by subject kind */
+      switch (subInt)
+      {
+	case player:
+	  {
+	    // check interaction list for poohs
+	    while (pWi != NULL)
+	      {
+		if (pWi->kind == objInt)
+		  {
+		    // check for a collision
+		    if (pWi->collision)
+		      {
+			pW->crouch_or_extra==True; // player GO reacts
+			pW->health -= 256;
+			if
+			if (--(pW->numlives)==0)
+			  {
+
+			  }
+		      }
+		  }
+		pWi = pWi->pNext;
+	      } // while
+	  } // case player
+	case alien:
+	  {
+
+	  }
+	case
+      }
+
+
+    }
 
 }
 
@@ -548,10 +587,10 @@ vImpactsTask (void *pvParams)
        *
        * IMPOSE COLLISION/LIMIT INTERACTIONS (characters have no say here!)
        *
-       * 	- aliens:
-       * 		- die from enough expunger strikes
        * 	- players:
        * 		- killed from contact with poohs
+       * 	- aliens:
+       * 		- die from enough expunger strikes
        * 	- babies:
        * 		- vapourized from contact with poohs
        * 	- kitties:
