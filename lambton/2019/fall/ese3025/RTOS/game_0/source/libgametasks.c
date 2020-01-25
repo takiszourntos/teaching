@@ -377,6 +377,18 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
  *
  * function called by vImpactsTask() to impose specific collision-type or
  * limit-induced interactions
+ *	- the subject, pointed to by pSub, is checked
+ *	- if objInt is of type 1 (alien) through 5 (kitty), then we check for
+ *		collisions between subject and an object of kind objInt; if a
+ *		collision has been registered, the subject's health is affected,
+ *		and/or the subject is terminated (for example, if the subject is
+ *		the player, and the object kind is pooh, then if a collision is
+ *		detected, the player's health is reduced and/or the player is
+ *		terminated, i.e., alive state is set to False)
+ *	- otherwise, if objInt is set to Other, we simply check whether the pSub
+ *		is located at an extreme location, which requires that pSub
+ *		terminate (as in the case of a missile or a bomb reaching the
+ *		end of its travel)
  *
  */
 static void
@@ -386,6 +398,7 @@ prvImposeConstraints (go_t *pSub, gotype_t objInt)
   go_t *pW = pSub;
   gotype_t subInt = pW->kind; // subject's kind
   go_list_t *pWi = pW->interactions;
+  uint16_t health;
   while (pW != NULL)
     {
       /* perform checks by subject kind */
@@ -402,11 +415,13 @@ prvImposeConstraints (go_t *pSub, gotype_t objInt)
 		    if (pWi->collision)
 		      {
 			pW->crouch_or_extra==True; // player GO reacts
-			pW->health -= 256;
-			if
-			if (--(pW->numlives)==0)
+			health = pW->health -= 256;
+			if (health <= 0)
 			  {
-
+			    pW->health = 0;
+			    pW->alive = False;
+			    pW = NULL;
+			    break;
 			  }
 		      }
 		  }
