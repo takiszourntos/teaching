@@ -371,74 +371,69 @@ spawnGONodeandTask (game_t *this_game, go_t *pGOHead, uint8_t GOtype,
       taskEXIT_CRITICAL();
       return pW;
     }
-}
+} // end function
 
 /*
  *
  * function called by vImpactsTask() to impose specific collision-type or
  * limit-induced interactions
- *	- the subject, pointed to by pSub, is checked
- *	- if objInt is of type 1 (alien) through 5 (kitty), then we check for
- *		collisions between subject and an object of kind objInt; if a
- *		collision has been registered, the subject's health is affected,
- *		and/or the subject is terminated (for example, if the subject is
- *		the player, and the object kind is pooh, then if a collision is
- *		detected, the player's health is reduced and/or the player is
- *		terminated, i.e., alive state is set to False)
- *	- otherwise, if objInt is set to Other, we simply check whether the pSub
+ *	- the subject, pointed to by pSub, is checked (one subject only, not
+ *		GO list)
+ *	- if objInt is set to Other, we simply check whether the pSub
  *		is located at an extreme location, which requires that pSub
  *		terminate (as in the case of a missile or a bomb reaching the
- *		end of its travel)
+ *		end of its path)
+ *	- otherwise, (if objInt is player, alien, kitty or baby) then we
+ *		check for collisions between subject and an object of kind
+ *		objInt; if a collision has been registered, the subject's health
+ *		is affected, and/or the subject is terminated (for example, if
+ *		the subject is the player, and the object kind is pooh, then if
+ *		a collision is detected, the player's health is reduced and/or
+ *		the player is terminated, i.e., alive state is set to False)
+ *		- it is presumed that objInt is either a pooh or an expunger
  *
  */
 static void
 prvImposeConstraints (go_t *pSub, gotype_t objInt)
 {
-  /* check for an interaction with an object of GO type ObjInt */
+  /* check for an interaction with an object of GO type objInt */
   go_t *pW = pSub;
   gotype_t subInt = pW->kind; // subject's kind
   go_list_t *pWi = pW->interactions;
   uint16_t health;
-  while (pW != NULL)
+  /* perform checks by subject kind */
+  switch (subInt)
     {
-      /* perform checks by subject kind */
-      switch (subInt)
-      {
-	case player:
-	  {
-	    // check interaction list for poohs
-	    while (pWi != NULL)
-	      {
-		if (pWi->kind == objInt)
-		  {
-		    // check for a collision
-		    if (pWi->collision)
-		      {
-			pW->crouch_or_extra==True; // player GO reacts
-			health = pW->health -= 256;
-			if (health <= 0)
-			  {
-			    pW->health = 0;
-			    pW->alive = False;
-			    pW = NULL;
-			    break;
-			  }
-		      }
-		  }
-		pWi = pWi->pNext;
-	      } // while
-	  } // case player
-	case alien:
-	  {
-
-	  }
-	case
-      }
-
-
-    }
-
-}
+    case pooh: // look for pooh/bomb reaching the ground
+      if (pW->pos.Y <= YBOTTOM)
+	{
+	  pW->alive = False; // terminate pooh
+	}
+    case expunger: // look for expunger hitting the ceiling
+      if (pW->pos.Y >= YTOP)
+	{
+	  pW->alive = False; // terminate expunger
+	}
+    default: // player, alien, baby, kitty, being struck with a projectile
+      while (pWi != NULL)
+	{
+	  if (pWi->kind == objInt)
+	    {
+	      // check for a collision
+	      if (pWi->collision)
+		{
+		  pW->crouch_or_extra == True; // GO reacts to being struck
+		  if ((pW->health -= 256) <= 0) // health reduces
+		    {
+		      pW->health = 0;
+		      pW->alive = False;
+		    }
+		}
+	    }
+	  pWi = pWi->pNext; // chk all potentially interacting projectiles
+	} // while
+    } // switch
+} // function
 
 /****************************************************************************
  *
@@ -457,7 +452,7 @@ vPlayerTask (void *pvParams)
 
   // update state
 
-}
+} // end function
 /*
  *
  * Impacts Task --- the task behind all the game action!
@@ -661,7 +656,7 @@ vImpactsTask (void *pvParams)
 	  pW = pW->pNext;
 	}
     }
-}
+} // end function
 
 /*
  *
@@ -740,4 +735,4 @@ vRunGameTask (void *pvParams)
 	}
       xSemaphoreGive (xGameMutex);
     } /* end while (1) */
-}
+} // end function

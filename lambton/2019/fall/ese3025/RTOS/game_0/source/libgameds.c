@@ -40,7 +40,7 @@ getGODefaults (go_t *pRet, char taskstring[])
    */
   pRet->ID = 0x00000000UL; /* to be defined by addGONode() */
   pRet->go_level = 1;
-  pRet->health = 256;
+  pRet->health = 512;
   pRet->alive = True;
   pRet->active = True;
   pRet->gameover = False;
