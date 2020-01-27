@@ -19,27 +19,19 @@
 #include <stdlib.h>
 #include "libgameds.h"
 #include <string.h>
+#include "libgameIO.h"
+#include "libgametasks.h"
 
 // TODO: insert other definitions and declarations here
 
 /********************************************************************
- * UART Comm Setup
- ********************************************************************/
-#define UART_SELECTION 	LPC_UART3
-#define IRQ_SELECTION 	UART3_IRQn
-#define HANDLER_NAME 	UART3_IRQHandler
-
-/* Transmit and receive ring buffers */
-STATIC RINGBUFF_T txring, rxring;
-/* Transmit and receive ring buffer sizes */
-#define UART_SRB_SIZE 128	/* Send */
-#define UART_RRB_SIZE 32	/* Receive */
-/* Transmit and receive buffers */
-static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
-
-/********************************************************************
  * Global Variables
  ********************************************************************/
+/* Transmit and receive buffers */
+static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
+/* Transmit and receive ring buffers */
+static RINGBUFF_T txring, rxring;
+
 //volatile queue_t q; /* UART queue */
 ui_t user =
   { False, False, False, False };
@@ -56,13 +48,13 @@ xSemaphoreHandle xGameMutex = NULL;
 static void
 prvShowNumPlayers (void)
 {
-  prvUARTSend ("C:clc\r\n");
+  sendUARTText ("C:clc\r\n");
   char numplayers_str[2];
   sprintf (numplayers_str, "%d", number_of_players);
   char mesg[40] = "D:enter number of players: ";
   strcat (mesg, numplayers_str);
   strcat (mesg, "\r\n");
-  prvUARTSend (mesg);
+  sendUARTText (mesg);
 }
 /*
  * function to determine the number of players in the game
@@ -93,15 +85,6 @@ prvGetNumberofPlayers (void)
     }
 }
 /*
- *	function to handle UART Transmissions
- */
-static void
-prvUARTSend (const char tx_text[])
-{
-  Chip_UART_SendRB (UART_SELECTION, &txring, tx_text, sizeof(tx_text) - 1);
-}
-
-/*
  * function to reset game board, called by vRunGameTask(), after scheduler has started
  */
 static void
@@ -109,11 +92,11 @@ prvResetBoard (void)
 {
   /* send command to clear the game screen/board and wait for 5 seconds */
   taskENTER_CRITICAL();
-  prvUARTSend ("C:clc"); /* command: clear console */
+  sendUARTText ("C:clc"); /* command: clear console */
   vTaskDelay (configTICK_RATE_HZ * 5); /* wait for a few seconds */
-  prvUARTSend ("D:emad studio inc. presents: ");
+  sendUARTText ("D:emad studio inc. presents: ");
   vTaskDelay (configTICK_RATE_HZ * 2);
-  prvUARTSend ("D:aliens & babies : at the daycare!");
+  sendUARTText ("D:aliens & babies : at the daycare!");
   vTaskDelay (configTICK_RATE_HZ * 5);
   taskEXIT_CRITICAL();
 }

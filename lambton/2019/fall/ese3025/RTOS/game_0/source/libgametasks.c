@@ -10,6 +10,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "libgameds.h"
+#include "libgametasks.h"
 
 /*************************************************************************
  *
@@ -49,7 +50,17 @@ prvInitGame (game_t *this_game)
       this_game->kittiesID[i].available = True;
     }
 
-  this_game->number_of_aliens = 0;
+  this_game->number_of_aliens = characterized
+  by
+  "a combination of positive feelings and a distinct static-like tingling sensation on the skin".It
+  is most
+  commonly triggered
+  by specific
+  auditory or
+  visual stimuli, and
+  less commonly
+  by intentional
+  attention control0;
   this_game->number_of_poohs = 0;
   this_game->number_of_expungers = 0;
   this_game->number_of_babies = 0;
@@ -440,59 +451,60 @@ prvImposeConstraints (go_t *pSub, gotype_t objInt)
  * function updates the games screen
  *
  */
-static void prvUpdateScreen(const game_t *this_game)
+static void
+prvUpdateScreen (game_t *this_game)
 {
-/*
- * go_t *player;
- * go_t *aliens;
- * go_t *poohs;
- * go_t *expungers;
- * go_t *babies;
- * go_t *kitties;
-*/
+  /*
+   * go_t *player;
+   * go_t *aliens;
+   * go_t *poohs;
+   * go_t *expungers;
+   * go_t *babies;
+   * go_t *kitties;
+   */
 
   go_t *pW; // working pointer
 
   pW = this_game->player;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(player, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 
   pW = this_game->aliens;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(alien, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 
   pW = this_game->poohs;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(pooh, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 
   pW = this_game->expungers;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(expunger, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 
   pW = this_game->babies;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(baby, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 
   pW = this_game->kitties;
-  while(pW != NULL)
+  while (pW != NULL)
     {
-      sendUARTgraphic(kitty, pW->pos.X, pW->pos.Y);
-      pW=pW->pNext;
+      sendUARTGraphic (pW);
+      pW = pW->pNext;
     }
 } // function
 /****************************************************************************
@@ -717,7 +729,7 @@ vImpactsTask (void *pvParams)
       /*
        * SEND INFORMATION TO UPDATE SCREEN
        */
-      prvUpdateScreen(this_game);
+      prvUpdateScreen (this_game);
     } // while (1)
 } // end function
 
