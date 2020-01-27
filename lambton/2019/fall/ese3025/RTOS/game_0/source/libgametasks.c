@@ -435,6 +435,66 @@ prvImposeConstraints (go_t *pSub, gotype_t objInt)
     } // switch
 } // function
 
+/*
+ *
+ * function updates the games screen
+ *
+ */
+static void prvUpdateScreen(const game_t *this_game)
+{
+/*
+ * go_t *player;
+ * go_t *aliens;
+ * go_t *poohs;
+ * go_t *expungers;
+ * go_t *babies;
+ * go_t *kitties;
+*/
+
+  go_t *pW; // working pointer
+
+  pW = this_game->player;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(player, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+
+  pW = this_game->aliens;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(alien, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+
+  pW = this_game->poohs;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(pooh, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+
+  pW = this_game->expungers;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(expunger, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+
+  pW = this_game->babies;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(baby, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+
+  pW = this_game->kitties;
+  while(pW != NULL)
+    {
+      sendUARTgraphic(kitty, pW->pos.X, pW->pos.Y);
+      pW=pW->pNext;
+    }
+} // function
 /****************************************************************************
  *
  *
@@ -503,7 +563,6 @@ vImpactsTask (void *pvParams)
 
   while (1)
     {
-
       /*
        * simple way to set the game level:
        * 	level = log2(2*LEVEL_UP_X) = 1 + log2(LEVEL_UP_X)
@@ -655,7 +714,11 @@ vImpactsTask (void *pvParams)
 	  prvImposeConstraints (pW, other);
 	  pW = pW->pNext;
 	}
-    }
+      /*
+       * SEND INFORMATION TO UPDATE SCREEN
+       */
+      prvUpdateScreen(this_game);
+    } // while (1)
 } // end function
 
 /*
