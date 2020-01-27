@@ -19,6 +19,4 @@
 #define UART_SRB_SIZE 128	/* Send */
 #define UART_RRB_SIZE 32	/* Receive */
 
-
-
 #endif /* LIBGAMEIO_H_ */
