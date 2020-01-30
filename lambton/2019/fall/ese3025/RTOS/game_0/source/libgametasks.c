@@ -438,7 +438,7 @@ prvImposeConstraints (go_t *pSub, gotype_t objInt)
 
 /*
  *
- * function updates the games screen
+ * function updates the games screen, sending updated info for each character
  *
  */
 static void
@@ -504,10 +504,10 @@ prvUpdateScreen (game_t *this_game)
  * elapsed time
  *
  */
-playerstate_t
-vPlayerStateMachine (playerstate_t current_state)
+superstateGO_t
+vPlayerStateMachine (superstateGO_t current_state)
 {
-  playerstate_t next_state;
+  superstateGO_t next_state;
 
   switch (current_state)
     {
@@ -586,7 +586,13 @@ vPlayerStateMachine (playerstate_t current_state)
 void
 vPlayerTask (void *pvParams)
 {
-  game_t *this_game = (game_t *) pvParams;
+  game_t 	*this_game = (game_t *) pvParams;
+  playerstate_t xP = *((playerstate_t *) this_game->player->go_state);
+
+  if ()
+    {
+
+    }
 
   // check for extermination
 

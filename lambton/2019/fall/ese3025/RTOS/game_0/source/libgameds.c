@@ -51,6 +51,7 @@ getGODefaults (go_t *pRet, char taskstring[])
   pRet->can_move = True;
   pRet->acc.X = 0;
   pRet->acc.Y = 0;
+  pRet->animstate = STOP;
   pRet->move_left = False;
   pRet->move_right = False;
   pRet->crouch_or_extra = False;

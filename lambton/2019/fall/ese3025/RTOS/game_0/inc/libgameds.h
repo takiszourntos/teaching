@@ -72,11 +72,14 @@ enum gotype
 };
 typedef enum gotype gotype_t;
 
-enum playerstatetype
+enum superstateGOtype
 {
-  STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2
+  // every GO must have a STOP state, used as a default initial state of being
+  STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2, // basic animation states, player
+  U0, D0, // additional states needed by aliens who move (U)p and (D)own
+  SELFCLEAN0, SELFCLEAN1, SELFCLEAN2, SELFCLEAN3 // states just for kitties
 };
-typedef enum playerstatetype playerstate_t;
+typedef enum superstateGOtype superstateGO_t;
 
 /* GO ID code book */
 /*
@@ -160,6 +163,7 @@ struct go_struct
   go_coord_t des_vel; // character's desired velocity, checked by vImpactsTask()
   bool_t can_move; // whether GO is allowed to move; (re)set by vImpactsTask()
   go_coord_t acc;
+  superstateGO_t animstate; // storage for the GO animation state
   bool_t move_left;
   bool_t move_right;
   bool_t crouch_or_extra;
