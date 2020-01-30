@@ -50,17 +50,7 @@ prvInitGame (game_t *this_game)
       this_game->kittiesID[i].available = True;
     }
 
-  this_game->number_of_aliens = characterized
-  by
-  "a combination of positive feelings and a distinct static-like tingling sensation on the skin".It
-  is most
-  commonly triggered
-  by specific
-  auditory or
-  visual stimuli, and
-  less commonly
-  by intentional
-  attention control0;
+  this_game->number_of_aliens = 0;
   this_game->number_of_poohs = 0;
   this_game->number_of_expungers = 0;
   this_game->number_of_babies = 0;
@@ -507,6 +497,84 @@ prvUpdateScreen (game_t *this_game)
       pW = pW->pNext;
     }
 } // function
+
+/*
+ *
+ * function determines player GO animation state, based on user input, and
+ * elapsed time
+ *
+ */
+playerstate_t
+vPlayerStateMachine (playerstate_t current_state)
+{
+  playerstate_t next_state;
+
+  switch (current_state)
+    {
+    case R0:
+      vTaskDelay (MOVE_TICKS);
+      next_state = R1;
+    case R1:
+      vTaskDelay (MOVE_TICKS);
+      next_state = R2;
+    case R2:
+      if (user_input.left_button)
+	{
+	  next_state = STOP;
+	}
+      else
+	{
+	  vTaskDelay (MOVE_TICKS);
+	  next_state = R0;
+	}
+    case L0:
+      vTaskDelay (MOVE_TICKS);
+      next_state = L1;
+    case L1:
+      vTaskDelay (MOVE_TICKS);
+      next_state = L2;
+    case L2:
+      if (user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+      else
+	{
+	  vTaskDelay (MOVE_TICKS);
+	  next_state = L0;
+	}
+    case STOP:
+      if (user_input.right_button)
+	{
+	  next_state = R0;
+	}
+      else if (user_input.left_button)
+	{
+	  next_state = L0;
+	}
+      else if (user_input.fire_button)
+	{
+	  next_state = FIRE;
+	}
+      else if (user_input.crouch_button)
+	{
+	  next_state = CROUCH;
+	}
+    case CROUCH:
+      if (user_input.fire_button || user_input.left_button
+	  || user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+    case FIRE:
+      if (user_input.crouch_button || user_input.left_button
+	  || user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+    }
+  return next_state;
+}
 /****************************************************************************
  *
  *

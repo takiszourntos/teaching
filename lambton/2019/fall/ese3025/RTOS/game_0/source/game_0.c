@@ -33,7 +33,7 @@ static uint8_t rxbuff[UART_RRB_SIZE], txbuff[UART_SRB_SIZE];
 static RINGBUFF_T txring, rxring;
 
 //volatile queue_t q; /* UART queue */
-ui_t user =
+ui_t user_input =
   { False, False, False, False };
 size_t number_of_players = 0;
 

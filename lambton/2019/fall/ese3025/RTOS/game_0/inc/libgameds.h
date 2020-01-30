@@ -40,6 +40,7 @@
 #define LEVELUP				8192
 #define	MAX_GO_CODES			16
 #define LEVEL_UP_X			256 // determines scale of leveling up
+#define MOVE_TICKS			100 // number of RTOS ticks for GO anim
 
 enum boolean
 {
@@ -71,6 +72,12 @@ enum gotype
 };
 typedef enum gotype gotype_t;
 
+enum playerstatetype
+{
+  STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2
+};
+typedef enum playerstatetype playerstate_t;
+
 /* GO ID code book */
 /*
  * GO IDs:
@@ -94,10 +101,10 @@ typedef struct go_ID_struct go_ID_t;
 /* user-input tracking */
 struct ui_struct
 {
-  bool_t move_left;
-  bool_t move_right;
-  bool_t crouch;
-  bool_t shoot;
+  bool_t left_button;
+  bool_t right_button;
+  bool_t crouch_button;
+  bool_t fire_button;
 };
 typedef struct ui_struct ui_t;
 
