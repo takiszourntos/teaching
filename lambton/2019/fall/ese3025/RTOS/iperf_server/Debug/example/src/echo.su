@@ -1,0 +1,8 @@
+echo.c:79:1:echo_init	16	static
+echo.c:105:1:echo_accept	32	static
+echo.c:140:1:echo_recv	40	static
+echo.c:224:1:echo_error	24	static
+echo.c:238:1:echo_poll	24	static
+echo.c:272:1:echo_sent	32	static
+echo.c:299:1:echo_send	32	static
+echo.c:348:1:echo_close	16	static

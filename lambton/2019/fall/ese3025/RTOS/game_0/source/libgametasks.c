@@ -503,6 +503,10 @@ prvUpdateScreen (game_t *this_game)
  *
  * function determines player GO animation state, based on user input, and
  * elapsed time
+ * every GO must have a STOP state, used as a default initial state of being
+ * STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2, // basic animation states, player
+ * U0, D0, // additional states needed by aliens who move (U)p and (D)own
+ * SELFCLEAN0, SELFCLEAN1, SELFCLEAN2, SELFCLEAN3 // states just for kitties
  *
  */
 superstateGO_t
@@ -567,6 +571,7 @@ vPlayerStateMachine (superstateGO_t current_state)
 	{
 	  next_state = STOP;
 	}
+    default:
     }
   vTaskDelay (MOVE_TICKS);
   return next_state;
@@ -577,81 +582,85 @@ vPlayerStateMachine (superstateGO_t current_state)
  * function determines alien GO animation state, based on user input, and
  * elapsed time
  *
+ * every GO must have a STOP state, used as a default initial state of being
+ * STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2, // basic animation states, player
+ * U0, D0, // additional states needed by aliens who move (U)p and (D)own
+ * SELFCLEAN0, SELFCLEAN1, SELFCLEAN2, SELFCLEAN3 // states just for kitties
+ *
+ *
+ *
+ *
  */
 superstateGO_t
 vAlienStateMachine (superstateGO_t current_state, go_coord_t vel)
 {
   superstateGO_t next_state;
 
-  bool_t moving_up = sgnbool(vel.Y);
-  bool_t moving_right = sgnbool(vel.X);
-
   // determine direction of velocity
+  bool_t moving_up = sgn_bool((void *) &vel.Y);
+  bool_t moving_right = sgn_bool((void *) &vel.X);
 
   switch (current_state)
     {
-    case R0:
-      next_state = R0;
-    case L0:
-      next_state = L0;
-    case R2:
-      if (user_input.left_button)
-	{
-	  next_state = STOP;
-	}
-      else
-	{
-	  vTaskDelay (MOVE_TICKS);
-	  next_state = R0;
-	}
-    case L0:
-      vTaskDelay (MOVE_TICKS);
-      next_state = L1;
-    case L1:
-      vTaskDelay (MOVE_TICKS);
-      next_state = L2;
-    case L2:
-      if (user_input.right_button)
-	{
-	  next_state = STOP;
-	}
-      else
-	{
-	  vTaskDelay (MOVE_TICKS);
-	  next_state = L0;
-	}
     case STOP:
-      if (user_input.right_button)
-	{
-	  next_state = R0;
-	}
-      else if (user_input.left_button)
-	{
-	  next_state = L0;
-	}
-      else if (user_input.fire_button)
-	{
-	  next_state = FIRE;
-	}
-      else if (user_input.crouch_button)
-	{
-	  next_state = CROUCH;
-	}
-    case CROUCH:
-      if (user_input.fire_button || user_input.left_button
-	  || user_input.right_button)
-	{
-	  next_state = STOP;
-	}
-    case FIRE:
-      if (user_input.crouch_button || user_input.left_button
-	  || user_input.right_button)
-	{
-	  next_state = STOP;
-	}
+      if (moving_right)
+	next_state = R0;
+      else if (!moving_right)
+	next_state = L0;
+    case R0:
+      if (!moving_right)
+	next_state = STOP;
+    case L0:
+      if (moving_right)
+	next_state = STOP;
     }
+  vTaskDelay (MOVE_TICKS);
   return next_state;
 }
+
+
+/*
+ *
+ * function determines alien GO animation state, based on user input, and
+ * elapsed time
+ *
+ * every GO must have a STOP state, used as a default initial state of being
+ * STOP, FIRE, CROUCH, R0, R1, R2, L0, L1, L2, // basic animation states, player
+ * U0, D0, // additional states needed by aliens who move (U)p and (D)own
+ * SELFCLEAN0, SELFCLEAN1, SELFCLEAN2, SELFCLEAN3 // states just for kitties
+ *
+ *
+ *
+ *
+ */
+superstateGO_t
+vAlienStateMachine (superstateGO_t current_state, go_coord_t vel)
+{
+  superstateGO_t next_state;
+
+  // determine direction of velocity
+  bool_t moving_up = sgn_bool(vel.Y);
+  bool_t moving_right = sgn_bool(vel.X);
+
+  switch (current_state)
+    {
+    case STOP:
+      if (moving_right)
+	next_state = R0;
+      else if (!moving_right)
+	next_state = L0;
+    case R0:
+      if (!moving_right)
+	next_state = STOP;
+    case L0:
+      if (moving_right)
+	next_state = STOP;
+    }
+  vTaskDelay (MOVE_TICKS);
+  return next_state;
+}
+
+
 /****************************************************************************
  *
  *

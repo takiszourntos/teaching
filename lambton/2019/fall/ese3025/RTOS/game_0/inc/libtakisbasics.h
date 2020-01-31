@@ -49,8 +49,9 @@ sgn_bool (void *parg)
   bool_t ret = False;
 
   if (arg > 0)
-  re
+    ret = True;
 
+  return ret;
 }
 
 #endif /* LIBTAKISBASICS_H_ */

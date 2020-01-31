@@ -1,0 +1,8 @@
+core_cm3.h:1405:22:NVIC_SetPriority	16	static
+core_cm3.h:1532:26:SysTick_Config	16	static
+lpc17xx_40xx_systick_arch.c:69:6:SysTick_Enable	16	static
+lpc17xx_40xx_systick_arch.c:87:6:SysTick_Disable	4	static
+lpc17xx_40xx_systick_arch.c:104:6:SysTick_Handler	4	static
+lpc17xx_40xx_systick_arch.c:115:10:SysTick_GetMS	4	static
+lpc17xx_40xx_systick_arch.c:121:6:msDelay	24	static
+lpc17xx_40xx_systick_arch.c:133:7:sys_now	8	static

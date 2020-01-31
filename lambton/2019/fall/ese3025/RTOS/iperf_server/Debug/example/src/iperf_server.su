@@ -1,0 +1,7 @@
+iperf_server.c:45:1:iperf_server_init	16	static
+iperf_server.c:71:1:iperfserver_accept	32	static
+iperf_server.c:104:1:iperfserver_recv	40	static
+iperf_server.c:158:1:iperfserver_error	24	static
+iperf_server.c:172:1:iperfserver_sent	32	static
+iperf_server.c:199:1:iperfserver_send	32	static
+iperf_server.c:248:1:iperfserver_close	16	static

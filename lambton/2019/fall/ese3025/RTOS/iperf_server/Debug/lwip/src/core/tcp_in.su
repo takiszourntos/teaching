@@ -1,0 +1,7 @@
+tcp_in.c:92:1:tcp_input	48	static
+tcp_in.c:440:1:tcp_listen_input	32	static
+tcp_in.c:529:1:tcp_timewait_input	24	static
+tcp_in.c:575:1:tcp_process	40	static
+tcp_in.c:800:1:tcp_oos_insert_segment	32	static
+tcp_in.c:847:1:tcp_receive	72	static
+tcp_in.c:1542:1:tcp_parseopt	32	static
