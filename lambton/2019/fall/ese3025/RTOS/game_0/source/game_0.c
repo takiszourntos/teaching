@@ -21,6 +21,7 @@
 #include <string.h>
 #include "libgameIO.h"
 #include "libgametasks.h"
+#include "libtakisbasics.h"
 
 // TODO: insert other definitions and declarations here
 

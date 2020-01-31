@@ -11,6 +11,7 @@
 #include "task.h"
 #include <stdlib.h>
 #include "libgameds.h"
+#include "libtakisbasics.h"
 
 /*****************************************************************************
  *

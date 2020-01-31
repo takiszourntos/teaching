@@ -17,6 +17,7 @@
 #include "task.h"
 #include <stdlib.h>
 #include "libgameds.h"
+#include "libtakisbasics.h"
 
 #define	RUN_GAME_PRIORITY		3
 #define IMPACTS_TASK_PRIORITY		(RUN_GAME_PRIORITY - 1)
@@ -42,11 +43,6 @@
 #define LEVEL_UP_X			256 // determines scale of leveling up
 #define MOVE_TICKS			100 // number of RTOS ticks for GO anim
 
-enum boolean
-{
-  False = 0U, True = 1U
-} boolean_enum;
-typedef enum boolean bool_t;
 
 enum likelihood
 {

@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include "libgameds.h"
+#include "libtakisbasics.h"
 #include "libgameIO.h"
 
 /*

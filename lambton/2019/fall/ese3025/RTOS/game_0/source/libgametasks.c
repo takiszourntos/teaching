@@ -11,6 +11,7 @@
 #include "task.h"
 #include "libgameds.h"
 #include "libgametasks.h"
+#include "libtakisbasics.h"
 
 /*************************************************************************
  *
@@ -512,11 +513,87 @@ vPlayerStateMachine (superstateGO_t current_state)
   switch (current_state)
     {
     case R0:
-      vTaskDelay (MOVE_TICKS);
       next_state = R1;
     case R1:
-      vTaskDelay (MOVE_TICKS);
       next_state = R2;
+    case R2:
+      if (user_input.left_button)
+	{
+	  next_state = STOP;
+	}
+      else
+	{
+	  next_state = R0;
+	}
+    case L0:
+       next_state = L1;
+    case L1:
+       next_state = L2;
+    case L2:
+      if (user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+      else
+	{
+	  next_state = L0;
+	}
+    case STOP:
+      if (user_input.right_button)
+	{
+	  next_state = R0;
+	}
+      else if (user_input.left_button)
+	{
+	  next_state = L0;
+	}
+      else if (user_input.fire_button)
+	{
+	  next_state = FIRE;
+	}
+      else if (user_input.crouch_button)
+	{
+	  next_state = CROUCH;
+	}
+    case CROUCH:
+      if (user_input.fire_button || user_input.left_button
+	  || user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+    case FIRE:
+      if (user_input.crouch_button || user_input.left_button
+	  || user_input.right_button)
+	{
+	  next_state = STOP;
+	}
+    }
+  vTaskDelay (MOVE_TICKS);
+  return next_state;
+}
+
+/*
+ *
+ * function determines alien GO animation state, based on user input, and
+ * elapsed time
+ *
+ */
+superstateGO_t
+vAlienStateMachine (superstateGO_t current_state, go_coord_t vel)
+{
+  superstateGO_t next_state;
+
+  bool_t moving_up = sgnbool(vel.Y);
+  bool_t moving_right = sgnbool(vel.X);
+
+  // determine direction of velocity
+
+  switch (current_state)
+    {
+    case R0:
+      next_state = R0;
+    case L0:
+      next_state = L0;
     case R2:
       if (user_input.left_button)
 	{
