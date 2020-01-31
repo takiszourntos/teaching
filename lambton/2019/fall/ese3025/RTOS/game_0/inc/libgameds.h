@@ -115,6 +115,37 @@ struct go_coord_struct
 };
 typedef struct go_coord_struct go_coord_t;
 
+
+/* (g)ame (o)bject record-keeping */
+struct go_struct
+{
+  gotype_t kind;
+  uint32_t ID;
+  uint16_t go_level; // can only be altered by the vImpactsTask()!
+  uint16_t health; // can only be altered by the vImpactsTask()!
+  bool_t alive; // can only be altered by the vImpactsTask()!
+  bool_t active;
+  bool_t gameover; // can only be altered by the vImpactsTask()!
+  go_coord_t pos;
+  go_coord_t des_vel; // character's desired velocity, checked by vImpactsTask()
+  bool_t can_move; // whether GO is allowed to move; (re)set by vImpactsTask()
+  go_coord_t acc;
+  superstateGO_t animstate; // storage for the GO animation state
+  bool_t move_left;
+  bool_t move_right;
+  bool_t crouch_or_extra;
+  bool_t shoot_or_pooh;
+  uint8_t numlives;
+  go_list_t *interactions;
+  xTaskHandle task;
+  char taskText[32];
+  struct go_struct *pNext;
+  struct go_struct *pPrev;
+};
+typedef struct go_struct go_t;
+
+
+
 /* game record-keeping for each player
  * (we assume one player per game, right?) */
 struct game_struct
@@ -145,33 +176,6 @@ struct game_struct
 };
 typedef struct game_struct game_t;
 
-/* (g)ame (o)bject record-keeping */
-struct go_struct
-{
-  gotype_t kind;
-  uint32_t ID;
-  uint16_t go_level; // can only be altered by the vImpactsTask()!
-  uint16_t health; // can only be altered by the vImpactsTask()!
-  bool_t alive; // can only be altered by the vImpactsTask()!
-  bool_t active;
-  bool_t gameover; // can only be altered by the vImpactsTask()!
-  go_coord_t pos;
-  go_coord_t des_vel; // character's desired velocity, checked by vImpactsTask()
-  bool_t can_move; // whether GO is allowed to move; (re)set by vImpactsTask()
-  go_coord_t acc;
-  superstateGO_t animstate; // storage for the GO animation state
-  bool_t move_left;
-  bool_t move_right;
-  bool_t crouch_or_extra;
-  bool_t shoot_or_pooh;
-  uint8_t numlives;
-  go_list_t *interactions;
-  xTaskHandle task;
-  char taskText[32];
-  struct go_struct *pNext;
-  struct go_struct *pPrev;
-};
-typedef struct go_struct go_t;
 
 struct go_list_struct
 {

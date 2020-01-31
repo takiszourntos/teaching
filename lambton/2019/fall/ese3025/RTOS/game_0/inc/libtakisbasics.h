@@ -23,7 +23,7 @@ typedef enum boolean bool_t;
  *
  */
 int
-sgn (void *parg)
+sgn (const void *parg)
 {
   int arg = *((int *) parg);
   int ret = 0;
@@ -43,7 +43,7 @@ sgn (void *parg)
  *
  */
 bool_t
-sgn_bool (void *parg)
+sgn_bool (const void *parg)
 {
   int arg = *((int *) parg);
   bool_t ret = False;

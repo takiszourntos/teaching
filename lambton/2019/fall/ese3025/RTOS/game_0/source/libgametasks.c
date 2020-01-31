@@ -13,6 +13,9 @@
 #include "libgametasks.h"
 #include "libtakisbasics.h"
 
+
+extern ui_t user_input
+
 /*************************************************************************
  *
  *
@@ -597,8 +600,8 @@ vAlienStateMachine (superstateGO_t current_state, go_coord_t vel)
   superstateGO_t next_state;
 
   // determine direction of velocity
-  bool_t moving_up = sgn_bool((void *) &vel.Y);
-  bool_t moving_right = sgn_bool((void *) &vel.X);
+  bool_t moving_up = sgn_bool(&vel.Y);
+  bool_t moving_right = sgn_bool(&vel.X);
 
   switch (current_state)
     {
