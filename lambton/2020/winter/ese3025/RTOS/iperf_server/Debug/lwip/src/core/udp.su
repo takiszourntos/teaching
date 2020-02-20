@@ -1,0 +1,15 @@
+udp.c:86:1:udp_init	4	static
+udp.c:99:1:udp_new_port	16	static
+udp.c:151:1:udp_input	64	static
+udp.c:454:1:udp_send	16	static
+udp.c:464:1:udp_send_chksum	32	static
+udp.c:491:1:udp_sendto	32	static
+udp.c:500:1:udp_sendto_chksum	48	static
+udp.c:549:1:udp_sendto_if	40	static
+udp.c:558:1:udp_sendto_if_chksum	64	static
+udp.c:766:1:udp_bind	32	static
+udp.c:853:1:udp_connect	32	static
+udp.c:911:1:udp_disconnect	16	static
+udp.c:930:1:udp_recv	24	static
+udp.c:946:1:udp_remove	24	static
+udp.c:977:1:udp_new	16	static

@@ -1,0 +1,6 @@
+ip_addr.c:55:1:ip4_addr_isbroadcast	24	static
+ip_addr.c:90:1:ip4_addr_netmask_valid	24	static
+ip_addr.c:130:1:ipaddr_addr	24	static
+ip_addr.c:152:1:ipaddr_aton	48	static
+ip_addr.c:261:1:ipaddr_ntoa	16	static
+ip_addr.c:276:7:ipaddr_ntoa_r	56	static

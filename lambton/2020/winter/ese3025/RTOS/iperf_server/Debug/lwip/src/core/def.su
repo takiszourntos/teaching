@@ -1,0 +1,4 @@
+def.c:64:1:lwip_htons	16	static
+def.c:76:1:lwip_ntohs	16	static
+def.c:88:1:lwip_htonl	16	static
+def.c:103:1:lwip_ntohl	16	static

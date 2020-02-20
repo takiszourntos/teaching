@@ -1,0 +1,4 @@
+ip.c:124:1:ip_route	24	static
+ip.c:305:1:ip_input	40	static
+ip.c:641:1:ip_output_if	40	static
+ip.c:818:1:ip_output	48	static

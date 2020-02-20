@@ -1,0 +1,6 @@
+mem.c:236:1:plug_holes	24	static
+mem.c:274:1:mem_init	16	static
+mem.c:311:1:mem_free	24	static
+mem.c:369:1:mem_trim	32	static
+mem.c:494:1:mem_malloc	40	static
+mem.c:646:7:mem_calloc	24	static
