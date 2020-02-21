@@ -65,9 +65,9 @@ prvGetNumberofPlayers (void)
 {
   prvShowNumPlayers ();
   /* get number of players */
-  while (user.shoot == False)
+  while (user_input.fire_button == False)
     {
-      if (user.move_right)
+      if (user_input.right_button)
 	{
 	  if (number_of_players <= MAX_NUMBER_OF_PLAYERS)
 	    {
@@ -75,7 +75,7 @@ prvGetNumberofPlayers (void)
 	      prvShowNumPlayers ();
 	    }
 	}
-      else if (user.move_left)
+      else if (user_input.left_button)
 	{
 	  if (number_of_players != 1)
 	    {

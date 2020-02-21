@@ -16,7 +16,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include <stdlib.h>
-#include "libgameds.h"
 #include "libtakisbasics.h"
 
 #define	RUN_GAME_PRIORITY		3

@@ -14,7 +14,7 @@
 #include "libtakisbasics.h"
 
 
-extern ui_t user_input
+extern ui_t user_input;
 
 /*************************************************************************
  *
