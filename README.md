@@ -38,13 +38,13 @@ The following is a comprehensive list with links for recommended software and ha
     
 9) Quartus (Intel), Xilinx ISE Webpack (https://www.xilinx.com/products/design-tools/ise-design-suite.html)
 
-## Git Collaboration Notes
-Please note the following helpful links by our very own Andres Cordoba!
+## For Capstone (ESE4009) students: Git Collaboration and Linux Cross Toolchain Notes
 
-https://www.bitsinaction.dev/2019/10/27/How-to-compile-a-linux-kernel-for-an-ARM-platform/
+Please note the following helpful links by our very own Andres Cordoba!
 
 https://www.bitsinaction.dev/2019/10/12/5-Essential-Skills-with-Git-and-Version-Control-Platforms-for-Software-Developers/
 
 https://www.bitsinaction.dev/2019/10/19/Three-daily-git-practices-when-working-on-a-team/
 
+https://www.bitsinaction.dev/2019/10/27/How-to-compile-a-linux-kernel-for-an-ARM-platform/
 
