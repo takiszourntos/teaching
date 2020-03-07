@@ -38,6 +38,18 @@ The following is a comprehensive list with links for recommended software and ha
     
 9) Quartus (Intel), Xilinx ISE Webpack (https://www.xilinx.com/products/design-tools/ise-design-suite.html)
 
+
+## Additional, useful textbooks:
+
+1) OpenCV 3: https://www.amazon.ca/Learning-OpenCV-Computer-Vision-Library-ebook/dp/B01MRXIYAN/ref=sr_1_1?keywords=opencv+bradski&qid=1583614382&sr=8-1
+
+2) Accelerated C++: https://www.amazon.ca/Accelerated-C-Practical-Programming-Example/dp/020170353X/ref=sr_1_1?keywords=accelerated+c%2B%2B&qid=1583614434&sr=8-1
+
+3) Deep Learning/Python: https://www.amazon.ca/Deep-Learning-Python-Francois-Chollet/dp/1617294438/ref=sr_1_1?keywords=deep+learning+with+python&qid=1583614491&sr=8-1
+
+4) Yocto+Beaglebone: https://www.amazon.ca/Using-Yocto-Project-BeagleBone-Black/dp/178528973X/ref=sr_1_2?keywords=yocto+and+beaglebone&qid=1583614525&sr=8-2
+
+
 ## For Capstone (ESE4009) students: Git Collaboration and Linux Cross Toolchain Notes
 
 Please note the following helpful links by our very own Andres Cordoba!
