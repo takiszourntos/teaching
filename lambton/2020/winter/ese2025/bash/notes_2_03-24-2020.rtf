@@ -1,0 +1,56 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 clean;}{\f1\fswiss\fcharset0 Arial;}}{\colortbl ;\red0\green0\blue0;}{\*\generator Msftedit 5.41.15.1507;}\ql\f0 \fs21 \cf1 takis@bernard:/$ mkdir
+\par\ql\f0 \fs21 \cf1 mkdir: missing operand
+\par\ql\f0 \fs21 \cf1 Try 'mkdir --help' for more information.
+\par\ql\f0 \fs21 \cf1 takis@bernard:/$ 
+\par\ql
+\par\ql\f0 \fs21 \cf1 for your exercise:
+\par\ql\f0 \fs21 \cf1 prepend your hello.x directory to the PATH variable, and then try to run the fake mkdir command from the root directory
+\par\ql
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ echo $PATH
+\par\ql\f1 \fs21 \cf1 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+\par\ql
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ PATH=/home/takis/temp:$PATH     # <----- here is where I prepended the directory
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ export PATH
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ cd /
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ mkdir
+\par\ql\f1 \fs21 \cf1 Hello World!
+\par\ql
+\par\ql\f1 \fs21 \cf1 takis@bernard:/$ echo $PATH | tr ":" "\\n"
+\par\ql\f1 \fs21 \cf1 /usr/local/sbin
+\par\ql\f1 \fs21 \cf1 /usr/local/bin
+\par\ql\f1 \fs21 \cf1 /usr/sbin
+\par\ql\f1 \fs21 \cf1 /usr/bin
+\par\ql\f1 \fs21 \cf1 /sbin
+\par\ql\f1 \fs21 \cf1 /bin
+\par\ql\f1 \fs21 \cf1 /usr/games
+\par\ql\f1 \fs21 \cf1 /usr/local/games
+\par\ql\f1 \fs21 \cf1 /snap/bin
+\par\ql
+\par\ql\f1 \fs21 \cf1 takis@bernard:~$ alias mypath=' echo $PATH | tr ":" "\\n" '
+\par\ql\f1 \fs21 \cf1 takis@bernard:~$ mypath
+\par\ql\f1 \fs21 \cf1 /usr/local/sbin
+\par\ql\f1 \fs21 \cf1 /usr/local/bin
+\par\ql\f1 \fs21 \cf1 /usr/sbin
+\par\ql\f1 \fs21 \cf1 /usr/bin
+\par\ql\f1 \fs21 \cf1 /sbin
+\par\ql\f1 \fs21 \cf1 /bin
+\par\ql\f1 \fs21 \cf1 /usr/games
+\par\ql\f1 \fs21 \cf1 /usr/local/games
+\par\ql\f1 \fs21 \cf1 /snap/bin
+\par\ql
+\par\ql\f1 \fs21 \cf1 (after doing nano ~/.bashrc ...)
+\par\ql\f1 \fs21 \cf1 ...
+\par\ql\f1 \fs21 \cf1 # some more ls aliases
+\par\ql\f1 \fs21 \cf1 alias ll='ls -alF'
+\par\ql\f1 \fs21 \cf1 alias la='ls -A'
+\par\ql\f1 \fs21 \cf1 alias l='ls -CF'
+\par\ql
+\par\ql\f1 \fs21 \cf1 # my own aliases                                                                  <---------------------------- NEW LINE ADDED
+\par\ql\f1 \fs21 \cf1 alias mypath=' echo $PATH | tr ":" "\\n" ' #                             <---------------------------- ANOTHER NEW LINE ADDED
+\par\ql
+\par\ql\f1 \fs21 \cf1 # Add an "alert" alias for long running commands.  Use like so:
+\par\ql\f1 \fs21 \cf1 #   sleep 10; alert
+\par\ql\f1 \fs21 \cf1 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\\''s/^\\s*[0-9]\\+\\s*//;$
+\par\ql
+\par\ql\f1 \fs21 \cf1 ...\par}

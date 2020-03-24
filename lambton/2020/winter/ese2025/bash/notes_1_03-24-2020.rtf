@@ -1,0 +1,44 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 Arial;}}{\colortbl ;\red0\green0\blue0;}{\*\generator Msftedit 5.41.15.1507;}\ql\f0 \fs21 \cf1 $ env
+\par\ql
+\par\ql\f0 \fs21 \cf1 $ env | more
+\par\ql
+\par\ql\f0 \fs21 \cf1 $ env | grep "takis" # <--- replace "takis" with your login
+\par\ql
+\par\ql\f0 \fs21 \cf1 USERNAME=
+\par\ql\f0 \fs21 \cf1 USER=
+\par\ql\f0 \fs21 \cf1 PWD=
+\par\ql\f0 \fs21 \cf1 HOME=
+\par\ql\f0 \fs21 \cf1 LOGNAME=
+\par\ql
+\par\ql\f0 \fs21 \cf1 $ env | grep PATH
+\par\ql\f0 \fs21 \cf1 KICAD_PATH=/usr/share/kicad
+\par\ql\f0 \fs21 \cf1 WINDOWPATH=2
+\par\ql\f0 \fs21 \cf1 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+\par\ql
+\par\ql\f0 \fs21 \cf1 $ man grep
+\par\ql
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ touch file1.txt file2.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ ls -l >> file1.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ cat file1.txt | grep takis >> file2.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ more file2.txt
+\par\ql\f0 \fs21 \cf1 -rw-r--r-- 1 takis takis 0 Mar 24 10:36 file1.txt
+\par\ql\f0 \fs21 \cf1 -rw-r--r-- 1 takis takis 0 Mar 24 10:36 file2.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ cat file1.txt | grep file1 > file3.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ more file3.txt
+\par\ql\f0 \fs21 \cf1 -rw-r--r-- 1 takis takis 0 Mar 24 10:36 file1.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ 
+\par\ql
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ dmesg > kernelringbuffer.txt
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ cat kernelringbuffer.txt | grep USB 
+\par\ql
+\par\ql\f0 \fs21 \cf1 [    0.688661] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 5.03
+\par\ql\f0 \fs21 \cf1 [    0.688662] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+\par\ql\f0 \fs21 \cf1 [    0.688712] hub 2-0:1.0: USB hub found
+\par\ql\f0 \fs21 \cf1 [    0.689128] xhci_hcd 0000:27:00.3: new USB bus registered, assigned bus number 3
+\par\ql\f0 \fs21 \cf1 [    0.689446] usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.03
+\par\ql\f0 \fs21 \cf1 [    0.689447] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+\par\ql\f0 \fs21 \cf1 [    0.689499] hub 3-0:1.0: USB hub found
+\par\ql
+\par\ql
+\par\ql\f0 \fs21 \cf1 takis@bernard:~/temp$ dmesg | grep USB
+\par\ql\par}
