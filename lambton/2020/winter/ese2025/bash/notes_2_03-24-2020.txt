@@ -1,0 +1,60 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+takis@bernard:/$ mkdir
+mkdir: missing operand
+Try 'mkdir --help' for more information.
+takis@bernard:/$ 
+
+for your exercise:
+prepend your hello.x directory to the PATH variable, and then try to run the fake mkdir command from the root directory
+
+takis@bernard:/$ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+takis@bernard:/$ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+takis@bernard:/$ PATH=/home/takis/temp:$PATH # <----- here is where I prepended the directory
+takis@bernard:/$ export PATH
+takis@bernard:/$ cd /
+takis@bernard:/$ mkdir
+Hello World!
+
+takis@bernard:/$ echo $PATH | tr ":" "\n"
+/usr/local/sbin
+/usr/local/bin
+/usr/sbin
+/usr/bin
+/sbin
+/bin
+/usr/games
+/usr/local/games
+/snap/bin
+
+takis@bernard:~$ alias mypath=' echo $PATH | tr ":" "\n" '
+takis@bernard:~$ mypath
+/usr/local/sbin
+/usr/local/bin
+/usr/sbin
+/usr/bin
+/sbin
+/bin
+/usr/games
+/usr/local/games
+/snap/bin
+
+(after doing nano ~/.bashrc ...)
+...
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# my own aliases <---------------------------- NEW LINE ADDED
+alias mypath=' echo $PATH | tr ":" "\n" ' # <---------------------------- ANOTHER NEW LINE ADDED
+
+# Add an "alert" alias for long running commands. Use like so:
+# sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;$
+
+...

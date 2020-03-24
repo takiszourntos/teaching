@@ -1,0 +1,48 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+$ env
+
+$ env | more
+
+$ env | grep "takis" # <--- replace "takis" with your login
+
+USERNAME=
+USER=
+PWD=
+HOME=
+LOGNAME=
+
+$ env | grep PATH
+KICAD_PATH=/usr/share/kicad
+WINDOWPATH=2
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+$ man grep
+
+takis@bernard:~/temp$ touch file1.txt file2.txt
+takis@bernard:~/temp$ ls -l >> file1.txt
+takis@bernard:~/temp$ cat file1.txt | grep takis >> file2.txt
+takis@bernard:~/temp$ more file2.txt
+-rw-r--r-- 1 takis takis 0 Mar 24 10:36 file1.txt
+-rw-r--r-- 1 takis takis 0 Mar 24 10:36 file2.txt
+takis@bernard:~/temp$ cat file1.txt | grep file1 > file3.txt
+takis@bernard:~/temp$ more file3.txt
+-rw-r--r-- 1 takis takis 0 Mar 24 10:36 file1.txt
+takis@bernard:~/temp$ 
+
+takis@bernard:~/temp$ dmesg > kernelringbuffer.txt
+takis@bernard:~/temp$ cat kernelringbuffer.txt | grep USB 
+
+[ 0.688661] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 5.03
+[ 0.688662] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[ 0.688712] hub 2-0:1.0: USB hub found
+[ 0.689128] xhci_hcd 0000:27:00.3: new USB bus registered, assigned bus number 3
+[ 0.689446] usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.03
+[ 0.689447] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[ 0.689499] hub 3-0:1.0: USB hub found
+
+
+takis@bernard:~/temp$ dmesg | grep USB
+
