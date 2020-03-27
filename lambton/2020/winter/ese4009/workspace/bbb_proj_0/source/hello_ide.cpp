@@ -9,7 +9,7 @@
 
 int main(void)
 {
-	std::cout << "Hello World!" << std::endl;
+	std::cout << "Hello World, directly from the Eclipse IDE!" << std::endl;
 
 	return 0;
 }
