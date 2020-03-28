@@ -73,9 +73,12 @@ static void Board_LED_Init(void)
 {
 	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
 	/* Set the PIO_22 as output */
-	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM, true);
-	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM, LED_GREEN_GPIO_BIT_NUM, true);
-	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM, LED_BLUE_GPIO_BIT_NUM, true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM,
+			true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
+			LED_GREEN_GPIO_BIT_NUM, true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
+			LED_BLUE_GPIO_BIT_NUM, true);
 }
 
 /*****************************************************************************
@@ -97,7 +100,7 @@ void Board_Debug_Init(void)
 	Chip_UART_Init(DEBUG_UART);
 	Chip_UART_SetBaud(DEBUG_UART, 115200);
 	Chip_UART_ConfigData(DEBUG_UART,
-			UART_LCR_WLEN8 | UART_LCR_SBS_1BIT | UART_LCR_PARITY_DIS);
+	UART_LCR_WLEN8 | UART_LCR_SBS_1BIT | UART_LCR_PARITY_DIS);
 
 	/* Enable UART Transmit */
 	Chip_UART_TXEnable(DEBUG_UART);
@@ -145,19 +148,18 @@ void Board_LED_Set(uint8_t LEDNumber, bool On)
 	if (LEDNumber == 0) // red LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
-				LED_RED_GPIO_BIT_NUM, On);
+		LED_RED_GPIO_BIT_NUM, On);
 	}
 	else if (LEDNumber == 1) // green LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
-				LED_GREEN_GPIO_BIT_NUM, On);
+		LED_GREEN_GPIO_BIT_NUM, On);
 	}
 	else if (LEDNumber == 2) // blue LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
-				LED_BLUE_GPIO_BIT_NUM, On);
+		LED_BLUE_GPIO_BIT_NUM, On);
 	}
-
 
 }
 
@@ -169,17 +171,17 @@ bool Board_LED_Test(uint8_t LEDNumber)
 	if (LEDNumber == 0)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
-				LED_RED_GPIO_BIT_NUM);
+		LED_RED_GPIO_BIT_NUM);
 	}
 	else if (LEDNumber == 1)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
-				LED_GREEN_GPIO_BIT_NUM);
+		LED_GREEN_GPIO_BIT_NUM);
 	}
 	else if (LEDNumber == 2)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
-				LED_BLUE_GPIO_BIT_NUM);
+		LED_BLUE_GPIO_BIT_NUM);
 	}
 
 	return state;
@@ -334,14 +336,14 @@ void Board_I2C_Init(I2C_ID_T id)
 void Board_Buttons_Init(void)
 {
 	Chip_GPIO_WriteDirBit(LPC_GPIO, BUTTONS_BUTTON1_GPIO_PORT_NUM,
-			BUTTONS_BUTTON1_GPIO_BIT_NUM, false);
+	BUTTONS_BUTTON1_GPIO_BIT_NUM, false);
 }
 
 uint32_t Buttons_GetStatus(void)
 {
 	uint8_t ret = NO_BUTTON_PRESSED;
 	if (Chip_GPIO_ReadPortBit(LPC_GPIO, BUTTONS_BUTTON1_GPIO_PORT_NUM,
-			BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0x00)
+	BUTTONS_BUTTON1_GPIO_BIT_NUM) == 0x00)
 	{
 		ret |= BUTTONS_BUTTON1;
 	}
