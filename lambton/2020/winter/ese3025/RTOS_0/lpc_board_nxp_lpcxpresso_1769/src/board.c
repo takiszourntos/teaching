@@ -73,8 +73,9 @@ static void Board_LED_Init(void)
 {
 	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
 	/* Set the PIO_22 as output */
-	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM,
-			true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM, true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM, LED_GREEN_GPIO_BIT_NUM, true);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM, LED_BLUE_GPIO_BIT_NUM, true);
 }
 
 /*****************************************************************************
@@ -141,11 +142,23 @@ void Board_UARTPutSTR(char *str)
 void Board_LED_Set(uint8_t LEDNumber, bool On)
 {
 	/* There is only one LED */
-	if (LEDNumber == 0)
+	if (LEDNumber == 0) // red LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
 				LED_RED_GPIO_BIT_NUM, On);
 	}
+	else if (LEDNumber == 1) // green LED
+	{
+		Chip_GPIO_WritePortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
+				LED_GREEN_GPIO_BIT_NUM, On);
+	}
+	else if (LEDNumber == 2) // blue LED
+	{
+		Chip_GPIO_WritePortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
+				LED_BLUE_GPIO_BIT_NUM, On);
+	}
+
+
 }
 
 /* Returns the current state of a board LED */
@@ -157,6 +170,16 @@ bool Board_LED_Test(uint8_t LEDNumber)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
 				LED_RED_GPIO_BIT_NUM);
+	}
+	else if (LEDNumber == 1)
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
+				LED_GREEN_GPIO_BIT_NUM);
+	}
+	else if (LEDNumber == 2)
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
+				LED_BLUE_GPIO_BIT_NUM);
 	}
 
 	return state;
