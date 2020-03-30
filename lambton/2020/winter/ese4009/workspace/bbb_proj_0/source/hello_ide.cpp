@@ -6,11 +6,13 @@
  */
 
 #include <iostream>
+using namespace std;
 
 int main(void)
 {
-	std::cout << "Hello World, directly from the Eclipse IDE!" << std::endl;
-
+	int x = 5;
+	x++;
+	cout << "The value of x is " << x << endl;
 	return 0;
 }
 
