@@ -39,3 +39,4 @@ echo "The number of loop iterations was $counter"
 # except ' gets interpreted literally. Consider single quotes ("full quoting") to be a stricter 
 # method of quoting than double quotes ("partial quoting").
  
+exit 0
