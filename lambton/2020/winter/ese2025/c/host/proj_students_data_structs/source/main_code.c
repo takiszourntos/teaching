@@ -13,5 +13,11 @@
 
 int main(void)
 {
+	// load data into linked list
+
+	// load data into binary search tree
+
+	// demonstrate search, insertion, deletion
+
 	return 0;
 }
