@@ -1,10 +1,10 @@
 #
 # BASH Script extracts real climate data from government website
 # 
-#	usage: ./test.sh 1985 16
+#	usage: ./query.sh 1985 16
 #
-#	first argument ($1) is the year of the measurements
-#  	second argument ($2) is the location (1 to 337)
+#	first argument (access in BASH as $1) is the year of the measurements
+#  	second argument (access in BASH as $2) is the location (1 to 338)
 #
 # author: Takis Zourntos
 #
