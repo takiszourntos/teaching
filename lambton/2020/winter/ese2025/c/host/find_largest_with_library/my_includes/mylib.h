@@ -7,7 +7,6 @@
  *      Author: takis
  */
 
-
 /*
  * this amazing function finds the largest element of an array
  *

@@ -8,22 +8,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int	key_t;
+typedef int key_t;
 
-key_t  pS[]={6,4,7,3,2,1,8,5,0,9};
-size_t NS = sizeof(pS)/sizeof(key_t);
+key_t pS[] =
+{ 6, 4, 7, 3, 2, 1, 8, 5, 0, 9 };
+size_t NS = sizeof(pS) / sizeof(key_t);
 
 /*
  * compare function needed for qsort() in the stdlib
  */
 int comp(const void* a, const void *b)
 {
-	int ia=*((int *) a);
-	int ib=*((int *) b);
+	int ia = *((int *) a);
+	int ib = *((int *) b);
 
-	if (ia<ib)
+	if (ia < ib)
 		return -1;
-	else if (ia>ib)
+	else if (ia > ib)
 		return +1;
 
 	return 0; /* default return if ia==ib */
@@ -40,11 +41,11 @@ int comp(const void* a, const void *b)
  */
 size_t find_sorted_median(key_t *pset, size_t Lset)
 {
-	size_t i_median=-1;
+	size_t i_median = -1;
 
-	if (Lset != 0 )
+	if (Lset != 0)
 	{
-		i_median = Lset/2-1;
+		i_median = Lset / 2 - 1;
 	}
 
 	return i_median; /* set must contain at least two elements */
@@ -54,13 +55,13 @@ size_t find_sorted_median(key_t *pset, size_t Lset)
  * function dynamically allocates an array of size given by
  * (iright-ileft)+1, made from another array pointed to by pset
  */
-key_t	*form_set(const key_t *pset, size_t ileft, size_t iright)
+key_t *form_set(const key_t *pset, size_t ileft, size_t iright)
 {
-	key_t *pnew = (key_t *) malloc((iright-ileft+1)*sizeof(key_t));
+	key_t *pnew = (key_t *) malloc((iright - ileft + 1) * sizeof(key_t));
 
-	for (size_t i=ileft; i != (iright+1); ++i)
+	for (size_t i = ileft; i != (iright + 1); ++i)
 	{
-		pnew[i-ileft] = pset[i];
+		pnew[i - ileft] = pset[i];
 	}
 
 	return pnew;
@@ -73,9 +74,9 @@ key_t	*form_set(const key_t *pset, size_t ileft, size_t iright)
 void printset(key_t *pset, size_t Lset)
 {
 
-	for (size_t i=0; i != Lset; ++i)
+	for (size_t i = 0; i != Lset; ++i)
 	{
-		printf("%d ",pset[i]);
+		printf("%d ", pset[i]);
 	}
 	printf("\n");
 
@@ -89,19 +90,19 @@ void printset(key_t *pset, size_t Lset)
  */
 int main(void)
 {
-	size_t 	im;
+	size_t im;
 	qsort(pS, NS, sizeof(key_t), comp);
 	im = find_sorted_median(pS, NS);
 
-	key_t *pSleft  = form_set(pS,0,im);
-	key_t *pSright = form_set(pS,im+1,NS-1);
+	key_t *pSleft = form_set(pS, 0, im);
+	key_t *pSright = form_set(pS, im + 1, NS - 1);
 
 	printf("original (sorted) set is: ");
 	printset(pS, NS);
 	printf("left set is:  ");
-	printset(pSleft, im+1);
+	printset(pSleft, im + 1);
 	printf("right set is: ");
-	printset(pSright, NS-im-1);
+	printset(pSright, NS - im - 1);
 
 	free(pSleft);
 	free(pSright);

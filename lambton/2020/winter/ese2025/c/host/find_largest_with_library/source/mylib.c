@@ -15,8 +15,8 @@
 
 int largest(int *set, int N_s)
 {
-	int large=set[0];
-	for (int i=1; i!=N_s; ++i)
+	int large = set[0];
+	for (int i = 1; i != N_s; ++i)
 	{
 		if (set[i] > large)
 		{

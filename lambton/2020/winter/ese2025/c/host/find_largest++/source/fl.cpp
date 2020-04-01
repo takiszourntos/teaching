@@ -5,7 +5,6 @@
  *      Author: takis
  */
 
-
 #include <iostream>
 #include <vector>
 
@@ -32,7 +31,7 @@ int main()
 
 	/* print integers from vector */
 	cout << "Your integers are:" << endl;
-	for (vector<int>::size_type j=0; j != myarr.size(); ++j)
+	for (vector<int>::size_type j = 0; j != myarr.size(); ++j)
 	{
 		cout << myarr[j] << endl;
 	}
@@ -41,7 +40,7 @@ int main()
 	/* find the largest element, manually */
 	int max = myarr[0];
 	int next;
-	vector<int>::size_type i=1;
+	vector<int>::size_type i = 1;
 	while (i != myarr.size())
 	{
 		next = myarr[i];
