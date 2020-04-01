@@ -15,12 +15,13 @@ int main(void)
 {
 	// load data into linked list
 	ll_node_t *pHead = NULL;
-	int ID_x;
-	float GPA_x;
-	char surname_x[NAMESIZE];
+	int ID_x=0;
+	float GPA_x=0.0;
+	char surname_x[NAMESIZE]="";
 
-	while (scanf("%s %d %f", surname_x, &ID_x, &GPA_x))
+	while (ID_x != -9999)
 	{
+		scanf("%s %d %f", surname_x, &ID_x, &GPA_x)
 		data_t token;
 		token.ID = ID_x;
 		token.GPA = GPA_x;
