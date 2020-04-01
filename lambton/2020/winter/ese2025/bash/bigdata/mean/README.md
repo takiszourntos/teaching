@@ -2,7 +2,7 @@
 
 This directory contains data obtained from a government web site, known as Homogenized Temperatures for Canada.
 
-Please see the included ATemperature_Documentation.doc file for more information. Essentially, each file in this directory
+Please see the included ATemperature_Documentation.doc file for more information. Essentially, each file (of the form mm*.txt) in this directory
 represents one of 338 locations across Canada where climate temperatures were made. Within each file, temperature data (in Celsius) is recorded several times over a period often spanning more than 100 years!
 
 I have written a script, query.sh, which you can study. It incorporates a couple of new BASH features such as command-line arguments and makes substantial use of pipes and variables.
@@ -31,9 +31,59 @@ where the location/station number is first (241), followed by the station ID cod
 Your BASH script, findtemp.sh, should filter the output of query.sh to produce an output with the proper name of the site, rather than a file name. Your script should be used as follows:
 
 $ ./findtemp.sh 1948 318
+
 MONTICELLO
+
 1948
+
 -9.5
+
+## Exercise
+Now, compose a BASH script to create a file, testdata.dat, which contains climate data for a specific site over a number of years. Your script, called testgen.sh, should be used as follows:
+
+$ ./testgen.sh 218 1948 1997 
+
+where 218 represents the site location, 1948 the start year, and 1997 the final year. The generated file, testdata.dat, should look something like:
+
+$ cat testdata.dat
+
+KAPUSKASING
+
+1948
+
+-3.6
+
+
+KAPUSKASING
+
+1949
+
+-5.2
+
+
+.
+.
+.
+
+
+KAPUSKASING
+
+1997
+
+2.6
+
+
+-9999
+
+-9999
+
+-9999
+
+
+where the three rows of -9999 are included to indicate the end of the valid data. These will be useful for our C-code.
+
+
+
 
 
 
