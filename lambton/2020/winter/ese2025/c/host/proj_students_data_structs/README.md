@@ -13,7 +13,7 @@ testdata.dat. You should use your C program to take its standard input from the 
 
 $ cat testdata.dat | ./proj_students_data_structs
 
-where your C-program namde is proj_students_data_structs. Each node of your linked list should correspond to a different year of
+where your C-program name is proj_students_data_structs. Each node of your linked list should correspond to a different year of
 climate data at the site you chose. Demonstrate that you can print (to standard output) any portion of the list that you desire.
 In addition, show that you can insert and delete nodes.
 
