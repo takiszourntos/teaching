@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "lib_ll.h"
 
 /*
@@ -21,7 +22,7 @@ ll_node_t* createNode(data_t info)
 		// assign the new node's data
 		pNew->key.ID = info.ID;
 		pNew->key.GPA = info.GPA;
-		pNew->key.surname = info.surname;
+		strcpy(pNew->key.surname, info.surname);
 
 		// initialize the new node's pointers
 		pNew->pPrev = NULL;
