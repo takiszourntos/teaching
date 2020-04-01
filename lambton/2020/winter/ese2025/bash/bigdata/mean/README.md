@@ -10,8 +10,11 @@ I have written a script, query.sh, which you can study. It incorporates a couple
 For example, you can use query.sh as follows at the Linux prompt, which returns the first temperature reading recorded in 1948 for site 318 (of 338 possible sites)
 
 $ ./query.sh 1948 318
+
 mm8300447.txt
+
 1948
+
 -9.5
 
 The first string returned is the name of the file corresponding to site 318. The second quantity (which can be stored as an integer in C) is the year in which the measurement was taken. The final quantity (which could be stored using a float in C) is a measured mean temperature.
