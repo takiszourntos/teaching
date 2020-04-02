@@ -1,0 +1,104 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+We've got the timing diagram, but how do we code this?
+
+For any given task:
+
+
+while (1)
+{
+ // this is time t = 0
+ /*
+ code in here describes what happens up until time t=Tx
+ */
+ // this is time t = Tx
+ /*
+ code in here desribes what happens up until t=Ty
+ */
+ // this is time t = Tx + Ty
+}
+ 
+...
+
+// red LED task
+void vLEDTaskRed ( void *pvParameters)
+{
+ // the task period is T1 = T = 4.5s
+ while (1)
+ {
+ // time t = 0, k*T, for any integer k >= 0
+ BoardLEDSet(0, ON); 
+ Delay(configTICKRATEHZ);
+ BoardLEDSet(0, OFF);
+ 
+ // time t = 1s + k*T
+ vTaskDelay(3*configTICKRATEHZ + configTICKRATEHZ / 2); // block for 3.5s
+
+ // time t = 4.5s + k*T
+ }
+}
+
+// green LED task (version 1: sneaky version)
+void vLEDTaskGreen (void *pvParameters)
+{
+ // the task period is T2 = T = 4.5s
+ // start with an offset delay
+ vTaskDelay(configTICKRATEHZ + configTICKRATEHZ / 2); // this only executes once
+ while (1)
+ {
+ // time t = 0 + offsetdelay + k*T
+ BoardLEDSet(1, ON); 
+ Delay(configTICKRATEHZ);
+ BoardLEDSet(1, OFF);
+ 
+ // time t = 1s +offsetdelay + k*T
+ vTaskDelay(3*configTICKRATEHZ + configTICKRATEHZ / 2);
+
+ // time t = 4.5s + offset delay + k*T
+ }
+}
+
+// green LED Task (version 2: non-sneaky version)
+void vLEDTaskGreen (void *pvParameters)
+{
+ while (1)
+ {
+ // t = 0
+ vTaskDelay(configTICKRATEHZ + configTICKRATEHZ / 2); // delay for 1.5s
+
+ // t = 1.5s
+ BoardLEDSet(1, ON);
+ Delay(configTICKRATEHZ);
+ BoardLEDSet(1, OFF);
+
+ // t = 2.5s
+ vTaskDelay(2 * configTICKRATEHZ); // delay for 2 s, remainder of 3.5-s delay happens at top of loop
+ }
+}
+
+For the Delay() you can use vTaskDelay() for Delay()... however, technically, while the LED is on, our task is
+supposed to be "running" and not in Block State.
+
+So, technically, we need a delay that keeps the task running while the corresponding LED is on.
+
+One way to "solve" this is to use a for/while/do-while loop to implement Delay(), but it can be tricky to make this accurate in time.
+
+We should actually be quite happy that our task is entering block because it increases the chance that the system can go into "sleep mode" and conserve energy. So, for now, just use vTaskDelay() in place of Delay().
+
+
+#define ON 0
+#define OFF 1
+
+Delay() ------> vTaskDelay()
+
+Upcoming assignment: repeat the same challenge, but this time have just ONE LED task function... you still need to have three separate tasks, so make use of pvParameters!
+
+
+
+
+
+
+
+
