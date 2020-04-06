@@ -1,7 +1,7 @@
 #
 # BASH Script extracts real climate data from government website
 # 
-#	usage: ./query2.sh 1985 16
+#	usage: ./query.sh 1985 16
 #
 #	first argument (access in BASH as $1) is the year of the measurements
 #  	second argument (access in BASH as $2) is the location (1 to 338)
@@ -14,24 +14,15 @@ NUMCONTEXTLINES=1 # works up to 17
 let NCLPLUSONE=NUMCONTEXTLINES+1
 
 # temporary file definitions
-BTstns="BTemperature_Stations.txt"
 alldatafile="BIGDATA8zx2756.txt"
 smalldatafile="distilled_datazx47432_$1.dat"
 locationsfile="locationszx646332.txt"
 
-# extract station IDs from BTemperature_Stations.txt
-
-# scan lines from line 5 to 343
-for x in {5..343}
+# scan all data files
+for x in mm*.txt # $x is a data file name, corresponding to a geographical location
 do
-	next=$(head -n $x $BTstns | tail -n 1)  # read line x from BTemperature_Stations.txt
-        line=($next)
-	stationNUM=(${line[0]})		# station number
-        stationID=(${line[1]})		# station ID
-        stationNAME=(${line[2]})	# station name
-	nextfile=mm$stationID.txt
-	echo "$nextfile" >> $locationsfile	# write the data file name first
-	y=$(cat $nextfile | tr "," "\n")	# remove commas, replace with newlines
+	echo "$x" >> $locationsfile	# write the data file name first
+	y=$(cat $x | tr "," "\n")	# remove commas, replace with newlines
 	for z in $y			# go through each token in the file $x
 	do
 		echo $z >> $alldatafile 
