@@ -37,7 +37,7 @@ ll_node_t* createNode(data_t);
 
 void addNode(ll_node_t*, ll_node_t*);
 
-void insertNode(ll_node_t*, ll_node_t*);
+void insertNode(ll_node_t*, ll_node_t*, data_t);
 
 void deleteNode(ll_node_t*, data_t);
 
