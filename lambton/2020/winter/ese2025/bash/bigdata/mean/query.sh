@@ -25,6 +25,7 @@ locationsfile="locationszx646332.txt"
 for x in {5..343}
 do
 	next=$(head -n $x $BTstns | tail -n 1)  # read line x from BTemperature_Stations.txt
+        echo $next
         line=($next)
 	stationNUM=(${line[0]})		# station number
         stationID=(${line[1]})		# station ID

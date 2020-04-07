@@ -48,15 +48,18 @@ void addNode(ll_node_t *pHead, ll_node_t *pNode)
 	return;
 }
 
-void insertNode(ll_node_t *pHead, ll_node_t *pNode)
+void insertNode(ll_node_t *pHead, ll_node_t *pNode, data_t info)
 {
 	// your code goes here
+	// pNode is the pointer to the node that is going to be inserted
+	// you may insert either before or after the node corresponding to "info"
 	return;
 }
 
 void deleteNode(ll_node_t *pHead, data_t info)
 {
 	// your code goes here
+	// you are deleting the node corresponding to "info"
 	return;
 }
 
@@ -64,7 +67,7 @@ ll_node_t* findNode(ll_node_t *pHead, data_t info)
 {
 	ll_node_t *pNode = pHead;
 
-	// your code goes here
+	// your code goes here -- you are looking for the node that matches "info"
 
 	return pNode;
 }
