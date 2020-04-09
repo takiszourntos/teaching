@@ -13,9 +13,9 @@ The program, make, searches for Makefile/makefile/GNUmakefile and parses the lin
 In the simplest terms, a Makefile consists of a list of hierarchically organized rules. The rules have a specific structure, 
 consisting of:
 
-<target_name> : <list of prerequisites or dependencies>
+target_name : list of prerequisites or dependencies
 
-<TAB> <recipe>
+TAB recipe
 
 Whenever a file in the list of prerequisites is updated, make knows that the target must be re-created, so that a project 
 is built with the minimum number of compilations. Sound familiar? It should, because this is precisely what Eclipse does.
