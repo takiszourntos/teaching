@@ -55,6 +55,10 @@
 #define LED_GREEN_GPIO_BIT_NUM					25
 #define LED_BLUE_GPIO_PORT_NUM					3
 #define LED_BLUE_GPIO_BIT_NUM					26
+#define MYBUTTON_A_PORT_NUM						1
+#define MYBUTTON_A_BIT_NUM						27	// PAD16 (LPCXPRESSO)
+#define MYBUTTON_B_PORT_NUM						1
+#define MYBUTTON_B_BIT_NUM						21	// PAD18 (LPCXPRESSO)
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -74,11 +78,27 @@ static void Board_LED_Init(void)
 	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
 	/* Set the PIO_22 as output */
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM,
-			true);
+	true);
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
-			LED_GREEN_GPIO_BIT_NUM, true);
+	LED_GREEN_GPIO_BIT_NUM, true);
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
-			LED_BLUE_GPIO_BIT_NUM, true);
+	LED_BLUE_GPIO_BIT_NUM, true);
+}
+
+/* Initializes my button GPIOS */
+static void Board_MyButtons_Init(void)
+{
+	/* configure the pins as GPIOs with internal pull-up resistors */
+	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
+			IOCON_MODE_PULLUP, IOCON_FUNC0);
+	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
+			IOCON_MODE_PULLUP, IOCON_FUNC0);
+
+	/* configure the GPIOs as inputs */
+	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
+			false);
+	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
+			false);
 }
 
 /*****************************************************************************
@@ -195,6 +215,24 @@ void Board_LED_Toggle(uint8_t LEDNumber)
 	}
 }
 
+/* Returns the current state of one of my buttons */
+bool Board_MyButtons_Test(mybutton_t button)
+{
+	bool state = false;
+
+	if (button == ButtonA)
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM);
+	}
+	else // (button == ButtonB)
+	{
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM);
+	}
+	return state;
+}
+
+
+
 /* Set up and initialize all required blocks and functions related to the
  board hardware */
 void Board_Init(void)
@@ -208,6 +246,10 @@ void Board_Init(void)
 
 	/* Initialize LEDs */
 	Board_LED_Init();
+
+	/* Initialize my buttons */
+	Board_MyButtons_Init();
+
 }
 
 /* Returns the MAC address assigned to this board */

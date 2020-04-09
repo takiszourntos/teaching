@@ -33,7 +33,8 @@
 #define __IOCON_17XX_40XX_H_
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /** @defgroup IOCON_17XX_40XX CHIP: LPC17xx/40xx I/O configuration driver
@@ -43,17 +44,19 @@ extern "C" {
 
 /** 
  * @brief Array of IOCON pin definitions passed to Chip_IOCON_SetPinMuxing() must be in this format 
- */ 
-typedef struct {
-	uint32_t pingrp:3;		/* Pin group */
-	uint32_t pinnum:5;		/* Pin number */
-	uint32_t modefunc:24;	/* Function and mode. */
+ */
+typedef struct
+{
+	uint32_t pingrp :3; /* Pin group */
+	uint32_t pinnum :5; /* Pin number */
+	uint32_t modefunc :24; /* Function and mode. */
 } PINMUX_GRP_T;
 
 /**
  * @brief IOCON register block
  */
-typedef struct {
+typedef struct
+{
 #if defined(CHIP_LPC175X_6X)
 	__IO uint32_t PINSEL[11];
 	uint32_t RESERVED0[5];
@@ -67,7 +70,7 @@ typedef struct {
 
 /**
  * IOCON function and mode selection definitions
- * See the User Manual for specific modes and functions supoprted by the
+ * See the User Manual for specific modes and functions supported by the
  * various LPC11xx devices. Functionality can vary per device.
  */
 #define IOCON_FUNC0             0x0				/*!< Selects pin function 0 */
@@ -207,12 +210,13 @@ STATIC INLINE void Chip_IOCON_DisableOD(LPC_IOCON_T *pIOCON, uint8_t port, uint8
 /**
  * @brief I2C pin configuration definitions 
  */
-typedef enum {
-	I2CPADCFG_STD_MODE = 0x00,                  /*!< Standard I2C mode */
-	I2CPADCFG_FAST_MODE = I2CPADCFG_STD_MODE,   /*!< Fast mode */
-	I2CPADCFG_FAST_MODE_PLUS = 0x05,            /*!< Fast mode plus */
-	I2CPADCFG_NON_I2C = 0x0A,                  /*!< For non-I2C use*/
-} IOCON_I2CPINS_CONFIG;
+typedef enum
+{
+	I2CPADCFG_STD_MODE = 0x00, /*!< Standard I2C mode */
+	I2CPADCFG_FAST_MODE = I2CPADCFG_STD_MODE, /*!< Fast mode */
+	I2CPADCFG_FAST_MODE_PLUS = 0x05, /*!< Fast mode plus */
+	I2CPADCFG_NON_I2C = 0x0A, /*!< For non-I2C use*/
+}IOCON_I2CPINS_CONFIG;
 
 /**
  * @brief Configure I2C pad pins (P0.27 and P0.28)
@@ -234,7 +238,8 @@ STATIC INLINE void Chip_IOCON_SetI2CPad(LPC_IOCON_T *pIOCON, IOCON_I2CPINS_CONFI
  * @param	modefunc	: OR'ed values or type IOCON_*
  * @return	Nothing
  */
-STATIC INLINE void Chip_IOCON_PinMuxSet(LPC_IOCON_T *pIOCON, uint8_t port, uint8_t pin, uint32_t modefunc)
+STATIC INLINE void Chip_IOCON_PinMuxSet(LPC_IOCON_T *pIOCON, uint8_t port,
+		uint8_t pin, uint32_t modefunc)
 {
 	pIOCON->p[port][pin] = modefunc;
 }
@@ -248,7 +253,8 @@ STATIC INLINE void Chip_IOCON_PinMuxSet(LPC_IOCON_T *pIOCON, uint8_t port, uint8
  * @param	func		: Pin function, value of type IOCON_FUNC0 to IOCON_FUNC7
  * @return	Nothing
  */
-STATIC INLINE void Chip_IOCON_PinMux(LPC_IOCON_T *pIOCON, uint8_t port, uint8_t pin, uint32_t mode, uint8_t func)
+STATIC INLINE void Chip_IOCON_PinMux(LPC_IOCON_T *pIOCON, uint8_t port,
+		uint8_t pin, uint32_t mode, uint8_t func)
 {
 	Chip_IOCON_PinMuxSet(pIOCON, port, pin, (mode | func));
 }
@@ -261,7 +267,8 @@ STATIC INLINE void Chip_IOCON_PinMux(LPC_IOCON_T *pIOCON, uint8_t port, uint8_t 
  * @param	arrayLength : Number of entries in pinArray
  * @return	Nothing
  */
-void Chip_IOCON_SetPinMuxing(LPC_IOCON_T *pIOCON, const PINMUX_GRP_T* pinArray, uint32_t arrayLength);
+void Chip_IOCON_SetPinMuxing(LPC_IOCON_T *pIOCON, const PINMUX_GRP_T* pinArray,
+		uint32_t arrayLength);
 
 /**
  * @}
