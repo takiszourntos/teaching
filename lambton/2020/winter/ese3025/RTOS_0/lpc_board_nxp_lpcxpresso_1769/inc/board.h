@@ -108,6 +108,14 @@ extern "C" {
 #define MCB_17XX_AUDIO_MIC_SELECT       0x00
 #define MCB_17XX_AUDIO_LINE_IN_SELECT   0x00
 
+
+/*
+ * My Button Typedef
+ */
+enum mybutton_enum {ButtonA=0U, ButtonB=1U};
+typedef enum mybutton_enum mybutton_t;
+
+
 /**
  * @brief	Initialize pin muxing for a UART
  * @param	pUART	: Pointer to UART register block for UART pins to init

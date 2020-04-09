@@ -67,7 +67,7 @@ typedef struct {
 
 /**
  * IOCON function and mode selection definitions
- * See the User Manual for specific modes and functions supoprted by the
+ * See the User Manual for specific modes and functions supported by the
  * various LPC11xx devices. Functionality can vary per device.
  */
 #define IOCON_FUNC0             0x0				/*!< Selects pin function 0 */
