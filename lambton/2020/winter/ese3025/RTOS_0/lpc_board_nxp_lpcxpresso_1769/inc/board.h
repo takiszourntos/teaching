@@ -126,7 +126,7 @@ typedef enum LED_enum LED_t;
  */
 enum OnorOff_enum
 {
-	Off = 0U, On = 1U
+	On = 0U, Off = 1U
 };
 typedef enum OnorOff_enum OnorOff_t;
 

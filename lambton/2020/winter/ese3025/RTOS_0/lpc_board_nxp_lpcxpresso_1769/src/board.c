@@ -71,8 +71,8 @@ const uint32_t RTCOscRateIn = 32768;
 /* Initializes board LED(s) */
 static void Board_LED_Init(void)
 {
-	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
-	/* Set the PIO_22 as output */
+	/* Pins are configured as GPIO pin during SystemInit */
+	/* Set the LED GPIOs as outputs */
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM,
 	true);
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
@@ -164,17 +164,17 @@ void Board_LED_Set(LED_t LEDNumber, OnorOff_t state)
 	if (LEDNumber == Red) // red LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
-		LED_RED_GPIO_BIT_NUM, On);
+		LED_RED_GPIO_BIT_NUM, state);
 	}
 	else if (LEDNumber == Green) // green LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
-		LED_GREEN_GPIO_BIT_NUM, On);
+		LED_GREEN_GPIO_BIT_NUM, state);
 	}
 	else if (LEDNumber == Blue) // blue LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
-		LED_BLUE_GPIO_BIT_NUM, On);
+		LED_BLUE_GPIO_BIT_NUM, state);
 	}
 
 }
@@ -219,12 +219,12 @@ bool Board_MyButtons_Test(mybutton_t button)
 	if (button == ButtonA)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM,
-				MYBUTTON_A_BIT_NUM);
+		MYBUTTON_A_BIT_NUM);
 	}
 	else if (button == ButtonB)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM,
-				MYBUTTON_B_BIT_NUM);
+		MYBUTTON_B_BIT_NUM);
 	}
 	return state;
 }

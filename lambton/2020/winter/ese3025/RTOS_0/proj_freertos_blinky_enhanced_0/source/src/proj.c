@@ -28,8 +28,8 @@
 /* global variables */
 static volatile bool stateButtonA = false; // state of ButtonA, either pressed (true) or not
 static volatile bool stateButtonB = false; // state of ButtonB, either pressed (true) or not
-static volatile portTickType T_LED = configTICK_RATE_HZ; // LED off time
-static const portTickType T_inc = configTICK_RATE_HZ / 8;
+static volatile portTickType T_LED = configTICK_RATE_HZ / 2; // LED off time (configTICK_RATE_HZ corresponds to one second)
+static const portTickType T_inc = 5; // configTICK_RATE_HZ / 8;
 static const LED_t RLED = Red;
 static const LED_t GLED = Green;
 static const LED_t BLED = Blue;
@@ -92,8 +92,8 @@ static void prvSetupHardware(void)
 static void vLEDTask(void *pvParameters)
 {
 	LED_t LED = *((LED_t*) pvParameters); // get the LED colour
-	portTickType TInitOff, TOff; // temporal parameters of LED flashing
-	portTickType xLastWakeUpTime = 0; // needed for vTaskDelayUntil, "absolute time"
+	volatile portTickType TInitOff, TOff; // temporal parameters of LED flashing
+	volatile portTickType xLastWakeUpTime = 0; // needed for vTaskDelayUntil, "absolute time"
 
 	while (1)
 	{
@@ -103,14 +103,17 @@ static void vLEDTask(void *pvParameters)
 
 		// delay relative to t = k*4.5*T_LED, k = 0, 1, 2, 3, ..., when Red LED comes on
 		vTaskDelayUntil(&xLastWakeUpTime, TInitOff);
+		//vTaskDelay(TInitOff);
 
 		// turn LED on
 		Board_LED_Set(LED, On);
 		vTaskDelayUntil(&xLastWakeUpTime, T_LED);
+		//vTaskDelay(T_LED);
 
 		// turn LED off and wait for TOff ticks
 		Board_LED_Set(LED, Off);
 		vTaskDelayUntil(&xLastWakeUpTime, TOff);
+		//vTaskDelay(TOff);
 	}
 }
 
