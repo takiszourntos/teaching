@@ -1,4 +1,137 @@
 /*
+ *
+ * enhanced blinky with buttons
+ *
+ *
+ */
+
+#include <stdint.h>
+
+#include "board.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+/*****************************************************************************
+ * Private types/enumerations/variables
+ ****************************************************************************/
+/* GPIO pin for interrupt */
+#define GPIO_INTERRUPT_PIN_A   MYBUTTON_A_BIT_NUM	/* GPIO pin number mapped to interrupt */
+#define GPIO_INTERRUPT_PIN_B   MYBUTTON_B_BIT_NUM	/* GPIO pin number mapped to interrupt */
+#define GPIO_INTERRUPT_PORT    GPIOINT_PORT2		/* GPIO port number mapped to interrupt;
+ 	 	 	 	 	 	 	 	 	 	 	 	 	   we ASSUME that both GPIOs are on the
+ 	 	 	 	 	 	 	 	 	 	 	 	 	   same port! */
+
+/* On the LPC1769, the GPIO interrupts share the EINT3 vector. */
+#define GPIO_IRQ_HANDLER  			EINT3_IRQHandler	/* GPIO interrupt IRQ function name */
+#define GPIO_INTERRUPT_NVIC_NAME    EINT3_IRQn			/* GPIO interrupt NVIC interrupt name */
+
+/* global button state variables */
+static volatile bool stateButtonA = false;
+static volatile bool stateButtonB = false;
+static volatile portTickType T_LED = configTICK_RATE_HZ; // LED off time
+const portTickType T_inc = configTICK_RATE_HZ / 8;
+
+/*****************************************************************************
+ * Public types/enumerations/variables
+ ****************************************************************************/
+/**
+ * @brief	Handle interrupt from GPIO pin or GPIO pin mapped to PININT
+ * @return	Nothing
+ */
+void GPIO_IRQ_HANDLER(void)
+{
+	Chip_GPIOINT_ClearIntStatus(LPC_GPIOINT, GPIO_INTERRUPT_PORT,
+			(1 << GPIO_INTERRUPT_PIN_A) | (1 << GPIO_INTERRUPT_PIN_B));
+
+	// check the button states
+	stateButtonA = Board_MyButtons_Test(ButtonA); // Button A raises period
+	stateButtonB = Board_MyButtons_Test(ButtonB); // Button B lowers period
+
+	if (stateButtonA)
+	{
+		//  frequency decreases
+		T_LED += T_inc;
+
+	}
+	else if (stateButtonB && (T_LED >= 2*T_inc))
+	{
+		// frequency increases
+		T_LED -= T_inc;
+	}
+}
+
+/*****************************************************************************
+ * Private functions
+ ****************************************************************************/
+
+/* Sets up system hardware */
+static void prvSetupHardware(void)
+{
+	SystemCoreClockUpdate();
+	Board_Init();
+
+	/* Initial LED0 state is off */
+	Board_LED_Set(0, false);
+
+	/* Configure the GPIO interrupt */
+	Chip_GPIOINT_SetIntFalling(LPC_GPIOINT, GPIO_INTERRUPT_PORT,
+			(1 << GPIO_INTERRUPT_PIN_A) | (1 << GPIO_INTERRUPT_PIN_B));
+
+	/* Enable interrupt in the NVIC */
+	NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
+	NVIC_EnableIRQ(GPIO_INTERRUPT_NVIC_NAME);
+
+}
+
+/* LED1 toggle thread */
+static void vLEDTask(void *pvParameters)
+{
+	LED_t LED = *((LED_t*) pvParameters);
+
+	/* some pre-delay */
+	vTaskDelay(LED * (3*T_LED / 2));
+
+	while (1)
+	{
+		Board_LED_Set(LED, ON);
+		LedState = (bool) !LedState;
+
+		/* About a 3Hz on/off toggle rate */
+		vTaskDelay(configTICK_RATE_HZ / 6);
+	}
+}
+
+/*****************************************************************************
+ * Public functions
+ ****************************************************************************/
+
+/**
+ * @brief	main routine for FreeRTOS blinky example
+ * @return	Nothing, function should not exit
+ */
+int main(void)
+{
+	prvSetupHardware();
+
+	/* LED1 toggle thread */
+	xTaskCreate(vLEDTask, (signed char* ) "vTaskLed1", configMINIMAL_STACK_SIZE,
+			NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
+
+	/* LED2 toggle thread */
+	xTaskCreate(vLEDTask, (signed char* ) "vTaskLed2", configMINIMAL_STACK_SIZE,
+			NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
+
+	/* Start the scheduler */
+	vTaskStartScheduler();
+
+	/* Should never arrive here */
+	return 1;
+}
+
+/**
+ * ORIGINAL PREAMBLE:
+ */
+/*
  * @brief FreeRTOS Blinky example
  *
  * @note
@@ -27,93 +160,4 @@
  * is used in conjunction with NXP Semiconductors microcontrollers.  This
  * copyright, permission, and disclaimer notice must appear in all copies of
  * this code.
- */
-
-#include "board.h"
-#include "FreeRTOS.h"
-#include "task.h"
-
-/*****************************************************************************
- * Private types/enumerations/variables
- ****************************************************************************/
-
-/*****************************************************************************
- * Public types/enumerations/variables
- ****************************************************************************/
-
-/*****************************************************************************
- * Private functions
- ****************************************************************************/
-
-/* Sets up system hardware */
-static void prvSetupHardware(void)
-{
-	SystemCoreClockUpdate();
-	Board_Init();
-
-	/* Initial LED0 state is off */
-	Board_LED_Set(0, false);
-}
-
-/* LED1 toggle thread */
-static void vLEDTask1(void *pvParameters)
-{
-	bool LedState = false;
-
-	while (1)
-	{
-		Board_LED_Set(0, LedState);
-		LedState = (bool) !LedState;
-
-		/* About a 3Hz on/off toggle rate */
-		vTaskDelay(configTICK_RATE_HZ / 6);
-	}
-}
-
-/* LED2 toggle thread */
-static void vLEDTask2(void *pvParameters)
-{
-	bool LedState = false;
-
-	while (1)
-	{
-		Board_LED_Set(1, LedState);
-		LedState = (bool) !LedState;
-
-		/* About a 7Hz on/off toggle rate */
-		vTaskDelay(configTICK_RATE_HZ / 14);
-	}
-}
-
-/*****************************************************************************
- * Public functions
- ****************************************************************************/
-
-/**
- * @brief	main routine for FreeRTOS blinky example
- * @return	Nothing, function should not exit
- */
-int main(void)
-{
-	prvSetupHardware();
-
-	/* LED1 toggle thread */
-	xTaskCreate(vLEDTask1, (signed char* ) "vTaskLed1",
-			configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-			(xTaskHandle *) NULL);
-
-	/* LED2 toggle thread */
-	xTaskCreate(vLEDTask2, (signed char* ) "vTaskLed2",
-			configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-			(xTaskHandle *) NULL);
-
-	/* Start the scheduler */
-	vTaskStartScheduler();
-
-	/* Should never arrive here */
-	return 1;
-}
-
-/**
- * @}
  */
