@@ -92,6 +92,11 @@ extern "C" {
 #define BUTTONS_BUTTON1     0x01
 #define NO_BUTTON_PRESSED   0x00
 
+#define MYBUTTON_A_PORT_NUM	2
+#define MYBUTTON_A_BIT_NUM	12	// J2-53 (LPCXPRESSO, interrupt-capable)
+#define MYBUTTON_B_PORT_NUM	2
+#define MYBUTTON_B_BIT_NUM	7	// J2-49 (LPCXPRESSO, interrupt-capable)
+
 /**
  * Joystick defines
  */

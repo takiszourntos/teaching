@@ -25,11 +25,14 @@
 #define GPIO_IRQ_HANDLER  			EINT3_IRQHandler	/* GPIO interrupt IRQ function name */
 #define GPIO_INTERRUPT_NVIC_NAME    EINT3_IRQn			/* GPIO interrupt NVIC interrupt name */
 
-/* global button state variables */
-static volatile bool stateButtonA = false;
-static volatile bool stateButtonB = false;
+/* global variables */
+static volatile bool stateButtonA = false; // state of ButtonA, either pressed (true) or not
+static volatile bool stateButtonB = false; // state of ButtonB, either pressed (true) or not
 static volatile portTickType T_LED = configTICK_RATE_HZ; // LED off time
-const portTickType T_inc = configTICK_RATE_HZ / 8;
+static const portTickType T_inc = configTICK_RATE_HZ / 8;
+static const LED_t RLED = Red;
+static const LED_t GLED = Green;
+static const LED_t BLED = Blue;
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -53,7 +56,7 @@ void GPIO_IRQ_HANDLER(void)
 		T_LED += T_inc;
 
 	}
-	else if (stateButtonB && (T_LED >= 2*T_inc))
+	else if (stateButtonB && (T_LED >= 2 * T_inc))
 	{
 		// frequency increases
 		T_LED -= T_inc;
@@ -70,8 +73,10 @@ static void prvSetupHardware(void)
 	SystemCoreClockUpdate();
 	Board_Init();
 
-	/* Initial LED0 state is off */
-	Board_LED_Set(0, false);
+	/* Initial LED states are OFF */
+	Board_LED_Set(Red, Off);
+	Board_LED_Set(Green, Off);
+	Board_LED_Set(Blue, Off);
 
 	/* Configure the GPIO interrupt */
 	Chip_GPIOINT_SetIntFalling(LPC_GPIOINT, GPIO_INTERRUPT_PORT,
@@ -83,21 +88,29 @@ static void prvSetupHardware(void)
 
 }
 
-/* LED1 toggle thread */
+/* LED Task Function */
 static void vLEDTask(void *pvParameters)
 {
-	LED_t LED = *((LED_t*) pvParameters);
-
-	/* some pre-delay */
-	vTaskDelay(LED * (3*T_LED / 2));
+	LED_t LED = *((LED_t*) pvParameters); // get the LED colour
+	portTickType TInitOff, TOff; // temporal parameters of LED flashing
+	portTickType xLastWakeUpTime = 0; // needed for vTaskDelayUntil, "absolute time"
 
 	while (1)
 	{
-		Board_LED_Set(LED, ON);
-		LedState = (bool) !LedState;
+		// update duration parameters (T_LED is changing based on ISR)
+		TInitOff = ((portTickType) LED) * (T_LED + T_LED / 2); // initial off time is LED*1.5*T_LED
+		TOff = (3 * T_LED + T_LED / 2) - TInitOff; // off "remainder" time is 3.5T_LED - TInitOff
 
-		/* About a 3Hz on/off toggle rate */
-		vTaskDelay(configTICK_RATE_HZ / 6);
+		// delay relative to t = k*4.5*T_LED, k = 0, 1, 2, 3, ..., when Red LED comes on
+		vTaskDelayUntil(&xLastWakeUpTime, TInitOff);
+
+		// turn LED on
+		Board_LED_Set(LED, On);
+		vTaskDelayUntil(&xLastWakeUpTime, T_LED);
+
+		// turn LED off and wait for TOff ticks
+		Board_LED_Set(LED, Off);
+		vTaskDelayUntil(&xLastWakeUpTime, TOff);
 	}
 }
 
@@ -113,13 +126,20 @@ int main(void)
 {
 	prvSetupHardware();
 
-	/* LED1 toggle thread */
-	xTaskCreate(vLEDTask, (signed char* ) "vTaskLed1", configMINIMAL_STACK_SIZE,
-			NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
+	/* Red LED thread */
+	xTaskCreate(vLEDTask, (signed char* ) "R_LED Task",
+			configMINIMAL_STACK_SIZE, (void* ) &RLED, (tskIDLE_PRIORITY + 3UL),
+			(xTaskHandle *) NULL);
 
-	/* LED2 toggle thread */
-	xTaskCreate(vLEDTask, (signed char* ) "vTaskLed2", configMINIMAL_STACK_SIZE,
-			NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
+	/* Green LED thread */
+	xTaskCreate(vLEDTask, (signed char* ) "G_LED Task",
+			configMINIMAL_STACK_SIZE, (void* ) &GLED, (tskIDLE_PRIORITY + 2UL),
+			(xTaskHandle *) NULL);
+
+	/* Blue LED thread */
+	xTaskCreate(vLEDTask, (signed char* ) "B_LED Task",
+			configMINIMAL_STACK_SIZE, (void* ) &BLED, (tskIDLE_PRIORITY + 1UL),
+			(xTaskHandle *) NULL);
 
 	/* Start the scheduler */
 	vTaskStartScheduler();

@@ -119,7 +119,7 @@ void Board_UARTPutSTR(char *str);
  * @param	State		: true for on, false for off
  * @return	None
  */
-void Board_LED_Set(LED_t LEDNumber, bool State);
+void Board_LED_Set(LED_t LEDNumber, OnorOff_t state);
 
 /**
  * @brief	Returns the current state of a board LED

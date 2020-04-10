@@ -55,10 +55,6 @@
 #define LED_GREEN_GPIO_BIT_NUM					25
 #define LED_BLUE_GPIO_PORT_NUM					3
 #define LED_BLUE_GPIO_BIT_NUM					26
-#define MYBUTTON_A_PORT_NUM						2
-#define MYBUTTON_A_BIT_NUM						12	// J2-53 (LPCXPRESSO, interrupt-capable)
-#define MYBUTTON_B_PORT_NUM						2
-#define MYBUTTON_B_BIT_NUM						7	// J2-49 (LPCXPRESSO, interrupt-capable)
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -90,15 +86,15 @@ static void Board_MyButtons_Init(void)
 {
 	/* configure the pins as GPIOs with internal pull-up resistors */
 	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
-			IOCON_MODE_PULLUP, IOCON_FUNC0);
+	IOCON_MODE_PULLUP, IOCON_FUNC0);
 	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
-			IOCON_MODE_PULLUP, IOCON_FUNC0);
+	IOCON_MODE_PULLUP, IOCON_FUNC0);
 
 	/* configure the GPIOs as inputs */
-	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
-			false);
-	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
-			false);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
+	false);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
+	false);
 }
 
 /*****************************************************************************
@@ -209,7 +205,7 @@ bool Board_LED_Test(LED_t LEDNumber)
 
 void Board_LED_Toggle(LED_t LEDNumber)
 {
-	if ((LEDNumber == Red) || (LEDNumber == Green)  || (LEDNumber == Blue) )
+	if ((LEDNumber == Red) || (LEDNumber == Green) || (LEDNumber == Blue))
 	{
 		Board_LED_Set(LEDNumber, !Board_LED_Test(LEDNumber));
 	}
@@ -222,16 +218,16 @@ bool Board_MyButtons_Test(mybutton_t button)
 
 	if (button == ButtonA)
 	{
-		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM);
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM,
+				MYBUTTON_A_BIT_NUM);
 	}
-	else // (button == ButtonB)
+	else if (button == ButtonB)
 	{
-		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM);
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM,
+				MYBUTTON_B_BIT_NUM);
 	}
 	return state;
 }
-
-
 
 /* Set up and initialize all required blocks and functions related to the
  board hardware */
