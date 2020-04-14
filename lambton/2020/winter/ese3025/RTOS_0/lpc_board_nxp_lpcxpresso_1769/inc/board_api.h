@@ -119,21 +119,21 @@ void Board_UARTPutSTR(char *str);
  * @param	State		: true for on, false for off
  * @return	None
  */
-void Board_LED_Set(uint8_t LEDNumber, bool State);
+void Board_LED_Set(LED_t LEDNumber, OnorOff_t state);
 
 /**
  * @brief	Returns the current state of a board LED
  * @param	LEDNumber	: LED number to set state for
  * @return	true if the LED is on, otherwise false
  */
-bool Board_LED_Test(uint8_t LEDNumber);
+bool Board_LED_Test(LED_t LEDNumber);
 
 /**
  * @brief	Toggles the current state of a board LED
  * @param	LEDNumber	: LED number to change state for
  * @return	None
  */
-void Board_LED_Toggle(uint8_t LEDNumber);
+void Board_LED_Toggle(LED_t LEDNumber);
 
 /**
  * @brief	Turn on Board LCD Backlight
@@ -153,8 +153,8 @@ void Board_SetLCDBacklight(uint8_t Intensity);
 typedef void (*p_msDelay_func_t)(uint32_t);
 
 /* The DEBUG* functions are selected based on system configuration.
-   Code that uses the DEBUG* functions will have their I/O routed to
-   the UART, semihosting, or nowhere. */
+ Code that uses the DEBUG* functions will have their I/O routed to
+ the UART, semihosting, or nowhere. */
 #if defined(DEBUG_ENABLE)
 #if defined(DEBUG_SEMIHOSTING)
 #define DEBUGINIT()

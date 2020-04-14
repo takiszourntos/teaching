@@ -55,10 +55,6 @@
 #define LED_GREEN_GPIO_BIT_NUM					25
 #define LED_BLUE_GPIO_PORT_NUM					3
 #define LED_BLUE_GPIO_BIT_NUM					26
-#define MYBUTTON_A_PORT_NUM						1
-#define MYBUTTON_A_BIT_NUM						27	// PAD16 (LPCXPRESSO)
-#define MYBUTTON_B_PORT_NUM						1
-#define MYBUTTON_B_BIT_NUM						21	// PAD18 (LPCXPRESSO)
 
 /*****************************************************************************
  * Public types/enumerations/variables
@@ -75,8 +71,8 @@ const uint32_t RTCOscRateIn = 32768;
 /* Initializes board LED(s) */
 static void Board_LED_Init(void)
 {
-	/* Pin PIO0_22 is configured as GPIO pin during SystemInit */
-	/* Set the PIO_22 as output */
+	/* Pins are configured as GPIO pin during SystemInit */
+	/* Set the LED GPIOs as outputs */
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM, LED_RED_GPIO_BIT_NUM,
 	true);
 	Chip_GPIO_WriteDirBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
@@ -90,15 +86,15 @@ static void Board_MyButtons_Init(void)
 {
 	/* configure the pins as GPIOs with internal pull-up resistors */
 	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
-			IOCON_MODE_PULLUP, IOCON_FUNC0);
+	IOCON_MODE_PULLUP, IOCON_FUNC0);
 	Chip_IOCON_PinMux(LPC_IOCON, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
-			IOCON_MODE_PULLUP, IOCON_FUNC0);
+	IOCON_MODE_PULLUP, IOCON_FUNC0);
 
 	/* configure the GPIOs as inputs */
-	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
-			false);
-	CHIP_GPIO_WriteDIrBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
-			false);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM,
+	false);
+	Chip_GPIO_WriteDirBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM,
+	false);
 }
 
 /*****************************************************************************
@@ -162,43 +158,43 @@ void Board_UARTPutSTR(char *str)
 }
 
 /* Sets the state of a board LED to on or off */
-void Board_LED_Set(uint8_t LEDNumber, bool On)
+void Board_LED_Set(LED_t LEDNumber, OnorOff_t state)
 {
 	/* There is only one LED */
-	if (LEDNumber == 0) // red LED
+	if (LEDNumber == Red) // red LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
-		LED_RED_GPIO_BIT_NUM, On);
+		LED_RED_GPIO_BIT_NUM, state);
 	}
-	else if (LEDNumber == 1) // green LED
+	else if (LEDNumber == Green) // green LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
-		LED_GREEN_GPIO_BIT_NUM, On);
+		LED_GREEN_GPIO_BIT_NUM, state);
 	}
-	else if (LEDNumber == 2) // blue LED
+	else if (LEDNumber == Blue) // blue LED
 	{
 		Chip_GPIO_WritePortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
-		LED_BLUE_GPIO_BIT_NUM, On);
+		LED_BLUE_GPIO_BIT_NUM, state);
 	}
 
 }
 
 /* Returns the current state of a board LED */
-bool Board_LED_Test(uint8_t LEDNumber)
+bool Board_LED_Test(LED_t LEDNumber)
 {
 	bool state = false;
 
-	if (LEDNumber == 0)
+	if (LEDNumber == Red)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_RED_GPIO_PORT_NUM,
 		LED_RED_GPIO_BIT_NUM);
 	}
-	else if (LEDNumber == 1)
+	else if (LEDNumber == Green)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_GREEN_GPIO_PORT_NUM,
 		LED_GREEN_GPIO_BIT_NUM);
 	}
-	else if (LEDNumber == 2)
+	else if (LEDNumber == Blue)
 	{
 		state = Chip_GPIO_ReadPortBit(LPC_GPIO, LED_BLUE_GPIO_PORT_NUM,
 		LED_BLUE_GPIO_BIT_NUM);
@@ -207,9 +203,9 @@ bool Board_LED_Test(uint8_t LEDNumber)
 	return state;
 }
 
-void Board_LED_Toggle(uint8_t LEDNumber)
+void Board_LED_Toggle(LED_t LEDNumber)
 {
-	if (LEDNumber == 0)
+	if ((LEDNumber == Red) || (LEDNumber == Green) || (LEDNumber == Blue))
 	{
 		Board_LED_Set(LEDNumber, !Board_LED_Test(LEDNumber));
 	}
@@ -222,16 +218,16 @@ bool Board_MyButtons_Test(mybutton_t button)
 
 	if (button == ButtonA)
 	{
-		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM, MYBUTTON_A_BIT_NUM);
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_A_PORT_NUM,
+		MYBUTTON_A_BIT_NUM);
 	}
-	else // (button == ButtonB)
+	else if (button == ButtonB)
 	{
-		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM, MYBUTTON_B_BIT_NUM);
+		state = Chip_GPIO_ReadPortBit(LPC_GPIO, MYBUTTON_B_PORT_NUM,
+		MYBUTTON_B_BIT_NUM);
 	}
 	return state;
 }
-
-
 
 /* Set up and initialize all required blocks and functions related to the
  board hardware */

@@ -52,20 +52,19 @@ extern "C" {
  */
 
 /** Define DEBUG_ENABLE to enable IO via the DEBUGSTR, DEBUGOUT, and
-    DEBUGIN macros. If not defined, DEBUG* functions will be optimized
-    out of the code at build time.
+ DEBUGIN macros. If not defined, DEBUG* functions will be optimized
+ out of the code at build time.
  */
 #define DEBUG_ENABLE
 
 /** Define DEBUG_SEMIHOSTING along with DEBUG_ENABLE to enable IO support
-    via semihosting. You may need to use a C library that supports
-    semihosting with this option.
+ via semihosting. You may need to use a C library that supports
+ semihosting with this option.
  */
 // #define DEBUG_SEMIHOSTING
-
 /** Board UART used for debug output and input using the DEBUG* macros. This
-    is also the port used for Board_UARTPutChar, Board_UARTGetChar, and
-    Board_UARTPutSTR functions.
+ is also the port used for Board_UARTPutChar, Board_UARTGetChar, and
+ Board_UARTPutSTR functions.
  */
 #define DEBUG_UART LPC_UART3
 
@@ -93,6 +92,11 @@ extern "C" {
 #define BUTTONS_BUTTON1     0x01
 #define NO_BUTTON_PRESSED   0x00
 
+#define MYBUTTON_A_PORT_NUM	2
+#define MYBUTTON_A_BIT_NUM	12	// J2-53 (LPCXPRESSO, interrupt-capable)
+#define MYBUTTON_B_PORT_NUM	2
+#define MYBUTTON_B_BIT_NUM	7	// J2-49 (LPCXPRESSO, interrupt-capable)
+
 /**
  * Joystick defines
  */
@@ -108,13 +112,37 @@ extern "C" {
 #define MCB_17XX_AUDIO_MIC_SELECT       0x00
 #define MCB_17XX_AUDIO_LINE_IN_SELECT   0x00
 
+/*
+ * LED Typedef
+ */
+enum LED_enum
+{
+	Red, Green, Blue
+};
+typedef enum LED_enum LED_t;
+
+/*
+ * LED ON/OFF Typedef
+ */
+enum OnorOff_enum
+{
+	On = 0U, Off = 1U
+};
+typedef enum OnorOff_enum OnorOff_t;
 
 /*
  * My Button Typedef
  */
-enum mybutton_enum {ButtonA=0U, ButtonB=1U};
+enum mybutton_enum
+{
+	ButtonA = 0U, ButtonB = 1U
+};
 typedef enum mybutton_enum mybutton_t;
 
+/*
+ * Returns the current state of one of my buttons - TZ (04-09-2020)
+ * */
+bool Board_MyButtons_Test(mybutton_t);
 
 /**
  * @brief	Initialize pin muxing for a UART

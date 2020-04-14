@@ -1,0 +1,30 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+$ cd ./teaching/lambton/2020/winter/ese2025/c/beaglebone
+
+$ sftp debian@192.168.7.2
+
+beaglebone $ sftp> put -r make-tutorial
+
+(exit sftp)
+
+$ ssh 192.168.7.2 -l debian
+
+beaglebone $ cd make-tutorial/
+beaglebone $ make
+
+For Test Taking:
+1) I will tell you where to find your test on github!
+2) You will fork the associated repository
+3) You will clone the forked repository onto your personal computer/laptop
+4) You will complete the coding exercises
+5) IMPORTANT: Please COMMIT the changes in the code as indicated in the test
+6) ALSO IMPORTANT: provide pseudo-code for algorithms in the comments!
+7) you will have a certain amount of time to complete the assignment
+
+To properly shutdown the Beaglebone:
+
+beaglebone $ sudo shutdown -h now
+
