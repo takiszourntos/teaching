@@ -93,7 +93,7 @@ static void vLEDTask(void *pvParameters)
 {
 	LED_t LED = *((LED_t*) pvParameters); // get the LED colour
 	volatile portTickType TInitOff, TOff; // temporal parameters of LED flashing
-	volatile portTickType xLastWakeUpTime = 0; // needed for vTaskDelayUntil, "absolute time"
+	portTickType xLastWakeUpTime = xTaskGetTickCount(); // needed for vTaskDelayUntil, "absolute time"
 
 	while (1)
 	{
