@@ -1,0 +1,48 @@
+Final Report Structure
+======================
+
+
+Abstract (50 - 100 words summarizing your work)
+--------
+
+
+Introduction
+------------
+   - describe of the problem you are trying to solve
+   - describe who your users are, and their needs
+   - conclude with a list of features needed in a solution 
+
+
+Our Solution (High Level)
+-------------------------
+   - describe your solution/project, at a high level using text,
+     graphics and pictures --- show the end-user experience
+   - describe how your project meets the needs of users as 
+     stated in the Introduction
+
+
+
+Detailed Description
+--------------------
+   - provide block diagrams (organized from high level to low
+     level), schematic diagrams and pseudo code.
+   - you might want to have separate subsections for hardware
+     software, but you should begin with an integrated system
+     description, embodying both hardware and software
+   - write text describing the detailed operation of each
+     module/diagram
+   - you can provide software fragments in this section, as well
+     as schematics, but save the full listings of code and the 
+     hardware parts lists, for the Appendix
+
+
+
+Demo Day Experience
+-------------------
+   - provide a description of your Demo Day experience, like
+     telling a story (a true story!). 
+   - describe what could have improved with your project 
+
+
+Appendix
+--------
