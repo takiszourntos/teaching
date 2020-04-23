@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chips chipVendor="NXP" family="MIMXRT1060" vendorURL="http://www.nxp.com"
+       chipURL="http://www.nxp.com/kinetis">
+   <chip name="MIMXRT1062xxxxA" xml_file="MIMXRT1062_internal.xml"
+         chipURL="http://www.nxp.com/kinetis"/>
+</chips>
