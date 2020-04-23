@@ -2,12 +2,11 @@
  *
  * enhanced blinky with buttons
  *
- * version 0.1
+ * version 1.0
  * author: T. Zourntos (emad studio, inc.)
  *
  * Copyright (C) 2014 NXP
  * Copyright (C) 2020 emad studio, inc.
- *
  *
  *
  */
@@ -37,6 +36,7 @@ static volatile bool stateButtonA = false; // state of ButtonA, either pressed (
 static volatile bool stateButtonB = false; // state of ButtonB, either pressed (true) or not
 static volatile portTickType T_LED = configTICK_RATE_HZ / 2; // LED off time (configTICK_RATE_HZ corresponds to one second)
 static const portTickType T_inc = 5; // configTICK_RATE_HZ / 8;
+static volatile portTickType TInitOff, TOff; // temporal parameters of LED flashing
 static const LED_t RLED = Red;
 static const LED_t GLED = Green;
 static const LED_t BLED = Blue;
@@ -61,7 +61,6 @@ void GPIO_IRQ_HANDLER(void)
 	{
 		//  frequency decreases
 		T_LED += T_inc;
-
 	}
 	else if (stateButtonB && (T_LED >= 2 * T_inc))
 	{
@@ -85,7 +84,7 @@ static void prvSetupHardware(void)
 	Board_LED_Set(Green, Off);
 	Board_LED_Set(Blue, Off);
 
-	/* Configure the GPIO interrupt */
+	/* Configure the GPIO interrupts */
 	Chip_GPIOINT_SetIntFalling(LPC_GPIOINT, GPIO_INTERRUPT_PORT,
 			(1 << GPIO_INTERRUPT_PIN_A) | (1 << GPIO_INTERRUPT_PIN_B));
 
@@ -99,7 +98,6 @@ static void prvSetupHardware(void)
 static void vLEDTask(void *pvParameters)
 {
 	LED_t LED = *((LED_t*) pvParameters); // get the LED colour
-	volatile portTickType TInitOff, TOff; // temporal parameters of LED flashing
 	portTickType xLastWakeUpTime = xTaskGetTickCount(); // needed for vTaskDelayUntil, "absolute time"
 
 	while (1)
