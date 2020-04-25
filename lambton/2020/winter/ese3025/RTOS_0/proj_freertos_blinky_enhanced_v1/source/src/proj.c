@@ -20,6 +20,10 @@
 /*****************************************************************************
  * Private types/enumerations/variables
  ****************************************************************************/
+/* timing limits */
+#define	TLEDMAX 10*configTICK_RATE_HZ
+#define TLEDMIN configTICK_RATE_HZ / 32
+
 /* GPIO pin for interrupt */
 #define GPIO_INTERRUPT_PIN_A   MYBUTTON_A_BIT_NUM	/* GPIO pin number mapped to interrupt */
 #define GPIO_INTERRUPT_PIN_B   MYBUTTON_B_BIT_NUM	/* GPIO pin number mapped to interrupt */
@@ -35,8 +39,7 @@
 static volatile bool stateButtonA = false; // state of ButtonA, either pressed (true) or not
 static volatile bool stateButtonB = false; // state of ButtonB, either pressed (true) or not
 static volatile portTickType T_LED = configTICK_RATE_HZ / 2; // LED off time (configTICK_RATE_HZ corresponds to one second)
-static const portTickType T_inc = 5; // configTICK_RATE_HZ / 8;
-static volatile portTickType TInitOff, TOff; // temporal parameters of LED flashing
+static const portTickType T_inc = configTICK_RATE_HZ / 32; // configTICK_RATE_HZ / 8;
 static const LED_t RLED = Red;
 static const LED_t GLED = Green;
 static const LED_t BLED = Blue;
@@ -57,15 +60,24 @@ void GPIO_IRQ_HANDLER(void)
 	stateButtonA = Board_MyButtons_Test(ButtonA); // Button A raises period
 	stateButtonB = Board_MyButtons_Test(ButtonB); // Button B lowers period
 
+	// update T_LED without using an if statement
+	// reference: T_LED = stateButtonA * T_inc - stateButtonB * T_inc + T_LED;
+
 	if (stateButtonA)
 	{
-		//  frequency decreases
 		T_LED += T_inc;
+		if (T_LED >= TLEDMAX)
+		{
+			T_LED = TLEDMAX;
+		}
 	}
-	else if (stateButtonB && (T_LED >= 2 * T_inc))
+	else if (stateButtonB)
 	{
-		// frequency increases
 		T_LED -= T_inc;
+		if (T_LED <= TLEDMIN)
+		{
+			T_LED = TLEDMIN;
+		}
 	}
 }
 
@@ -99,12 +111,16 @@ static void vLEDTask(void *pvParameters)
 {
 	LED_t LED = *((LED_t*) pvParameters); // get the LED colour
 	portTickType xLastWakeUpTime = xTaskGetTickCount(); // needed for vTaskDelayUntil, "absolute time"
+	volatile portTickType TInitOff = 0, TOff = 0; // temporal parameters of LED flashing
 
 	while (1)
 	{
 		// update duration parameters (T_LED is changing based on ISR)
-		TInitOff = ((portTickType) LED) * (T_LED + T_LED / 2); // initial off time is LED*1.5*T_LED
-		TOff = (3 * T_LED + T_LED / 2) - TInitOff; // off "remainder" time is 3.5T_LED - TInitOff
+		taskENTER_CRITICAL();
+		//xLastWakeUpTime = xTaskGetTickCount();
+		TInitOff = ((portTickType) LED) * (2 * T_LED); // initial off time is LED*1.5*T_LED
+		TOff = (5 * T_LED) - TInitOff; // off "remainder" time is 3.5T_LED - TInitOff
+		taskEXIT_CRITICAL();
 
 		// delay relative to t = k*4.5*T_LED, k = 0, 1, 2, 3, ..., when Red LED comes on
 		vTaskDelayUntil(&xLastWakeUpTime, TInitOff);
