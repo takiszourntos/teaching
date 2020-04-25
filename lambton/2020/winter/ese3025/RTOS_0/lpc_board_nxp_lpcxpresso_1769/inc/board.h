@@ -117,7 +117,7 @@ extern "C" {
  */
 enum LED_enum
 {
-	Red, Green, Blue
+	Red = 0U, Green = 1U, Blue = 2U
 };
 typedef enum LED_enum LED_t;
 
