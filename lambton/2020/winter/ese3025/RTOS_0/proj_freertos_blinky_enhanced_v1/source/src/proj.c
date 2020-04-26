@@ -25,9 +25,8 @@
 #define TLEDMIN (configTICK_RATE_HZ/16)
 
 /* delay timer Interval */
-#define TICKRATE_HZ1 (256) // 1000 corresponds to 1 second
-#define INT_TIMER_PRIORITY 4
-
+#define TICKRATE_HZ1 (10) // 1000 corresponds to 1 second... don't want this too long or it can affect the RTOS
+#define INT_TIMER_PRIORITY 4 // should be more important (a lower number) than the GPIO interrupt
 
 /* GPIO pin for interrupt */
 #define INT_GPIO_PRIORITY 6 // should be less important (i.e., higher priority number than INT_TIMER_PRIORITY)
@@ -79,8 +78,8 @@ void GPIO_IRQ_HANDLER(void)
 			(1 << GPIO_INTERRUPT_PIN_A) | (1 << GPIO_INTERRUPT_PIN_B));
 
 	// prevent recursive interrupt calls
-//	NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
-//	NVIC_DisableIRQ(GPIO_INTERRUPT_NVIC_NAME);
+	NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
+	NVIC_DisableIRQ(GPIO_INTERRUPT_NVIC_NAME);
 
 	// check the button states
 	stateButtonA = Board_MyButtons_Test(ButtonA); // Button A raises period
@@ -106,7 +105,7 @@ void GPIO_IRQ_HANDLER(void)
 		}
 	}
 
-	// delay for a bit, 0.1 seconds
+	// delay for a bit, 0.01 seconds, to de-bounce
 	timer_check = timer_toggle;
 	while (timer_check == timer_toggle)
 	{
@@ -115,8 +114,8 @@ void GPIO_IRQ_HANDLER(void)
 	}
 
 	// re-enable the interrupt
-//	NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
-//	NVIC_EnableIRQ(GPIO_INTERRUPT_NVIC_NAME);
+	NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
+	NVIC_EnableIRQ(GPIO_INTERRUPT_NVIC_NAME);
 }
 
 /*****************************************************************************
@@ -176,31 +175,25 @@ static void vLEDTask(void *pvParameters)
 	{
 		// update duration parameters (T_LED is changing based on ISR) - make sure these are done together
 		taskENTER_CRITICAL();
-//		Chip_GPIOINT_ClearIntStatus(LPC_GPIOINT, GPIO_INTERRUPT_PORT,
-//				(1 << GPIO_INTERRUPT_PIN_A) | (1 << GPIO_INTERRUPT_PIN_B));
-//		NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
-//		NVIC_DisableIRQ(GPIO_INTERRUPT_NVIC_NAME);
 
 		TInitOff = ((portTickType) LED) * (2 * T_LED); // initial off time is LED*1.5*T_LED
 		TOff = (5 * T_LED) - TInitOff; // off "remainder" time is 3.5T_LED - TInitOff
 
-//		NVIC_ClearPendingIRQ(GPIO_INTERRUPT_NVIC_NAME);
-//		NVIC_EnableIRQ(GPIO_INTERRUPT_NVIC_NAME);
 		taskEXIT_CRITICAL();
 
 		// delay relative to t = k*4.5*T_LED, k = 0, 1, 2, 3, ..., when Red LED comes on
-		//vTaskDelayUntil(&xLastWakeUpTime, TInitOff);
-		vTaskDelay(TInitOff);
+		vTaskDelayUntil(&xLastWakeUpTime, TInitOff);
+		//vTaskDelay(TInitOff);
 
 		// turn LED on
 		Board_LED_Set(LED, On);
-		//vTaskDelayUntil(&xLastWakeUpTime, T_LED);
-		vTaskDelay(T_LED);
+		vTaskDelayUntil(&xLastWakeUpTime, T_LED);
+		//vTaskDelay(T_LED);
 
 		// turn LED off and wait for TOff ticks
 		Board_LED_Set(LED, Off);
-		//vTaskDelayUntil(&xLastWakeUpTime, TOff);
-		vTaskDelay(TOff);
+		vTaskDelayUntil(&xLastWakeUpTime, TOff);
+		//vTaskDelay(TOff);
 	}
 }
 
