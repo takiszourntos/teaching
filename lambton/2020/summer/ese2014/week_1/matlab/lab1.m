@@ -8,6 +8,10 @@
 
 %% Lab Manual Week 1
 
+clear;
+clc;
+close all;
+
 % 1. create a vector:
     
     % here is a row vector:
@@ -74,7 +78,7 @@
     v_cmplx_61 = rand(6,1) + j*rand(6,1); % engineers use "j" not "i" for sqrt(-1) !!
     
 % 9. multiply a row of a matrix with an element of that same matrix:
-    v_9 = A_33(3,3)*A_33(2,:);
+    v_9 = A_33(3,3)*A_33(2,:); % multiply second row of A_33 by the element (3,3) of the same matrix
     
 % 10. generate a vector of values ranging from 0 t0 500 with 100 elements
     vrange_500 = linspace(0, 500, 100); % a linear range
@@ -82,8 +86,76 @@
     vrange_alt_2 = 0:(500/99):500; % this is equivalent to vrange_500
     
 % 11. Create a 2D plot of the sine function between 0 and 2\pi
-
+    T0 = 2*pi; % desired period of sine (we've set this to have just one period on 0 to 2*pi)
+    f0 = 1/T0; % frequency in Hz is just the reciprocal of the period
+    Npts = 1024; % number of points to plot
+    delta = T0/Npts; % increment or "sampling period"
+    trange = 0:delta:(T0-delta);
+    y_sine = sin(2*pi*f0*trange); 
+    figure;plot(trange, y_sine); grid;
     
-
+% 12. create a surface plot of the exponential function, Z = exp(x)*exp(-y):
+%  note that the question did not uniquely identify the exponential
+%  function in two variables, so you are free to choose it!
+    Nplot = 100; % plot will be Nplot points by Nplot points
+    xrange = linspace(1, -1, Nplot); % ordering is important here 
+    yrange = linspace(-1, 1, Nplot);
+    xvals = exp(xrange); 
+    yvals = exp(-yrange);
+    zvals = xvals' * yvals; % generate a table of values Nplot x Nplot in size
+    figure;surf(xrange, yrange, zvals);xlabel('X');ylabel('Y'); % verify that max occurs at X=+1, Y=-1
     
+% 13. generate a plot of a vector of random data; draw a horizontal line at the mean
+    Ndata_pts = 512; % number of data points
+    xdata = 0:(Ndata_pts-1); % independent variable
+    bias = 3.789*ones(size(xdata));
+    ydata = bias + randn(1,Ndata_pts); % random data with a bias term (normally distributed)
+    mean_val = mean(ydata);
+    figure;plot(xdata, ydata,'g.',xdata,mean_val*ones(size(xdata)),'r-',xdata,bias,'b--');
+    grid
+    legend('data','mean value','bias');
+    
+% 14. write a script that calculates the mean of five samples of data from
+% a vector of random data. Calculate the overall mean. Use a for-loop to
+% perform the calculations. For each iteration of the loop, use an if-else
+% control statement to display whether the sample is less than, greater
+% than, or equal to the mean (use data from question 13.)
+    % generate five random samples
+    IMAX = max(size(ydata));
+    samples = zeros(5, 1);
+    for ii=1:5
+        indx = randi(IMAX);
+        samples(ii) = ydata(indx);
+    end;
+    mean_samples = mean(samples);
+    
+    for ii=1:Ndata_pts
+        if ydata(ii) > mean_samples
+            disp('greater than');
+        elseif ydata(ii) < mean_samples
+            disp('less than');
+        else 
+            disp('equal to!');
+        end;
+    end;
+
+% 15. create a function that calculates the sum of an arbitrary number of
+% sinusoidal terms; call this function from this script--- NOTE: the
+% function addsines.m is located in this directory; the function addsines
+% is called as addsines(Y) where the vector Y is an Nterms x Npts matrix, 
+% such that each row corresponds to a sinusoidal function;
+    % note: we'll use Npts and trange defined in question 11;
+    Nterms = 5;
+    
+    Y = zeros(Nterms, Npts); % initialize Y
+    % generate Nterms random sinusoids and populate Y
+    for ii = 1:Nterms;
+        frandom = f0*randi(16); % frequency can be up to 16x f0;
+        prandom = 2*pi*rand(1,1); % random phase shift from 0 to 2*pi
+        y_sine = sin(2*pi*frandom*trange + prandom);
+        Y(ii,:) = y_sine;
+    end;
+    
+    Ytotal = addsines(Y);
+    figure; plot(trange, Ytotal); grid; title('sum of sinusoids');
     
