@@ -60,7 +60,7 @@
     A_33_inverse = inv(A_33); % get inverse of A_33;
     P_identity = A_33*A_33_inverse; % check that this is close to identity
     A_error = eye(3) - P_identity;
-    err=norm(A_error); % quantify the error
+    
     
     
 
