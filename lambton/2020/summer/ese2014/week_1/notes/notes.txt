@@ -1,0 +1,17 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+for those of you without the experience in Signals & Systems, I recommend the following text:
+
+Signals & Systems, Second Edition by Alan V. Oppenheim, Alan S. Willsky with S. Hamid Nawab
+
+get through Chapters 1, 2 and 3 over the next month.
+
+to follow along, if you don't have Octave or Matlab at the moment, do a:
+
+$ sudo apt install octave
+
+(should be possible to install Octave on Windows as well)
+
+
