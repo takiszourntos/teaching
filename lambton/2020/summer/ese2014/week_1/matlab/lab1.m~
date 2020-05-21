@@ -60,8 +60,26 @@
     A_33_inverse = inv(A_33); % get inverse of A_33;
     P_identity = A_33*A_33_inverse; % check that this is close to identity
     A_error = eye(3) - P_identity;
+    err=norm(A_error); % quantify the error
     
+% 6. compute the element-wise multiplication of a matrix and a scalar:
+    alpha = 0.678432; % a scalar quantity
+    A_scaled = alpha*A_33; % simple asterisk does the scalar multiplication
     
+% 7. concatenate two matrices:
+    A_35 = [A_33  A_32]; % side-by-side concatenation
+    A_53 = [A_33; A_23]; % top-bottom concatenation
+    
+% 8. create a vector of complex numbers:
+    v_cmplx_61 = rand(6,1) + j*rand(6,1); % engineers use "j" not "i" for sqrt(-1) !!
+    
+% 9. multiply a row of a matrix with an element of that same matrix:
+    v_9 = A_33(3,3)*A_33(2,:);
+    
+% 10. generate a vector of values ranging from 0 t0 500 with 100 elements
+    vrange_500 = linspace(0, 500, 100); % a linear range
+    vrange_alt = 0:5:500; % another way (but it has 101 elements)
+    vrange_alt_2 = 0:501/100:500;
     
 
     
