@@ -1,5 +1,5 @@
 % this function assumes that the passed parameter corresponds to a set of 
-% sinusoids (one function per row);
+% sinusoids (one sinusoid per row);
 % the function adds up the sinusoids, point by point
 % 
 % author: Takis Zourntos
