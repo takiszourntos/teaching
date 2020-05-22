@@ -3,7 +3,9 @@
 %
 % ESE2014
 %
-% instructor: Takis Zourntos
+% author: Takis Zourntos
+%
+% Copyright (C) 2020
 %
 
 %% Lab Manual Week 1
@@ -33,7 +35,7 @@ close all;
     x_ones = ones(6,1); % column vector of ones
     x_zeros = zeros(1,7); % row vector of zeros
     x_rand = rand(1,8); % uniformly-distributed pseudorandom row vector of ones
-    x_randn = rand(5,1); % normally-distributed pseudorandom column vector of ones
+    x_randn = randn(5,1); % normally-distributed pseudorandom column vector of ones
     
 % 2. create a matrix:
 
