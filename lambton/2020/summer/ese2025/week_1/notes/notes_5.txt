@@ -1,0 +1,19 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+You reports need to be done on Google Docs.
+
+You are going to use the CodeBlocks plug in.
+
+Code fragments in the main text.
+
+Introduction
+Description
+Conclusion
+Appendix (code listing in entirety)
+
+Save full listings for the Appendix only!!!
+
+
+

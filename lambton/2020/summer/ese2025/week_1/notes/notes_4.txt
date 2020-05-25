@@ -1,0 +1,23 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+Additional Materials HIGHLY recommended for this class:
+
+1) a Beaglebone Black Rev. C or a Pocket Beagle:
+ Beaglebone Black Rev. C: http://www.digikey.ca/short/pf1w9f
+ Pocket Beagle: https://www.digikey.ca/en/products/detail/ghi-electronics-llc/POCKETBEAGLE-SC-569/7603326?s=N4IgTCBcDaIA4HsDGBrApgFwAQCM0EMBzAGzRAF0BfIA
+
+2) a great book to accompany the Beaglebone Black (or Pocket Beagle), make sure it's the Second Edition:
+ https://www.amazon.ca/Exploring-BeagleBone-Techniques-Building-Embedded-ebook/dp/B07MMVV65W
+
+3) Introduction to Algorithms (Cormen et al.): https://www.amazon.ca/Introduction-Algorithms-H-S-Chawla/dp/0262533057/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=
+
+Please check out my tutorial videos:
+
+https://github.com/takiszourntos/teaching/tree/master/instructional/BB_intro (there are two videos for you to watch)
+
+(please keep in mind that for writing to the onboard FLASH memory, use the IoT distribution (versus the GUI version), otherwise the image may not fit!)
+
+If you need more information on Git, please read "Using Git for Version Control" starting on page 124 of Derek Molloy's book (ref. 2)
+
