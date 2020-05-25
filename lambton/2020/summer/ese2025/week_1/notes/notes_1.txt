@@ -1,0 +1,16 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+Software Environment for the Class... 
+
+We have two main platforms we are going to use. One is the 64-bit host machine (running Eclipse under Linux) and the other is an MCU environment (Linux on the Beaglebone).
+
+At a minimum, you will need:
+
+1) Ubuntu (18.04 LTS or 20.04 LTS) installed on your host machine (laptop or desktop)
+
+2) Eclipse (for C/C++ developers) on your host machine
+
+3) Beaglebone running the latest IoT Debian distribution (available from beagleboard.org)
+
