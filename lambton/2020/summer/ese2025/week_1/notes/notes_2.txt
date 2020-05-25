@@ -1,0 +1,30 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+
+-----------------
+Now, code your algorithm as a C-function. Here is an outline:
+
+int findLargestInt (int *s, size_t L)
+{
+ int largest=s[0];
+ 
+ // your code goes here
+
+ return largest;
+}
+
+Now, let's code a bubble sort algorithm!
+
+O(n^2) complexity (quicksort perfoms O(n log n) complexity)
+
+After this, I will ask you to watch some YouTube movies/links.
+
+1) the documentary on Linux: https://www.youtube.com/watch?v=XMm0HsmOTFI
+
+2) a recent interview with Linux Torvalds: https://www.youtube.com/watch?v=o8NPllzkFhE
+
+3) historical/documentary on the Unix OS: https://www.youtube.com/watch?v=tc4ROCJYbm0
+
+
+UNIX -> INUX -> LINUX
