@@ -1,0 +1,230 @@
+% Uncomment one of three below
+%\RequirePackage[]{optional}
+\RequirePackage[]{optional}
+%\RequirePackage[slides]{optional}
+
+\opt{slides}{
+% Following for presentation mode
+\documentclass[10pt]{beamer}
+\usepackage{xmpmulti}
+%usetheme{Berlin}
+}
+\opt{notslides}{
+% Following for notes mode
+\documentclass{article}
+\usepackage{beamerarticle}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+}
+
+% Following for all modes
+%\usepackage{auto-pst-pdf}
+%\usepackage{pst-pdf}
+
+\parindent=0ex
+\parskip=1ex
+\newcommand{\conv}{\ast}
+\reversemarginpar
+
+\title{Signals as elements of a vector space}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\mode<article>{{\bf \LARGE Signals as elements of a vector space}}
+
+%\section{Signals as elements of a vector space}
+For interest only.
+
+\begin{frame}
+  \frametitle{Abstract vector spaces}
+  A vector space $V$ is a set that is closed under finite vector addition and scalar multiplication.  The following must hold for any $\mathbf{u}$, $\mathbf{v}$, $\mathbf{w}$ in $V$ and scalars $a$, $b$ (real or complex):
+  \begin{enumerate}
+  \item $\mathbf{v} + \mathbf{w} = \mathbf{w} + \mathbf{v}$ (commutativity)
+  \item $\mathbf{u} + (\mathbf{v} + \mathbf{w}) = (\mathbf{u} + \mathbf{v}) + \mathbf{w}$ (associativity)
+  \item There exists an element $\mathbf{0}$ in $V$ such that $\mathbf{v} + \mathbf{0} = \mathbf{v}$ for all $\mathbf{v}$ (additive identity)
+  \item For all $\mathbf{v}$ in $V$ there exists an element $\mathbf{w}$ in $V$ such that $\mathbf{v} + \mathbf{w} = \mathbf{0}$ (existence of additive inverse)
+  \item $a(\mathbf{v} + \mathbf{w}) = a \mathbf{v} + a \mathbf{w}$ (distributivity of vector sums)
+  \item $(a + b) \mathbf{v} = a \mathbf{v} + b \mathbf{v}$ (distributivity of scalar sums)
+  \item $a(b \mathbf{v}) = (a b) \mathbf{v}$ (associativity of scalar multiplication)
+  \item $1 \mathbf{v} = \mathbf{v}$ (scalar multiplication identity).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Euclidean space}
+  Euclidean $n$-space $V = \mathbb{R}^n$ is a familiar example of a vector space, where every element is represented by a list of $n$ real numbers, scalars are real numbers, addition is componentwise, and scalar multiplication is multiplication on each term  separately.
+  
+  Vector addition:
+  \begin{equation*}
+    \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} + \begin{pmatrix} w_1 \\ \vdots \\ w_n \end{pmatrix}
+    = \begin{pmatrix} v_1 + w_1 \\ \vdots \\ v_n + w_n \end{pmatrix}
+  \end{equation*}
+  Scalar multiplication:
+  \begin{equation*}
+    a \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} = \begin{pmatrix} a v_1 \\ \vdots \\ a v_n \end{pmatrix}
+  \end{equation*}
+  
+  \mode<presentation>{{\bf Exercise:}  Convince yourself that the 8 vector space axioms hold for $V = \mathbb{R}^3$.} 
+  \mode<article>{Convince yourself that the 8 vector space axioms hold for $V = \mathbb{R}^3$.\marginpar{\bf Exercise:}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Canonical basis of Euclidean space}
+  Given a vector $\mathbf{x} \in \mathbb{R}^n$ ($n$-dimensional Euclidean space) we can write $\mathbf{x}$ as a linear combination (weighted sum) of $n$ vectors:
+  \begin{equation*}
+    \mathbf{x} = a_1 \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix} + 
+    a_2 \begin{pmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{pmatrix} + \cdots + 
+    a_n \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{pmatrix} = \sum_{i=1}^n a_i \mathbf{e}_i
+  \end{equation*}
+  where $\mathbf{e}_i = (0, \ldots, 1, \ldots, 0)^T$ with the single nonzero element at position $i$.  Clearly in this case $a_i = x_i$.  
+  
+  The set of vectors $\{\mathbf{e}_1, \ldots, \mathbf{e}_n\}$ (or alternatively $\{\mathbf{e}_i\}_{i=1}^n$) forms a basis of $\mathbb{R}^n$: any values for the weights $\{a_i\}_{i=1}^n$ determines a particular $\mathbf{x}$, and any $\mathbf{x}$ is uniquely specified by a set of coefficient values $\{a_i\}_{i=1}^n$.  
+
+  This can be written in the form $\mathbf{x} = \mathbf{I} \mathbf{a}$, where $\mathbf{I} = \begin{pmatrix} \mathbf{e}_1 \cdots \mathbf{e}_n \end{pmatrix}$ represents the canonical basis and $\mathbf{a} = \mathbf{x}$ are the coefficients.
+\end{frame}
+
+\begin{frame}
+  \frametitle{So...}
+  
+  Suppose I'm thinking of a vector $\mathbf{x}$ in $\mathbb{R}^3$ and you want to know what vector it is.
+  
+  You could get some information by asking me  "What is the value of the first component relative to the canonical basis?", in which case I might reply "The value is 11."  If you asked me the value for the other two components you would know the overall vector.
+  
+  Alternatively you could ask me "What value do you obtain when you take the dot product of your vector with $\mathbf{e}_1$, in which case I would also reply "The value is 11".  If I additionally gave you the dot products with vectors $\mathbf{e}_2$ and $\mathbf{e}_3$ you would know $\{a_1, a_2, a_3\}$ and $\mathbf{x}$ is fully determined via $\mathbf{x} = \sum_{i=1}^n a_i \mathbf{e}_i$.  
+  \end{frame}
+
+\begin{frame}
+  \frametitle{General basis of Euclidean space}
+  For $\mathbb{R}^n$, any set of linearly independent vectors $\{\mathbf{b}_i\}_{i=1}^n$ is a basis.  Thus for any $\mathbf{x}  \in \mathbb{R}^n$ we can write 
+  \begin{equation*}
+    \mathbf{x} = a_1' \mathbf{b}_1 + a_2' \mathbf{b}_2 + \cdots + a_n' \mathbf{b}_n = \sum_{i=1}^n a'_i \mathbf{b}_i = \mathbf{B} \mathbf{a}',
+  \end{equation*}
+  where $\mathbf{B} = (\mathbf{b}_1 \cdots \mathbf{b}_n)$.  Since
+  \begin{equation*}
+    \mathbf{x} = \mathbf{I} \mathbf{x} = \mathbf{I} \mathbf{B} \mathbf{B}^{-1} \mathbf{x} = \mathbf{B} (\mathbf{B}^{-1} \mathbf{x})
+\end{equation*}
+the coefficients of $\mathbf{x}$ on the basis $\mathbf{B}$ are evidently $\mathbf{a}' = \mathbf{B}^{-1} \mathbf{x}$.
+  
+ One often chooses the basis vectors to be orthogonal and unit length, so $\mathbf{b}_i^T \mathbf{b}_j = \delta_{ij} \Longrightarrow 
+  \mathbf{B}^T \mathbf{B} = \mathbf{I} \Longrightarrow \mathbf{B}^{-1} = \mathbf{B}^T$.  In this case $\mathbf{a}' = \mathbf{B}^T \mathbf{x}$, so the $i$th element of $\mathbf{a}'$ is $a_i' = \mathbf{b}_i^T \mathbf{x}$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{The vector space of continuous functions}
+  Let $C$ be the set of real-valued continuous functions of a real variable.  Elements of this space are {\em functions}, written for example as $s(t)$.  
+  
+  For elements (functions) $u(t)$ and $v(t)$ in $C$ we can define a vector addition operation, which takes the two elements and returns a third:  $u(t) + v(t)$:  this is a function which, for each $t$, has a value equal to the sum of the values of the two functions at the same value of $t$.
+  
+  For $v(t)$ in $C$ and a scalar $a$ we can define scalar multiplication in the obvious way, and the product of the scalar with the function is a new function $a v(t)$:  this is a function which, for each $t$, has a value equal to $a$ times the value of the function at $t$.
+  
+  The vector space axioms hold on the set $C$ with the above operations.  Therefore $C$ is a vector space, and the elements can be considered to be vectors.
+  
+  \mode<presentation>{{\bf Exercise:}  Convince yourself that the 8 vector space axioms hold for $C$ defined above.} 
+  \mode<article>{Convince yourself that the 8 vector space axioms hold for $C$ defined above.\marginpar{\bf Exercise:}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why do we care?}
+  
+  Consider say a temperature sensor on a buoy floating on the Atlantic Ocean.  For each instant in time, this sensor provides a temperature reading.  Thus for each time instant $t$, the temperature signal takes on a value $s(t)$.  It is therefore natural to represent signals by functions.  
+  
+  If $s(t)$ is a continuous function, then it is a member of $C$ (the vector space of continuous functions).  We can therefore think of the signal $s(t)$ as a {\em vector} of this space.  
+  
+  \begin{center}
+  {\em This is probably the best way to think of signals --- as vectors.}  
+  \end{center}
+  
+  There are other properties of signals that make them special, but when working with them you should keep the analogy of signals as (generalised) vectors in mind.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Basis of continuous function space}
+  Since $C$ is a vector space, it has a basis.  Any element $x(t)$ of this space can therefore be written as a linear combination (weighted sum) of a set of basis vectors $b_i(t)$.  The only complication is that $C$ is infinite dimensional, so there are infinitely many basis vectors!
+  
+  If the set of basis vectors is $\{b_i(t)\}_{i=-\infty}^\infty$, then any $x(t)$ in $C$ can be written as
+  \begin{equation*}
+    x(t) = \sum_{i=-\infty}^\infty a_i b_i(t)
+  \end{equation*}
+  for some appropriate choice of coefficients $\{a_i\}_{i=-\infty}^\infty$, where $i$ is integer.  Knowing these coefficients is {\em entirely equivalent} to knowing the original signal $x(t)$.  
+  
+  The Fourier series applies to signals $x(t)$ that are periodic with period $T$.  In this case the set of functions $\{b_i(t)\}_{i=-\infty}^\infty$ with $b_i(t) = e^{j 2 \pi i t/T}$ and $i$ integer is a basis.  This is just the set of complex exponentials with frequencies $2 \pi i/T$ for appropriate values of $i$.  The Fourier series decomposition therefore lets us write any periodic signal $x(t)$ as a linear combination or weighted sum of a set of complex exponentials.  The coefficients or weights specify the amount of each complex exponential present in the signal.  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Orthogonality of the Fourier series basis functions}
+  
+The basis functions $b_i(t)$ have an important property --- they are orthogonal over the range $0$ to $T$.  In particular, it is quite easy to show that
+  \begin{equation*}
+    \int_0^T b_k(t) b_l^\ast(t) dt = \delta_{kl} T, \quad \text{where} \quad 
+    \delta_{kl} = \begin{cases} 1 \quad & k = l \\ 0 \quad & k \neq l. \end{cases}
+  \end{equation*}
+  \mode<presentation>{{\bf Exercise:}  
+  Convince yourself that this is true.  Using the previous definition we have
+  \begin{equation*}
+    \int_0^T b_k(t) b_l^\ast(t) dt = \int_0^T e^{j 2 \pi k t/T} e^{-j 2 \pi l t/T} dt
+    = \int_0^T e^{j 2 \pi (k-l) t/T} dt = \int_0^T e^{j 2 \pi m t/T} dt,
+  \end{equation*}
+  where $m = k - l$ is an integer.  This integral is trivially equal to $T$ when $m=0$.  Show that for nonzero $m$ the integral evaluates to $\frac{1}{j 2 \pi m/T} (e^{j 2 \pi m} - 1) = 0$, since $e^{j 2 \pi m} = (e^{j 2 \pi})^m = 1^m = 1$.  } 
+  \mode<article>{Convince yourself that this is true.  \marginpar{\bf Exercise:}
+  Using the previous definition we have
+  \begin{equation*}
+    \int_0^T b_i(t) b_k^\ast(t) dt = \int_0^T e^{j 2 \pi i t/T} e^{-j 2 \pi k t/T} dt
+    = \int_0^T e^{j 2 \pi (i-k) t/T} dt = \int_0^T e^{j 2 \pi m t/T} dt,
+  \end{equation*}
+  where $m = i - k$ is an integer.  This integral is trivially equal to $T$ when $m=0$.  Show that for nonzero $m$ the integral evaluates to $\frac{1}{j 2 \pi m/T} (e^{j 2 \pi m} - 1) = 0$, since $e^{j 2 \pi m} = (e^{j 2 \pi})^m = 1^m = 1$.  Additionally, we could change the integration limits to go from $a$ to $T+a$ and the result would still be true.
+}
+  \end{frame} 
+  
+  \begin{frame}
+  \frametitle{Finding the coefficients}
+  
+  Multiplying both sides of $x(t) = \sum_{i=-\infty}^\infty a_i b_i(t)$ by $b_k^\ast(t)$ and integrating:
+  \begin{align*}
+    \int_0^T x(t) b_k^\ast(t) dt &= \int_0^T \left[ \sum_{i=-\infty}^\infty a_i b_i(t) \right] b_k^\ast(t) dt
+    = \sum_{i=-\infty}^\infty a_i \int_0^T b_i(t) b_k^\ast(t) dt \\
+    &= \sum_{i=-\infty}^\infty a_i \delta_{ik} T = a_k T.
+  \end{align*}
+  Thus for each $k$ we have $a_k = \frac{1}{T} \int_0^T x(t) e^{-j 2 \pi k t/T} dt$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{So...}
+  
+  Suppose I'm thinking of a signal $s(t)$ and you want to know what signal it is.
+  
+  You could get some information by asking me  "What is the value of the signal at $t=1$?", in which case I might reply "The value of $s(1)$ is 14."  If you asked me the value for {\em lots} of different values of $t$ (infinitely many), you would know the overall signal.  Thus the signal could be described by the infinite set of values $\{\ldots, x(0), \ldots, x(0.5), \ldots, x(1), \ldots\}$.
+  
+  Alternatively you could also get some information by asking me "If you take your signal $s(t)$ and calculate $a_i = \frac{1}{T} \int_0^T x(t) e^{-j 2 \pi i t/T} dt$ for $k=1$ what do you get?", I might reply "You get $a_1$ is equal to 2.".  If you asked me this question for every $k$ you would know the signal, since you could calculate its value at any instant in time using $x(t) = \sum_{i=-\infty}^\infty a_i e^{j 2 \pi i t/T}$.  Thus the signal could also be described by the infinite set of values $\{\ldots, a_{-1}, a_0, a_1, \ldots\}$.
+  
+  It turns out that the second description is much more useful in practice.
+\end{frame}
+
+\begin{center}
+\begin{tabular}{r|c|c|}
+  & Euclidean space $\mathbb{R}^n$ & Function space {\cal C} (periodic $T$) \\
+  Dimensionality of space & $n$ & $\infty$ \\
+  Vectors in space & $\mathbf{x}$ & $x(t)$ \\
+  Inner (dot) product & $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \mathbf{y}$ & 
+   $\langle x(t), y(t) \rangle = \int_0^T x^*(t) y(t) dt$ \\
+   Orthonormal basis vectors & $\mathbf{b}_1, \ldots, \mathbf{b}_n$ & $\ldots, b_{-1}(t), b_0(t), b_1(t), \ldots$ \\
+   & with $\langle \mathbf{b}_k, \mathbf{b}_l \rangle = \delta_{kl}$ & 
+   with $\langle b_k(t), b_l(t) \rangle = \delta_{kl}$ \\
+   Representation on basis & $\mathbf{x} = \sum_{i=1}^n c_i \mathbf{b}_i$ for some $\{c_i\}_{i=1}^n$ & 
+   $x(t) = \sum_{i=-\infty}^{\infty} c_i b_i(t)$ \\
+   & & $\text{~for some~} \{c_i\}_{i=-\infty}^\infty$ \\
+   Analysis & $c_i = \langle \mathbf{b}_i, \mathbf{x} \rangle = \mathbf{b}_i^T \mathbf{x}$ & 
+   $c_i = \langle b_i(t), x(t) \rangle = \int_0^T x(t) b_i^*(t) dt$
+\end{tabular}
+\end{center}
+
+  \mode<presentation>{{\bf Exercise:}  Suppose $b_i(t) = \frac{1}{T} e^{j 2 \pi i t/T}$.  Convince yourself that the relationships in the function space ${\cal C}$ above correspond exactly to the conventional Fourier series relationships.} 
+  \mode<article>{Suppose $b_i(t) = \frac{1}{T} e^{j 2 \pi i t/T}$.  \marginpar{\bf Exercise:} Convince yourself that the relationships in the function space ${\cal C}$ above correspond exactly to the conventional Fourier series relationships.}
+  
+\end{document}
