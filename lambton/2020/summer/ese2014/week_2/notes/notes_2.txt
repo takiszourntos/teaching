@@ -1,0 +1,16 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+So there is no confusion:
+
+For Lab 1: individual submission, start with an empty file/mind/document/screen (in other words, don't start with my code or your friend's code and then try to make minor changes!)
+
+Also, for the report: adhere to the guidelines discussed at the beginning of today's class
+
+Your document body should be largely written in complete sentences. Have something to say, and use code fragments to support your points. 
+
+Save the listings for the Appendix
+
+You can take an extra week or two if you need it
+

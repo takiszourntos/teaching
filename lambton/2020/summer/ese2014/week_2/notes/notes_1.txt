@@ -1,0 +1,14 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+Report Writing
+
+- you have to have something to say, PICK SOMETHING
+- potentially wide audience, some non-technical people
+- in your introduction, you have to motivate your work and explain its relevance to a larger context --- relate your technial work to a bigger picture
+- after the introduction, you can start a DISCUSSION
+- in that discussion, use code fragments to illustrate your points
+- remember, you have something to say, so presumably you have points to make
+- then conclude (reiterate your main points, summarize & justify)
+- Appendix: put your code listings back here for people who may be interested in looking at them
