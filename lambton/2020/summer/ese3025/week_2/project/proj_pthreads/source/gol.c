@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ncurses.h>
 #include "gol_config.h"
 #include "cells.h"
@@ -23,7 +24,7 @@ const size_t M = config_ME;
 
 cell_t env[config_NE][config_ME];
 cell_t update_env[config_NE][config_ME];
-reproduction_flag = false; // is high when it's mating season
+bool reproduction_flag = false; // is high when it's mating season
 
 /*
  * main code
@@ -56,12 +57,21 @@ int main(void)
 			}
 		}
 	}
-	getch();
 
-	while ()
+	unsigned short int ctr=0;
+	while (1)
 	{
-
+		udelay(config_TL / 2);
+		reproduction_flag=true;
+		udelay(config_TL / 2);
+		reproduction_flag=false;
+		if (++ctr==config_TDISP)
+		{
+			ctr=0;
+			updateDisplay();
+		}
 	}
 
-	return 0;
+	// should never arrive here;
+	return 1;
 }

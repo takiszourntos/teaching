@@ -11,14 +11,14 @@
 /*
  * "community of cells" (handled by one thread) parameters
  */
-#define config_NC		8 // # of cell rows in a community
-#define config_MC		8 // # of cell columns in a community
+#define config_NC		32 // # of cell rows in a community
+#define config_MC		16 // # of cell columns in a community
 
 /*
  * overall environment parameters
  */
-#define config_K		4 // # of communities "down"
-#define config_L		8 // # of communities "across"
+#define config_K		2 // # of communities "down"
+#define config_L		4 // # of communities "across"
 #define config_NE 		config_K*config_NC // number of environment rows
 #define config_ME 		config_L*config_MC // number of environment columns
 

@@ -9,10 +9,14 @@
 #define DISPLAY_H_
 
 #include <ncurses.h>
+#include <stdbool.h>
+
 
 /*
  * functions
  */
 void initDisplay(void);
+
+void updateDisplay(void);
 
 #endif /* DISPLAY_H_ */
