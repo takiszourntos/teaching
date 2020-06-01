@@ -52,7 +52,7 @@ int main(void)
 			threadID[index].col = j;
 			if (pthread_create(&threadptrs[index], NULL, &updateCellFunc, &threadID[index]) != 0)
 			{
-				printf("failed to create the thread %d\n", i * j);
+				printf("failed to create the thread %d\n", (int) index);
 				return 1;
 			}
 		}
