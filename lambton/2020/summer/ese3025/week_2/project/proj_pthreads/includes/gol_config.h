@@ -27,7 +27,7 @@
 /*
  * temporal parameters
  */
-#define config_TL		1048576 // nanoseconds between generation
+#define config_TL		1048576 // microseconds between generation
 #define	config_TDISP	8 // number of generations between plots
 
 /*
@@ -48,6 +48,5 @@ struct threadID_struct
 	size_t col;
 };
 typedef struct threadID_struct threadID_t;
-
 
 #endif /* GOL_CONFIG_H_ */

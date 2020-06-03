@@ -12,9 +12,8 @@
 /*
  * important variables
  */
-extern cell_t env;
-extern cell_t update_env;
-extern bool reproduction_flag; // is high when it's mating season
+extern cell_t **env;
+extern cell_t **update_env;
 
 void initDisplay(void)
 {

@@ -14,13 +14,13 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-
-
 /*
  * functions
  */
 void initEnvironment(void);
 
-void* updateCellFunc(void *);
+void copyEnvironment(void);
+
+void* updateCommFunc(void*);
 
 #endif /* CELLS_H_ */

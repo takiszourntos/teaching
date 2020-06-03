@@ -38,18 +38,18 @@ int main(void)
 	// initialize workspace
 	initEnvironment();
 
-
-	// create the threads, returns 0 on the successful creation of each thread
+	// create the threads
 	size_t index;
 	for (size_t i = 0; i != config_K; ++i)
 	{
 		for (size_t j = 0; j != config_L; ++j)
 		{
-			index = i*config_K + j; // map (i,j) to an 1-d index
-			threadID[index];
+			index = i * config_K + j; // map (i,j) to an 1-d index
 			threadID[index].row = i;
 			threadID[index].col = j;
-			if (pthread_create(&threadptrs[index], NULL, &updateCellFunc, &threadID[index]) != 0)
+			// the following if condition returns 0 on the successful creation of each thread:
+			if (pthread_create(&threadptrs[index], NULL, &updateCommFunc,
+					&threadID[index]) != 0)
 			{
 				printf("failed to create the thread %d\n", (int) index);
 				return 1;
@@ -60,18 +60,19 @@ int main(void)
 	// initialize display with ncurses
 	initDisplay();
 
-	unsigned short int ctr=0;
+	unsigned short int ctr = 0;
 	while (1)
 	{
-		reproduction_flag=true;
-		usleep(config_TL/2);
-		reproduction_flag=false;
-		usleep(config_TL/2);
-		if (++ctr==config_TDISP)
+		reproduction_flag = true;
+		usleep(config_TL / 2); // allow new generation to check in
+		reproduction_flag = false;
+		usleep(config_TL / 2); // put a hold on reproduction to update display
+		if (++ctr == config_TDISP)
 		{
-			ctr=0;
+			ctr = 0;
 			updateDisplay();
 		}
+		copyEnvironment(); // write changes to the environment, env, from update_env
 	}
 
 	// should never arrive here;
