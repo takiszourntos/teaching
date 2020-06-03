@@ -5,6 +5,7 @@
  *      Author: takis
  */
 
+#include "gol_config.h"
 #include <ncurses.h>
 #include "display.h"
 

@@ -5,10 +5,11 @@
  *      Author: takis
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <ncurses.h>
 #include "gol_config.h"
 #include "cells.h"
@@ -37,8 +38,6 @@ int main(void)
 	// initialize workspace
 	initEnvironment();
 
-	// initialize display
-	initDisplay();
 
 	// create the threads, returns 0 on the successful creation of each thread
 	size_t index;
@@ -58,13 +57,16 @@ int main(void)
 		}
 	}
 
+	// initialize display with ncurses
+	initDisplay();
+
 	unsigned short int ctr=0;
 	while (1)
 	{
-		udelay(config_TL / 2);
 		reproduction_flag=true;
-		udelay(config_TL / 2);
+		usleep(config_TL/2);
 		reproduction_flag=false;
+		usleep(config_TL/2);
 		if (++ctr==config_TDISP)
 		{
 			ctr=0;
