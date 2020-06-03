@@ -8,6 +8,8 @@
 #ifndef GOL_CONFIG_H_
 #define GOL_CONFIG_H_
 
+#include <stdlib.h>
+
 /*
  * "community of cells" (handled by one thread) parameters
  */
