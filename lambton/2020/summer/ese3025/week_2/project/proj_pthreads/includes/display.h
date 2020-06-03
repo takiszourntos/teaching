@@ -11,7 +11,6 @@
 #include <ncurses.h>
 #include <stdbool.h>
 
-
 /*
  * functions
  */
