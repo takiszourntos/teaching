@@ -28,7 +28,7 @@
  * temporal parameters
  */
 #define config_TL		1048576 // microseconds between generation
-#define	config_TDISP	8 // number of generations between plots
+#define	config_TDISP	1 // number of generations between plots
 
 /*
  * basic cell type
@@ -40,7 +40,7 @@ enum cell_enum
 typedef enum cell_enum cell_t;
 
 /*
- * thread identifier
+ * thread identifier (in units of community BLOCKS not cells!)
  */
 struct threadID_struct
 {
@@ -48,5 +48,27 @@ struct threadID_struct
 	size_t col;
 };
 typedef struct threadID_struct threadID_t;
+
+/*
+ * a neighbour type for cells... here, X represents the cell:
+ *
+ *    			a b c
+ *              d X e
+ *              f g h
+ *
+ */
+enum neighbour_enum
+{
+	a_posn=0U,
+	b_posn,
+	c_posn,
+	d_posn,
+	e_posn,
+	f_posn,
+	g_posn,
+	h_posn
+};
+typedef enum neighbour_enum neighbour_t;
+
 
 #endif /* GOL_CONFIG_H_ */
