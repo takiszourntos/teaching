@@ -1,0 +1,28 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+Some resources for getting into Conway's Game of Life
+
+https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
+check out the examples of patterns, in particular
+
+more legit reference (non-Wikipedia!) from an article published in Scientific American:
+https://web.stanford.edu/class/sts145/Library/life.pdf
+
+Venerable Youtube link with music!
+https://www.youtube.com/watch?v=C2vgICfQawE
+
+Please note John Conway's desiderata from the article:
+"The basic idea is to start with a simple configuration of counters (organisms), one to a cell, then observe
+how it changes as you apply Conway's "genetic laws" for births, deaths, and survivals. Conway chose his
+rules carefully, after a long period of experimentation, to meet three desiderata:
+1. There should be no initial pattern for which there is a simple proof that the population can grow without limit.
+2. There should be initial patterns that apparently do grow without limit.
+3. There should be simple initial patterns that grow and change for a considerable period of time before coming to end in three possible ways: fading away
+ completely (from overcrowding or becoming too sparse), settling into a stable configuration that remains unchanged thereafter, or entering an oscillating phase 
+ in which they repeat an endless cycle of two or more periods. In brief, the rules should be such as to make the behavior of the population unpredictable."
+
+Also some resources for the ncurses library:
+https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/
