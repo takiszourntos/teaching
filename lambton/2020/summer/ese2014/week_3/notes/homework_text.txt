@@ -1,0 +1,25 @@
+Homework Problems (you may be tested on any of this content!)
+=============================================================
+
+- These problems will be especially useful if you need a review of Systems & Signals, or if you are relatively new to the subject
+
+- Please note, however, that some background in Systems and Signals is expected for this class, and any undergraduate program in electrical, electronic, computer and mechanical engineering, usually includes a course or two on this material. If you have not had this preparation, you must undertake a remedial study of the subject yourself, using these homework problems, but also by going  through the recommended Oppenheim & Willsky System and Signals text (and working through example problems there).
+
+- The textbook for this course is Digital Signal Processing using Matlab by Ingle & Proakis
+
+
+1) Matlab Review
+----------------
+
+Study (and try out!) some of the examples from Chapter 1 of the class text. Also, if you not already done so, complete Lab 1 from the course lab manual.
+
+2) Continuous-Time Signals
+--------------------------
+
+The course text deals primarily with a discrete-time signals. A lot of the theory for discrete-time signals and systems, however, derives from continuous-time signals and systems. It is important to note that discrete-time signals and systems are objects onto themselves, and not necessarily derived from continuous-time systems. Nevertheless, a better appreciation of Fourier Theory usually comes from the continuous-time domain.
+
+A nice treatment of continuous- and discrete-time systems is offered in Oppenheim & Willsky, Chapter 1, Basic Problems: 1.1-1.7, 1.21-1.22.
+
+
+
+ 
