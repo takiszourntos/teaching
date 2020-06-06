@@ -51,6 +51,8 @@ The following is a comprehensive list with links for recommended software and ha
 
 5) Yocto+Beaglebone: https://www.amazon.ca/Using-Yocto-Project-BeagleBone-Black/dp/178528973X/ref=sr_1_2?keywords=yocto+and+beaglebone&qid=1583614525&sr=8-2
 
+6) The Linux Programming Interface (Kerrisk): https://www.amazon.ca/Linux-Programming-Interface-System-Handbook/dp/1593272200
+
 
 ## For Capstone (ESE4009) students: Git Collaboration and Linux Cross Toolchain Notes
 
