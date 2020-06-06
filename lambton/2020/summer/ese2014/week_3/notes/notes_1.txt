@@ -1,0 +1,7 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+If you don't know what difference or differential equations are, please review them in a good text on Calculus or ODEs
+
+A system realization is essentially a schematic for how to build the system!
