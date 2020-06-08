@@ -56,7 +56,7 @@ bool stack_empty(void)
 void push(int x)
 {
 	// we need the "- 1" because this is C...
-	s[s_top++] = x; // increment s_top, then place value at this new location
+	s[++s_top - 1] = x; // increment s_top, then place value at this new location
 
 	// can you check for stack overflow? if so, how? And what to do about it?
 
@@ -75,7 +75,8 @@ int pop(void)
 	}
 	else
 	{
-		return s[--s_top]; // return value at s_top location, decrement s_top
+		// we need the "- 1" because this is C...
+		return s[s_top-- - 1]; // return value at s_top location, decrement s_top
 	}
 }
 
