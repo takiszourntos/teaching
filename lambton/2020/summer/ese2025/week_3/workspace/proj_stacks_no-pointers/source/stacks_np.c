@@ -24,7 +24,7 @@
  */
 int s[L]; // stack storage
 size_t s_top = 0;	// the stack "pointer", s.top, valid from 1 to L;
-					// a value of zero means the stack is empty
+// a value of zero means the stack is empty
 
 /************************************************************************
  * FUNCTIONS
@@ -110,5 +110,8 @@ int main()
 	{
 		printf("%d ", pop());
 	}
+
+	// exit normally
+	return EXIT_SUCCESS;
 }
 
