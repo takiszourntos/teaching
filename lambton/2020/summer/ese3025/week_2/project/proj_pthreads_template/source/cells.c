@@ -52,7 +52,7 @@ void transferCommunity(size_t iT, size_t jT,
  * at row r and column c of the env array
  *
  * for reference, neighbours are designated as follows:
- *     			a b c
+ *     		a b c
  *              d X e
  *              f g h
  *
