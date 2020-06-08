@@ -19,7 +19,7 @@
 /*
  * overall environment parameters
  */
-#define config_K		2 // # of communities "down"
+#define config_K		1 // # of communities "down"
 #define config_L		4 // # of communities "across"
 #define config_NE 		config_K*config_NC // number of environment rows
 #define config_ME 		config_L*config_MC // number of environment columns

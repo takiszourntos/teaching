@@ -18,15 +18,15 @@
 /*
  * global variables
  */
-const size_t n = config_NC;
-const size_t m = config_MC;
-const size_t N = config_NE;
-const size_t M = config_ME;
-
 cell_t env[config_NE][config_ME];
 cell_t update_env[config_NE][config_ME];
 bool reproduction_flag = false; // is high when it's mating season
 
+int STARTX = 0;
+int STARTY = 0;
+int ENDX = config_NE;
+int ENDY = config_ME;
+WINDOW *win;
 /*
  * main code
  */
@@ -39,6 +39,7 @@ int main(void)
 	initEnvironment();
 
 	// create the threads
+	printf("\ncreating threads...\n");
 	size_t index;
 	for (size_t i = 0; i != config_K; ++i)
 	{
