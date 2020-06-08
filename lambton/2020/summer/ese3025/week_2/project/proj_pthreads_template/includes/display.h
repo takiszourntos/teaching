@@ -11,6 +11,10 @@
 #include <ncurses.h>
 #include <stdbool.h>
 
+// window parameters
+#define CELL_CHAR '*'
+#define TIME_OUT  300
+
 /*
  * functions
  */
