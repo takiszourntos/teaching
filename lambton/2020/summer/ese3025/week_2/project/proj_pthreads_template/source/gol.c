@@ -24,8 +24,8 @@ bool reproduction_flag = false; // is high when it's mating season
 
 int STARTX = 0;
 int STARTY = 0;
-int ENDX = config_NE;
-int ENDY = config_ME;
+int ENDX = config_ME;
+int ENDY = config_NE;
 WINDOW *win;
 /*
  * main code
@@ -45,7 +45,7 @@ int main(void)
 	{
 		for (size_t j = 0; j != config_L; ++j)
 		{
-			index = i * config_K + j; // map (i,j) to an 1-d index
+			index = i * config_L + j; // map (i,j) to an 1-d index
 			threadID[index].row = i;
 			threadID[index].col = j;
 			// the following if condition returns 0 on the successful creation of each thread:
