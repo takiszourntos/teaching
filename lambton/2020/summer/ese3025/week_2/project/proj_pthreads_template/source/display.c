@@ -57,9 +57,9 @@ void updateDisplay(void)
 
 	int i, j;
 	wclear(win);
-	for (i = STARTX; i != config_NE; ++i)
-		for (j = STARTY; j != config_ME; ++j)
-			if (env[i][j] == live)
+	for (i = STARTX; i != config_ME; ++i)
+		for (j = STARTY; j != config_NE; ++j)
+			if (env[j][i] == live)
 				mvwaddch(win, j, i, CELL_CHAR);
 	wrefresh(win);
 }
