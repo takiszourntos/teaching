@@ -1,0 +1,28 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+to see the stack (w/ pointer implementation) example code:
+
+https://github.com/takiszourntos/teaching/tree/master/lambton/2020/summer/ese2025/week_4/workspace
+
+I wrote a stack *libary* ---> stack.h and stack.c
+
+now, if someone wants to use my stack implementation, all they have to do is have this line in their program:
+
+#include "stack.h"
+
+(not possible with global variable version!!!)
+
+major components of a library:
+
+queue.h : header file ----> should go in the local (project) include/ folder
+ - typedefs 
+ - macros (#define)
+ - function prototypes
+
+queue.c : source file -----> should go in the local (project) source/ folder
+ - #include "queue.h"
+ - function definitions (full code)
+
+---> in Settings be sure to specify that your "include/" workspace sub-directory be listed as an include directories
