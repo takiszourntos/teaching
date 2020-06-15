@@ -1,0 +1,21 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 Arial;}}{\colortbl ;\red0\green0\blue0;}{\*\generator Msftedit 5.41.15.1507;}\ql\f0 \fs21 \cf1 about the index/offset in the stack program:
+\par\ql
+\par\ql\f0 \fs21 \cf1 -> size_t is basically unsigned long
+\par\ql
+\par\ql\f0 \fs21 \cf1 -> to accommodate the -1 value for s_top, it's type had to change from size_t to simply "long"
+\par\ql
+\par\ql\f0 \fs21 \cf1 practical application for stacks and queues in embedded systems is often for Data Buffering
+\par\ql
+\par\ql\f0 \fs21 \cf1 sizeof() is an operator that is a compile-time function: two arguments are possible (an array pointer or a type)
+\par\ql\f0 \fs21 \cf1 ---> the number of bytes associated with a type VARY with platforms
+\par\ql
+\par\ql\f0 \fs21 \cf1 EXIT_FAILURE and EXIT_SUCCESS are macros defined in the stdlib library (#include <stdlib.h>)...
+\par\ql
+\par\ql\f0 \fs21 \cf1 use F3 (hover or click on these identifiers)
+\par\ql
+\par\ql\f0 \fs21 \cf1 #define EXIT_FAILURE 1
+\par\ql\f0 \fs21 \cf1 #define EXIT_SUCCESS 0
+\par\ql
+\par\ql\f0 \fs21 \cf1 ... often use in conjuntion with the exit() function, which provides a form of error control
+\par\ql\f0 \fs21 \cf1 using these instead of just "-1", or "1" or "0" communicates more about the intention of the programmer
+\par\ql\par}
