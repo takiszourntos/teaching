@@ -1,0 +1,25 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+about the index/offset in the stack program:
+
+-> size_t is basically unsigned long
+
+-> to accommodate the -1 value for s_top, it's type had to change from size_t to simply "long"
+
+practical application for stacks and queues in embedded systems is often for Data Buffering
+
+sizeof() is an operator that is a compile-time function: two arguments are possible (an array pointer or a type)
+---> the number of bytes associated with a type VARY with platforms
+
+EXIT_FAILURE and EXIT_SUCCESS are macros defined in the stdlib library (#include <stdlib.h>)...
+
+use F3 (hover or click on these identifiers)
+
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
+
+... often use in conjuntion with the exit() function, which provides a form of error control
+using these instead of just "-1", or "1" or "0" communicates more about the intention of the programmer
+
