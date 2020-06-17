@@ -1,0 +1,36 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+Daily study hours average = (estimated total hours studying EMBT-related subjects in a week) / 7
+
+/*
+ * update cell located at row r and column c in env (indicated by X):
+ *
+ * a b c
+ * d X e
+ * f g h
+ *
+ * with nearest neighbours indicated as shown from a, b, ..., h.
+ *
+ * this function features Conway's rules:
+ * - if a cell is dead but surrounded by exactly three live neighbours, it sprouts to life (birth)
+ * - if a cell is live but has more than 4 live neighbours, it dies (overpopulation)
+ * - if a cell is live but has fewer than 2 live neighbours, it dies (underpopulation)
+ * - all other dead or live cells remain the same to the next generation (i.e., a live cell must
+ * have exactly three neighbours to survive)
+
+// only interested in when the cell state changes
+if (cell == dead) && (live_neighbours==3)
+{
+ cell = live;
+}
+if (cell == live) && ( (live_neighbours > 4) || (live_neighbours < 2) )
+{
+ cell = dead;
+}
+
+To check against the result in my video:
+
+- communities are going to be 16 x 16 
+- for the environment, 8 communities across by 2 communities down (16 pthreads)
