@@ -1,0 +1,15 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+NANO is a built-in text editor for Linux
+
+It is a "lightweight" program meaning that it does not take up much mass-storage space.
+
+It is fairly intuitive to use. Here are some basic commands.
+
+<CTRL><o> : saves your program
+<CTRL><x> : exits from nano
+<CTRL><k> : text cut
+<CTRL><u> : paste text
+

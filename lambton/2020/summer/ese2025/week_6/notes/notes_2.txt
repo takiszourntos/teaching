@@ -1,0 +1,11 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+We often see the "./" before the name of an executable file.
+
+The "./" means that we are in the same directory as that executable file.
+
+Before executing a file that is not in a directory specified by your PATH variable, Linux requires you to specify the FULL NAME of the file (i.e., including the directory in which the executable file can be found).
+
+This is convention, but it also serves as a kind of security. Because ordinary users won't be able to play tricks (or worse) by creating executables with the same names as Linux commands.
