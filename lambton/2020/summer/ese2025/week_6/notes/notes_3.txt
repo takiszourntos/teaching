@@ -1,0 +1,7 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+Mendel Cooper's Advanced Bash Scripting Guide:
+
+https://tldp.org/LDP/abs/html/
