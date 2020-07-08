@@ -78,7 +78,7 @@ size_t countLiveNeighbours(size_t row, size_t col)
  *
  * this function features Conway's rules:
  * 		- if a cell is dead but surrounded by exactly three live neighbours, it sprouts to life (birth)
- * 		- if a cell is live but has more than 4 live neighbours, it dies (overpopulation)
+ * 		- if a cell is live but has more than 3 live neighbours, it dies (overpopulation)
  * 		- if a cell is live but has fewer than 2 live neighbours, it dies (underpopulation)
  * 		- all other dead or live cells remain the same to the next generation (i.e., a live cell must
  * 		  have exactly three neighbours to survive)
