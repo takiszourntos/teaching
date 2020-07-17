@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 clean;}}{\colortbl ;\red0\green0\blue0;}{\*\generator Msftedit 5.41.15.1507;}\ql\f0 \fs21 \cf1 NOTES on hold/plot:
+\par\ql
+\par\ql\f0 \fs21 \cf1 t = 0:1000;
+\par\ql\f0 \fs21 \cf1 y = sin(2*pi*t);
+\par\ql\f0 \fs21 \cf1 x = sin(3*pi*t);
+\par\ql\f0 \fs21 \cf1 plot(t,y);
+\par\ql\f0 \fs21 \cf1 hold on;
+\par\ql\f0 \fs21 \cf1 plot(t, x); % this plot will be on the same axes (plot window) as plot(t,y)
+\par\ql\f0 \fs21 \cf1 hold off;
+\par\ql
+\par\ql\f0 \fs21 \cf1 % instead, you could do
+\par\ql\f0 \fs21 \cf1 plot(t,y,'r-', t, x, 'b-'); % also plots x and y vs. t in the same window (my preference)
+\par\ql
+\par\ql
+\par\ql\par}
