@@ -1,0 +1,19 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+NOTES on hold/plot:
+
+t = 0:1000;
+y = sin(2*pi*t);
+x = sin(3*pi*t);
+plot(t,y);
+hold on;
+plot(t, x); % this plot will be on the same axes (plot window) as plot(t,y)
+hold off;
+
+% instead, you could do
+plot(t,y,'r-', t, x, 'b-'); % also plots x and y vs. t in the same window (my preference)
+
+
+

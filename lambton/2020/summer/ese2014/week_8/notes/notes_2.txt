@@ -1,0 +1,12 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+A closed-form expression from a summation means that you are computing the sum (so that we don't see the summation operator anymore).
+
+For example,
+
+1 + 2 + 3 + 4 + ... + N = N (N +1 ) / 2
+
+the "N(N+1)/2" is the closed-form expression.
+
