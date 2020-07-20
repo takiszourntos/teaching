@@ -1,0 +1,39 @@
+#
+# Our first makefile (you can also use Makefile or even GNUmakefile, but Makefile is recommended)
+#
+# a make file consists of a series of RULES, which have the following structure:
+#
+# <spaces>  <target_name> : <list of pre-requisites/dependencies>
+# 	<TAB>	<recipe>
+#
+# - note that the <TAB> whitespace is REQUIRED (but you can change this in .RECIPEPREFIX) to indicate a recipe line
+# - the recipe defines how to create the target
+# - the RULES are normally organized in a hierarchical fashion, so that the first target is the name of your application
+# - make goes through each rule, checking if any of the dependent files of each target are NEWER than the target; if
+#   so, then that target must by recreated; any other targets which depend on this recreated target must themselves
+#   be recreated.
+# - make MINIMIZES the effort of building large projects by recreating only the targets which have changed 
+#
+#
+# author: T. Zourntos, emad studio
+#
+
+# our project will be called proj_ds, and it LINKS object files main_code.o, lib_ll.o and lib_bst.o
+proj_ds : main_code.o lib_ll.o lib_bst.o
+	gcc -o proj_ds main_code.o lib_ll.o lib_bst.o 
+
+# compile main_code.c to produce main_code.o, if needed
+main_code.o : source/main_code.c my_includes/lib_ll.h my_includes/lib_bst.h
+	gcc -c source/main_code.c -Imy_includes/ 
+
+# compile lib_ll.c, if needed
+lib_ll.o : source/lib_ll.c my_includes/lib_ll.h
+	gcc -c source/lib_ll.c -Imy_includes/
+
+# compile lib_bst.c, if needed
+lib_bst.o : source/lib_bst.c my_includes/lib_bst.h
+	gcc -c source/lib_bst.c -Imy_includes/
+
+# a clean option that will remove proj_ds and any object files
+clean : 
+	rm proj_ds main_code.o lib_ll.o lib_bst.o
