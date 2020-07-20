@@ -1,0 +1,31 @@
+#
+# Our slightly more developed makefile --- an example of variable use
+#
+# author: T. Zourntos, emad studio
+#
+
+# define a variable to contain all of our object files (if this list changes, we only need to change the variable)
+objects = main_code.o lib_ll.o lib_bst.o
+
+# define a variable for our include directory
+include = my_includes
+
+# our project will be called proj_ds, and it LINKS object files main_code.o, lib_ll.o and lib_bst.o
+proj_ds : $(objects)
+	gcc -o proj_ds $(objects) 
+
+# compile main_code.c to produce main_code.o, if needed
+main_code.o : source/main_code.c $(include)/lib_ll.h $(include)/lib_bst.h
+	gcc -c source/main_code.c -I$(include)
+
+# compile lib_ll.c, if needed
+lib_ll.o : source/lib_ll.c $(include)/lib_ll.h
+	gcc -c source/lib_ll.c -I$(include)
+
+# compile lib_bst.c, if needed
+lib_bst.o : source/lib_bst.c $(include)/lib_bst.h
+	gcc -c source/lib_bst.c -I$(include)
+
+# a clean option that will remove proj_ds and any object files
+clean : 
+	rm proj_ds $(objects)
