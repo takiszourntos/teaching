@@ -1,8 +1,6 @@
 /*
  * fl.cpp
  *
- *  Created on: Sep. 26, 2019
- *      Author: takis
  */
 
 #include <iostream>
@@ -22,8 +20,7 @@ int main()
 	vector<int> myarr;	// our container
 	int token; 			// our container content variable
 	cout << "Please enter some integers, followed by <CTRL><D>:" << endl;
-	// invariant: fill is the integer to be stored
-	while (cin >> token)
+	while (cin >> token) // loop exits when user enters <CTRL><D>
 	{
 		myarr.push_back(token);
 	}
@@ -31,7 +28,7 @@ int main()
 
 	/* print integers from vector */
 	cout << "Your integers are:" << endl;
-	for (vector<int>::size_type j=0; j != myarr.size(); ++j)
+	for (vector<int>::size_type j = 0; j != myarr.size(); ++j)
 	{
 		cout << myarr[j] << endl;
 	}
@@ -40,7 +37,7 @@ int main()
 	/* find the largest element, manually */
 	int max = myarr[0];
 	int next;
-	vector<int>::size_type i=1;
+	vector<int>::size_type i = 1;
 	while (i != myarr.size())
 	{
 		next = myarr[i];
