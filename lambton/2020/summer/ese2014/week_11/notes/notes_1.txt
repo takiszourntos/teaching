@@ -1,0 +1,15 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 2 fonts total
+
+-----------------
+QUESTION PERIOD (AND FREE LAB TIME: PLEASE WORK ON LAB FROM WEEK 9!!!)
+
+
+20 * log_10 (10 ^ -4) = -4 * (20) * log10(10) = -80 (1) = -80 dB
+
+the following quantities are equivalent:
+
+a) a gain of -80 dB
+b) an attenuation of 80 dB
+c) a gain of 1/10000
+
