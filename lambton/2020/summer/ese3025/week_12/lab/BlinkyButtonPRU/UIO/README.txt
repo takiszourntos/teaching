@@ -1,4 +1,4 @@
-to use this stuff, it must run a pocket beagle.
+to use this stuff, it must run on a pocket beagle.
 
 1) build application: $ ./build.sh
 
