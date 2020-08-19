@@ -1,0 +1,3 @@
+Cover the conceptual parts of RTS_Week_5 notes: RT system resources, sources of latency from various sources (I/O, Memory, etc.)
+
+Then follow up with RTS_Week_6 notes to formalize things
