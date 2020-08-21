@@ -1,0 +1,11 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+TEST NEXT WEEK!
+
+Some basic filtering questions: working with transfer functions, realizations, Matlab filter-design tools
+
+Some basic fixed-point math questions!
+
+Some basic data converter questions!
