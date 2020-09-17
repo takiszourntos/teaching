@@ -1,0 +1,26 @@
+###  Translation from RTF performed by UnRTF, version 0.21.9 
+### font table contains 1 fonts total
+
+-----------------
+A) Timing Diagram Homework:
+
+1) try EDF on our simple example: T1=2, T2=3, T3=6; C1=2, C2=3, C3=6; (literally thinking like a schedule)
+
+2) RM: T1=4, T2=5, T3=10; C1=1, C2=2, C3=3;
+
+3) RM: T1=3, T2=8, T3=12; C1=2, C2=2, C3=3;
+
+4) RM: T1=5, T2=10, T3=15; C1=2, C2=4, C3=5;
+
+B) Install MCUXpresso IDE (latest version) on your host machine
+
+C) get your makefile finished and run a version of the GoL on Beaglebone (with an HDMI screen); 
+ without hdmi screen: $ cat seed.txt | ./proj_pthreads > my_final_result.txt
+ (instead of using ncurses, have your GoL program output the state of env[][] array periodically to standard output)
+
+
+
+
+
+
+
