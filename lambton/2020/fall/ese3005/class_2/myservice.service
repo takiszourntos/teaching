@@ -1,0 +1,9 @@
+[Unit]
+Description=a test service experiment!
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/test_service
+
+[Install]
+WantedBy=multi-user.target
