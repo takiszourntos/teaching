@@ -1,0 +1,16 @@
+###  Translation from RTF performed by UnRTF, version 0.21.10 
+### font table contains 1 fonts total
+
+-----------------
+Read, Write and eXecutable permissions for filesystem objects:
+
+specified using 3 bits, corresponding to Read, Write and eXecutable
+
+binary form: 000, 001, 010, ..., 111
+decimal form: 0, 1, 2, ..., 7
+text: ---, --x, -w-. -wx, r--, ..., rwx
+
+for each user type: 
+
+Root, Owner (or Current User), Other(s)
+
