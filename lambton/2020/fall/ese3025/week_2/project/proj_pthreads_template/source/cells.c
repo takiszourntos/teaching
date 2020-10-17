@@ -52,7 +52,7 @@ void transferCommunity(size_t iT, size_t jT,
  * at row r and column c of the env array
  *
  * for reference, neighbours are designated as follows:
- *     		a b c
+ *     			a b c
  *              d X e
  *              f g h
  *
@@ -62,7 +62,26 @@ size_t countLiveNeighbours(size_t row, size_t col)
 {
 	size_t cell_count = 0;
 
-	// your code goes here
+	// your code goes here -- watch those boundary conditions, e.g., col posn of 0 or 127, or
+	// a row posn of 0 or 31
+	for (neighbour_t i=aposn; i <= hposn; ++i)
+	{
+
+		switch (i) 
+			{
+		        case aposn: ;
+		        case bposn: ;   
+		        case cposn: ;
+		        case dposn: ;
+		        case eposn: ;
+		        case fposn: ;
+		        case gposh: ;
+		        case hposn: ;
+    		}
+ 
+ 		// handle boundary conditions
+	}
+
 
 	return cell_count;
 }
@@ -153,6 +172,11 @@ void copyEnvironment(void)
  */
 void* updateCommFunc(void *param)
 {
+	threadID_t *threadoffsets = (threadID_t *) param;
+	size_t thread_row = threadoffsets->row;
+	size_t thread_col = threadoffsets->col;
+
+	// you'll need to make use of updateCell(size_t r, size_t c)
 
 	// your code goes here
 }
