@@ -1,0 +1,2 @@
+For those of you who wish to read ahead, go ahead and start on page 608 of Molloy's Exploring Beaglebone, 2nd Edition... you can skip the GTK+ parts for now and just read about At for the Beagle Board, up until page 629 
+
