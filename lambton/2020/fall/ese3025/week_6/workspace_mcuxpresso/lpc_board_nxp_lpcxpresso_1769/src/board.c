@@ -321,6 +321,9 @@ void Board_I2C_Init(I2C_ID_T id)
 		Chip_IOCON_EnableOD(LPC_IOCON, 0, 10);
 		Chip_IOCON_EnableOD(LPC_IOCON, 0, 11);
 		break;
+
+	case I2C_NUM_INTERFACE:
+		break;
 	}
 }
 
