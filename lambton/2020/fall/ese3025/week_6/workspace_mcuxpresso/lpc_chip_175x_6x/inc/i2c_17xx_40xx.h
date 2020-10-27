@@ -279,10 +279,10 @@ typedef struct {
  * available in the Chip.
  */
 typedef enum I2C_ID {
-	I2C0,				/**< ID I2C0 */
-	I2C1,				/**< ID I2C1 */
-	I2C2,				/**< ID I2C2 */
-	I2C_NUM_INTERFACE	/**< Number of I2C interfaces in the chip */
+	I2C0 = 0U,				/**< ID I2C0 */
+	I2C1 = 1U,				/**< ID I2C1 */
+	I2C2 = 2U,				/**< ID I2C2 */
+	I2C_NUM_INTERFACE = 3U	/**< Number of I2C interfaces in the chip */
 } I2C_ID_T;
 
 /**
