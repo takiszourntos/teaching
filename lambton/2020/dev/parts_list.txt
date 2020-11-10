@@ -1,0 +1,20 @@
+
+Parts List for ESE3014/ESE3005 (also useful for ESE4009 capstone)
+
+#### IrDA (optical), CANBUS, BLE, Wifi components:
+
+https://www.digikey.ca/short/z07fqt
+
+#### GPS module
+
+recommended: GPS module with antenna, link:
+https://elmwoodelectronics.ca/products/adafruit-ultimate-gps-breakout-66-channel-w-10-hz-updates-version-3?variant=34667752095909
+
+if kit with antenna is not available, you can get just the module:
+https://elmwoodelectronics.ca/products/adafruit-ultimate-gps-breakout-66-channel-w-10-hz-updates-version-3?variant=7380630851
+
+and source the antenna elsewhere, perhaps here:
+https://elmwoodelectronics.ca/products/gps-antenna-external-active-antenna-with-sma-to-u-fl-cable-assembly
+
+#### USB camera
+* get any usb camera to connect to the Beaglebone *
