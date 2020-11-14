@@ -1,0 +1,42 @@
+### Images, Video and Audio (Chapter 14, pg. 643 of Exploring Beaglebone, 2nd Edition)
+
+
+## USB Webcam
+- use a USB hub since the Beaglebone has only a single USB2.0 port
+- and you might need to connect a mouse, keyboard and a camera
+
+- for this tutorial, please use your GUI version of Debian Linux on the Beaglebone Black (or Pocket Beagle)
+- recommended: connect the Beaglebone to an external power supply especially when you are using many USB peripherals!
+
+- connect your camera, boot the Beaglebone and try this:
+
+$ lsusb # lists the devices connected to your system via USB
+
+
+- to inspect any associated loadable kernel modules, try the following:
+
+$ lsmod # lists the drivers associated with your devices
+
+- "uncvideo" is what you're looking for: this module works with USB-based cameras
+
+# Simple Image Capture (pg. 647)
+
+$ sudo apt update # prepare for installation
+
+$ apt-cache search v4l2
+
+$ sudo apt install fswebcam gpicview libav-tools libv4l-dev
+
+now, be sure to take Derek's fswebcom.conf file and sftp it to your Beaglebone, or you can directly clone exploringBB/ using git onto your Beaglebone Black.
+
+$ sudo fswebcam -c fswebcam.conf
+
+you can also try to get a "video feed" on the Beaglebone:
+
+$ sudo apt install cheese
+
+
+
+N.B.: if you are using a USB hub, it should be powered in order for most USB cameras to work properly, otherwise you may not get an image! You may also get some error messages.
+
+ 
