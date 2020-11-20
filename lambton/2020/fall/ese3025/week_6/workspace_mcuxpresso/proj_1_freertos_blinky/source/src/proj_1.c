@@ -46,58 +46,57 @@
  ****************************************************************************/
 
 /* Sets up system hardware */
-static void prvSetupHardware(void)
+static void
+prvSetupHardware (void)
 {
-	SystemCoreClockUpdate();
-	Board_Init();
-
-	/* Initial LED0 state is off */
-	Board_LED_Set(0, false);
+  SystemCoreClockUpdate ();
+  Board_Init (); /* Initial LED0 state is off */
+  Board_LED_Set (0, false);
 }
 
 /* LED1 toggle thread */
-static void vLEDTask1(void *pvParameters)
+static void
+vLEDTask1 (void *pvParameters)
 {
-	bool LedState = false;
-
-	while (1)
-	{
-		Board_LED_Set(0, LedState);
-		LedState = (bool) !LedState;
-
-		/* About a 3Hz on/off toggle rate */
-		vTaskDelay(configTICK_RATE_HZ / 6);
-	}
+  bool LedState = false;
+  while (1)
+    {
+      Board_LED_Set (0, LedState);
+      LedState = (bool) !LedState;/* About a 3Hz on/off toggle rate */
+      vTaskDelay (configTICK_RATE_HZ / 6);
+    }
 }
 
 /* LED2 toggle thread */
-static void vLEDTask2(void *pvParameters)
+static void
+vLEDTask2 (void *pvParameters)
 {
-	bool LedState = false;
+  bool LedState = false;
 
-	while (1)
-	{
-		Board_LED_Set(1, LedState);
-		LedState = (bool) !LedState;
+  while (1)
+    {
+      Board_LED_Set (1, LedState);
+      LedState = (bool) !LedState;
 
-		/* About a 7Hz on/off toggle rate */
-		vTaskDelay(configTICK_RATE_HZ / 14);
-	}
+      /* About a 7Hz on/off toggle rate */
+      vTaskDelay (configTICK_RATE_HZ / 14);
+    }
 }
 
 /* UART (or output) thread */
-static void vUARTTask(void *pvParameters)
+static void
+vUARTTask (void *pvParameters)
 {
-	int tickCnt = 0;
+  int tickCnt = 0;
 
-	while (1)
-	{
-		DEBUGOUT("Tick: %d\r\n", tickCnt);
-		tickCnt++;
+  while (1)
+    {
+      DEBUGOUT("Tick: %d\r\n", tickCnt);
+      tickCnt++;
 
-		/* About a 1s delay here */
-		vTaskDelay(configTICK_RATE_HZ);
-	}
+      /* About a 1s delay here */
+      vTaskDelay (configTICK_RATE_HZ);
+    }
 }
 
 /*****************************************************************************
@@ -108,30 +107,28 @@ static void vUARTTask(void *pvParameters)
  * @brief	main routine for FreeRTOS blinky example
  * @return	Nothing, function should not exit
  */
-int main(void)
+int
+main (void)
 {
-	prvSetupHardware();
+  prvSetupHardware ();
 
-	/* LED1 toggle thread */
-	xTaskCreate(vLEDTask1, (signed char* ) "vTaskLed1",
-			configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-			(xTaskHandle *) NULL);
+  /* LED1 toggle thread */
+  xTaskCreate(vLEDTask1, (signed char* ) "vTaskLed1", configMINIMAL_STACK_SIZE,
+	      NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
 
-	/* LED2 toggle thread */
-	xTaskCreate(vLEDTask2, (signed char* ) "vTaskLed2",
-			configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-			(xTaskHandle *) NULL);
+  /* LED2 toggle thread */
+  xTaskCreate(vLEDTask2, (signed char* ) "vTaskLed2", configMINIMAL_STACK_SIZE,
+	      NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
 
-	/* UART output thread, simply counts seconds */
-	xTaskCreate(vUARTTask, (signed char* ) "vTaskUart",
-			configMINIMAL_STACK_SIZE, NULL, (tskIDLE_PRIORITY + 1UL),
-			(xTaskHandle *) NULL);
+  /* UART output thread, simply counts seconds */
+  xTaskCreate(vUARTTask, (signed char* ) "vTaskUart", configMINIMAL_STACK_SIZE,
+	      NULL, (tskIDLE_PRIORITY + 1UL), (xTaskHandle *) NULL);
 
-	/* Start the scheduler */
-	vTaskStartScheduler();
+  /* Start the scheduler */
+  vTaskStartScheduler ();
 
-	/* Should never arrive here */
-	return 1;
+  /* Should never arrive here */
+  return 1;
 }
 
 /**
