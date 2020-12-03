@@ -29,11 +29,12 @@ typedef struct
 class Student
 {
 public:
+	Student();
 	// data on the student
 	record_t data;
 	int get(); // get the data from standard input and keygen();
-	bool last_record;
-	Student();
+	void put(); // send the record to standard output;
+
 
 private:
 	bool end(); // checks if record if student record is the last one, updates last_record

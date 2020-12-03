@@ -5,21 +5,21 @@
  *      Author: takis
  */
 
-
 #include <iostream>
 #include <string>
 #include <vector>
 #include "students.h"
 
 // Student constructor, initializes the object
-Student::Student() : last_record(false){}
+Student::Student()
+{
+}
 
 // Student::end() method
 bool Student::end()
 {
-	if (Student::data.ID == END_MARKER)
+	if (data.ID == END_MARKER)
 	{
-		Student::last_record = true;
 		return true;
 	}
 	return false;
@@ -31,36 +31,80 @@ int Student::get(void)
 	long Nc;
 
 	// get the student ID number (NOTE: this is not the same as the "key" information)
-	std::cin >> Student::data.ID;
+	std::cin >> data.ID;
 
 	// get the last name
-	std::cin >> Student::data.last_name;
+	std::cin >> data.last_name;
 
 	// get the first name
-	std::cin >> Student::data.first_name;
+	std::cin >> data.first_name;
 
 	// get the student courses
-	std::cin >> Student::data.num_courses;
-	Nc = Student::data.num_courses;
+	std::cin >> data.num_courses;
+	Nc = data.num_courses;
 
 	// get the course names and the grades
 	std::string course_name;
-	for (long j=0; j!= Nc; ++j)
+	for (long j = 0; j != Nc; ++j)
 	{
 		std::cin >> course_name;
 		Student::data.courses.push_back(course_name);
 	}
 	double grade;
-	for (long j=0; j!= Nc; ++j)
+	for (long j = 0; j != Nc; ++j)
 	{
 		std::cin >> grade;
-		Student::data.grades.push_back(grade);
+		data.grades.push_back(grade);
 	}
 
 	// generate a unique key
-	Student::data.key = Student::keygen(Student::data.ID, Student::data.last_name);
+	data.key = keygen(data.ID, data.last_name);
 
 	return 0; // in the future, can add error checking
+}
+
+// Student::put() method
+void Student::put(void)
+{
+	long Nc = data.num_courses;
+
+	// put key
+	std::cout << "key: " << data.key << std::endl;
+
+	// put the student ID number (NOTE: this is not the same as the "key" information)
+	std::cout << "ID: " << data.ID << std::endl;
+
+	// put the last name
+	std::cout << "last name: " << data.last_name << std::endl;
+
+	// put the first name
+	std::cout << "first name: " << data.first_name << std::endl;
+	;
+
+	// put  the student courses
+	std::cout << "number of courses: " << Nc << std::endl;
+	;
+
+	// put the course names and the grades
+	std::string course_name;
+	double grade;
+	for (long j = 0; j != Nc; ++j)
+	{
+		course_name = data.courses[j];
+		grade = data.grades[j];
+		std::cout << "\t" << course_name << ":\t" << grade << std::endl;
+	}
+
+	// line spacing
+	std::cout << std::endl << std::endl;
+}
+
+// Student::keygen() method
+std::string Student::keygen(std::string A, std::string B)
+{
+	std::string ret = A+"_"+B;
+
+	return ret;
 }
 
 

@@ -9,19 +9,19 @@
 #include <iostream>
 #include "proj_classes.h"
 #include "students.h"
-#include "things.h"
-
-
-#define		STUDENTS	1
-#define		TOYS		2
-// depending on the type of data base you want, set the following:
-#define 	DBtype		STUDENTS // don't forget to use the appropriate data file for standard input!
-
-
+//#include "toys.h"
 
 using namespace std;
 
-int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+int main()
+{
+	// declare a student-database object, load from standard input
+	DB<Student> myStudentDB;
+
+	// print out the data
+//	myStudentDB.display();
+
+	// exit
+//	cout << endl << myStudentDB.numelements() << " processed." << endl;
 	return 0;
 }
