@@ -12,6 +12,20 @@ McMurthy
 5				
 Gym	Basketweaving	Poohing	Burping	Stopping
 56	23	99	89	91
+	
+Z452349				
+Gibson				
+Les				
+4				
+Math	Science	Geography	Music	
+76	67		60		99
+	
+Z684663				
+Diablo				
+Rosso				
+2				
+Art	Farting			
+95	98		
 				
 -9999				
 dummy				
