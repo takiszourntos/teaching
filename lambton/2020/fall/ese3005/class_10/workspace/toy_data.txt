@@ -1,0 +1,43 @@
+				
+12-25-2009				
+15.99				
+Flying_Kite				
+fun_factor	value 	minimum_age
+8		10	7
+my_room
+
+12-25-2009
+89.99
+Building_Blocks
+fun_factor	value 	minimum_age
+9		8	8
+brother_room
+
+12-25-2010
+123.50
+Train_Set
+fun_factor	value 	minimum_age
+10		7	10
+sister_room
+
+01-26-2014
+8999.99
+Motorcycle
+fun_factor	value 	minimum_age
+10		9	16
+my_shed
+
+04-30-2015
+5000.00
+Hot_Wheels
+fun_factor	value	minimum_age
+7		3	5
+my_room
+				
+				
+-9999				
+0				
+dummy				
+fun_factor	value 	minimum_age				
+0		0	0				
+				

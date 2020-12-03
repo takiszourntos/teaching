@@ -25,11 +25,13 @@ typedef struct
 	std::vector<double> grades;
 } record_t;
 
-
+/*
+ * this defines a Student object
+ */
 class Student
 {
 public:
-	Student();
+	Student(void); // constructor
 	// data on the student
 	record_t data;
 	int get(); // get the data from standard input and keygen();

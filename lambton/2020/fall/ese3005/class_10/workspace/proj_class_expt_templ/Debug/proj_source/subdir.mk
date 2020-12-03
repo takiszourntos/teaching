@@ -5,17 +5,14 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../proj_source/proj_class_expt_templ.cpp \
-../proj_source/proj_classes.cpp \
 ../proj_source/students.cpp 
 
 OBJS += \
 ./proj_source/proj_class_expt_templ.o \
-./proj_source/proj_classes.o \
 ./proj_source/students.o 
 
 CPP_DEPS += \
 ./proj_source/proj_class_expt_templ.d \
-./proj_source/proj_classes.d \
 ./proj_source/students.d 
 
 
