@@ -19,9 +19,9 @@ int main()
 	DB<Student> myStudentDB;
 
 	// print out the data
-//	myStudentDB.display();
+	myStudentDB.display();
 
 	// exit
-//	cout << endl << myStudentDB.numelements() << " processed." << endl;
+	cout << endl << myStudentDB.numelements() << " processed." << endl;
 	return 0;
 }

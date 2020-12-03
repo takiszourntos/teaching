@@ -33,11 +33,10 @@ public:
 	// data on the student
 	record_t data;
 	int get(); // get the data from standard input and keygen();
-	void put(); // send the record to standard output;
-
+	void put() const; // send the record to standard output;
+	bool end(); // checks if record if student record is the last one, updates last_record
 
 private:
-	bool end(); // checks if record if student record is the last one, updates last_record
 	std::string keygen(std::string, std::string);
 };
 

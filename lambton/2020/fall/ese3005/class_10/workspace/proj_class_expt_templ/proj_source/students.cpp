@@ -64,7 +64,7 @@ int Student::get(void)
 }
 
 // Student::put() method
-void Student::put(void)
+void Student::put(void) const
 {
 	long Nc = data.num_courses;
 
