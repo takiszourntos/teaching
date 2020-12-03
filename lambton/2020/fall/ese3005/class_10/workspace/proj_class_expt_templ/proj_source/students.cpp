@@ -11,7 +11,7 @@
 #include "students.h"
 
 // Student constructor, initializes the object
-Student::Student()
+Student::Student(void)
 {
 }
 
@@ -25,10 +25,10 @@ bool Student::end()
 	return false;
 }
 
-// Student::get() method
+// Student::get() method, populates the data record from standard input
 int Student::get(void)
 {
-	long Nc;
+	long Nc; // stores the number of courses
 
 	// get the student ID number (NOTE: this is not the same as the "key" information)
 	std::cin >> data.ID;
@@ -63,7 +63,7 @@ int Student::get(void)
 	return 0; // in the future, can add error checking
 }
 
-// Student::put() method
+// Student::put() method, sends data contents to standard output
 void Student::put(void) const
 {
 	long Nc = data.num_courses;
@@ -79,11 +79,9 @@ void Student::put(void) const
 
 	// put the first name
 	std::cout << "first name: " << data.first_name << std::endl;
-	;
 
 	// put  the student courses
 	std::cout << "number of courses: " << Nc << std::endl;
-	;
 
 	// put the course names and the grades
 	std::string course_name;
@@ -102,9 +100,8 @@ void Student::put(void) const
 // Student::keygen() method
 std::string Student::keygen(std::string A, std::string B)
 {
-	std::string ret = A+"_"+B;
+	std::string ret = A + "_" + B;
 
 	return ret;
 }
-
 
