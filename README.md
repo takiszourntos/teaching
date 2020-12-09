@@ -39,6 +39,17 @@ The following is a comprehensive list with links for recommended software and ha
 9) Quartus (Intel), Xilinx ISE Webpack (https://www.xilinx.com/products/design-tools/ise-design-suite.html)
 
 
+# Lab Parts for Lockdown!
+
+a power supply for your breadboard can be very helpful... consider these economical solutions!
+
+A) https://elmwoodelectronics.ca/products/adjustable-breadboard-power-supply-kit
+
+B) https://elmwoodelectronics.ca/products/8376
+
+
+
+
 ## Additional, useful textbooks:
 
 1) Introduction to Algorithms (Cormen et al.): https://www.amazon.ca/Introduction-Algorithms-H-S-Chawla/dp/0262533057/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=
