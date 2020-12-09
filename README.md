@@ -47,7 +47,7 @@ A) https://elmwoodelectronics.ca/products/adjustable-breadboard-power-supply-kit
 
 B) https://elmwoodelectronics.ca/products/8376
 
-
+C) CHEAP CHEAP CHEAP! (thanks Vishal): https://www.digikey.ca/en/products/detail/bud-industries/BBP-32701/8602382?utm_adgroup=Evaluation%20Boards%20-%20Linear%20Voltage%20Regulators&utm_source=google&utm_medium=cpc&utm_campaign=Shopping_Product_Development%20Boardshttps:/www.digikey.ca/en/products/detail/bud-industries/BBP-32701/8602382?utm_adgroup=Evaluation%20Boards%20-%20Linear%20Voltage%20Regulators&utm_source=google&utm_medium=cpc&utm_campaign=Shopping_Product_Development%20Boards%2C%20Kits%2C%20Programmers_NEW&utm_term=&productid=8602382&gclid=CjwKCAiAiML-BRAAEiwAuWVggn-IpPQ66wwdoVEeJCz9AeqOtpKdGIkxxOowpOActNsUbOGlAIoI8hoCh4AQAvD_BwEC%20Kitshttps:/www.digikey.ca/en/products/detail/bud-industries/BBP-32701/8602382?utm_adgroup=Evaluation%20Boards%20-%20Linear%20Voltage%20Regulators&utm_source=google&utm_medium=cpc&utm_campaign=Shopping_Product_Development%20Boards%2C%20Kits%2C%20Programmers_NEW&utm_term=&productid=8602382&gclid=CjwKCAiAiML-BRAAEiwAuWVggn-IpPQ66wwdoVEeJCz9AeqOtpKdGIkxxOowpOActNsUbOGlAIoI8hoCh4AQAvD_BwEC%20Programmers_NEW&utm_term=&productid=8602382&gclid=CjwKCAiAiML-BRAAEiwAuWVggn-IpPQ66wwdoVEeJCz9AeqOtpKdGIkxxOowpOActNsUbOGlAIoI8hoCh4AQAvD_BwE
 
 
 ## Additional, useful textbooks:
