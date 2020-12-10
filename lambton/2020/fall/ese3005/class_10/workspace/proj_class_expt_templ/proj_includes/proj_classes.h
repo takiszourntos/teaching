@@ -20,8 +20,8 @@ template<class T> class DB
 public: // this is the interface to the class
 	DB(void); // constructor
 	std::size_t numelements() const;
-	int add(const T&); // adds an element referenced in the argument
-	int del(const std::string&); // deletes an element specified by key argument
+	int add(void); // adds an element referenced in the argument
+	int del(void); // deletes an element specified by key argument
 	void display() const; // displays all the records in the map
 
 private: // these are needed by other methods of the class, but not needed externally
@@ -57,17 +57,18 @@ std::size_t DB<T>::numelements() const
 
 // DB::add() method
 template<class T>
-int DB<T>::add(const T &token)
+int DB<T>::add(void)
 {
+	T token;
 	// retrieve new element from standard input
 	token.get();
-	std::string key = token.key; // find the key for this token
+	std::string key = token.data.key; // find the key for this token
 
 	// add the new element to the database
 	DBmap[key] = token; // add this element to the map
 
 	// check if the element can be found
-	if (DBmap.find(key)->key == token.key)
+	if ( (DBmap.find(key)->first) == (token.data.key) )
 	{
 		++DBi;
 		return 0;
@@ -78,8 +79,12 @@ int DB<T>::add(const T &token)
 
 // DB::del() method
 template<class T>
-int DB<T>::del(const std::string &key)
+int DB<T>::del(void)
 {
+	std::string key;
+	std::cout << "/n Enter key: " << std::flush;
+	std::cin >> key;
+
 	auto iter = DBmap.find(key); // auto infers variable type from initializer type
 	if (iter != DBmap.end())
 	{
