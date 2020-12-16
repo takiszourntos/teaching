@@ -53,9 +53,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../proj_Qt_0/main.cpp \
-		../proj_Qt_0/mainwindow.cpp moc_mainwindow.cpp
+		../proj_Qt_0/mainwindow.cpp \
+		../proj_Qt_0/student.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		student.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -133,8 +135,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../proj_Qt_0/proj_Qt_0.pro ../proj_Qt_0/mainwindow.h ../proj_Qt_0/main.cpp \
-		../proj_Qt_0/mainwindow.cpp
+		../proj_Qt_0/proj_Qt_0.pro ../proj_Qt_0/mainwindow.h \
+		../proj_Qt_0/proj_classes.h \
+		../proj_Qt_0/student.h ../proj_Qt_0/main.cpp \
+		../proj_Qt_0/mainwindow.cpp \
+		../proj_Qt_0/student.cpp
 QMAKE_TARGET  = proj_Qt_0
 DESTDIR       = 
 TARGET        = proj_Qt_0
@@ -316,8 +321,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../proj_Qt_0/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../proj_Qt_0/main.cpp ../proj_Qt_0/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../proj_Qt_0/mainwindow.h ../proj_Qt_0/proj_classes.h ../proj_Qt_0/student.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../proj_Qt_0/main.cpp ../proj_Qt_0/mainwindow.cpp ../proj_Qt_0/student.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../proj_Qt_0/mainwindow.ui $(DISTDIR)/
 
 
@@ -379,12 +384,20 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-main.o: ../proj_Qt_0/main.cpp ../proj_Qt_0/mainwindow.h
+main.o: ../proj_Qt_0/main.cpp ../proj_Qt_0/mainwindow.h \
+		../proj_Qt_0/proj_classes.h \
+		../proj_Qt_0/student.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../proj_Qt_0/main.cpp
 
 mainwindow.o: ../proj_Qt_0/mainwindow.cpp ../proj_Qt_0/mainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../proj_Qt_0/proj_classes.h \
+		../proj_Qt_0/student.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../proj_Qt_0/mainwindow.cpp
+
+student.o: ../proj_Qt_0/student.cpp ../proj_Qt_0/mainwindow.h \
+		../proj_Qt_0/student.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o student.o ../proj_Qt_0/student.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
