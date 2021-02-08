@@ -16,3 +16,10 @@ summary(sales)
 # plot num_of_orders vs. sales
 plot(sales$num_of_orders, sales$sales_total, main="Number of Orders vs. Sales")
 
+# perform a statistical analysis (fit a linear regression model)
+results <- lm(sales$sales_total ~ sales$num_of_orders)
+summary(results)
+
+# perform some diagnostics on the fitted model
+# plot histogram of the residuals
+hist(results$residuals, breaks = 800)
