@@ -2,7 +2,7 @@
 getwd()
 
 # change the following line for your setup
-setwd("Identities/takiszourntos/teaching/lambton/2021/winter/cbd2204_3/week_2/workspace/")
+# setwd("Identities/takiszourntos/teaching/lambton/2021/winter/cbd2204_3/week_2/workspace/")
 
 # import a CSV file of the total annual sales for each customer
 #sales <- read.csv("Identities/takiszourntos/teaching/lambton/2021/winter/cbd2204_3/week_2/workspace/yearly_sales.csv", sep="");
