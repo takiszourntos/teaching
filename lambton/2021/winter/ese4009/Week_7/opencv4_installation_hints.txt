@@ -1,0 +1,119 @@
+
+Overview
+
+In this module, we will discuss how to Install OpenCV for C++ on Ubuntu.
+
+The instructions might be complicated, but give time to understand and install it correctly. Ask questions in the Forum; we will be available to answer all the questions.
+
+Although these instructions are to install OpenCV 4.5.0, you can use them to install any version of OpenCV.
+Step 1: Update Packages
+
+We are going to create an installation directory where OpenCV is downloaded and installed.
+
+Start a new terminal session and change directory to the OpenCV install path.
+
+# Create directory for installation
+mkdir installation
+mkdir installation/OpenCV
+
+For convenience, let us store the current working directory in OpenCV_Home_DIR variable. The variable will be convenient for later stages.
+
+# Save current working directory
+OpenCV_Home_DIR=$(pwd)
+
+Finally, let's update the packages.
+
+sudo apt -y update
+sudo apt -y upgrade
+
+Step 2: Install OS libraries
+
+sudo apt -y remove x264 libx264-dev
+
+## Install dependencies
+sudo apt -y install build-essential checkinstall cmake pkg-config yasm
+sudo apt -y install git gfortran
+sudo apt -y install libjpeg8-dev libpng-dev
+
+sudo apt -y install software-properties-common
+sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+sudo apt -y update
+
+sudo apt -y install libjasper1
+sudo apt -y install libtiff5-dev
+
+sudo apt -y install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev
+sudo apt -y install libxine2-dev libv4l-dev
+cd /usr/include/linux
+sudo ln -s -f ../libv4l1-videodev.h videodev.h
+cd "$OpenCV_Home_DIR"
+
+sudo apt -y install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+sudo apt -y install libgtk2.0-dev libtbb-dev qt5-default
+sudo apt -y install libatlas-base-dev
+sudo apt -y install libfaac-dev libmp3lame-dev libtheora-dev
+sudo apt -y install libvorbis-dev libxvidcore-dev
+sudo apt -y install libopencore-amrnb-dev libopencore-amrwb-dev
+sudo apt -y install libavresample-dev
+sudo apt -y install x264 v4l-utils
+
+# Optional dependencies
+sudo apt -y install libprotobuf-dev protobuf-compiler
+sudo apt -y install libgoogle-glog-dev libgflags-dev
+sudo apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
+
+Step 3: Download OpenCV and OpenCV_contrib
+
+Now, we clone OpenCV and OpenCV_contrib packages from their GitHub repositories.
+
+First, we clone the OpenCV_contrib GitHub repository and checkout the version of choice.
+
+git clone https://github.com/opencv/opencv_contrib.git
+cd opencv_contrib
+git checkout tags/4.5.0
+cd ..
+
+Similarly, we clone the OpenCV repository and checkout to the version selected.
+
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout tags/4.5.0
+
+Step 4: Compile and install OpenCV with contrib modules
+
+The major thing to note here is where will OpenCV be installed? The answer is the path given to CMAKE_INSTALL_PREFIX.
+
+If you want to do a system wide installation, then replace $OpenCV_Home_DIR/installation/OpenCV with /usr/local.
+
+Now, we start building OpenCV using CMake. First, we configure the build.
+
+First, create a build directory.
+
+mkdir build && cd build
+
+Configure OpenCV
+
+cmake \
+      -D CMAKE_BUILD_TYPE=RELEASE \
+      -D CMAKE_INSTALL_PREFIX=$OpenCV_Home_DIR/installation/OpenCV \
+      -D INSTALL_C_EXAMPLES=ON \
+      -D WITH_TBB=ON \
+      -D WITH_V4L=ON \
+      -D WITH_OPENGL=ON \
+      -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+      -D BUILD_EXAMPLES=ON \
+      ..
+
+Finally, install OpenCV
+
+make
+sudo make install
+
+Note: If you have a high end system, you can use make -j4 instead of make
+
+cd $OpenCV_Home_DIR
+
+You can delete the build folder inside opencv if you want to free up space. The installation folder is $OpenCV_Home_DIR/installation/OpenCV/.
+
+You will find the CMake files in "$OpenCV_Home_DIR/installation/OpenCV/lib/cmake/opencv4".
+
