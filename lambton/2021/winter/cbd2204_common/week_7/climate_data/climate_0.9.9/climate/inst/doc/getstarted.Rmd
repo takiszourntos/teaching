@@ -1,0 +1,219 @@
+---
+title: "Introduction to the climate package"
+author: "Bartosz Czernecki, Arkadiusz Głogowski, Jakub Nowosad"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction-to-the-climate-package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(scipen=999)
+```
+
+The goal of the  **climate** R package is to automatize downloading of meteorological
+and hydrological data from publicly available repositories:
+
+- OGIMET [(ogimet.com)](http://ogimet.com/index.phtml.en) 
+- University of Wyoming - atmospheric vertical profiling data (http://weather.uwyo.edu/upperair/).
+- Polish Institute of Meterology and Water Management - National Research Institute [(IMGW-PIB)](https://dane.imgw.pl/)
+- National Oceanic & Atmospheric Administration - Earth System Research Laboratory - Global Monitoring Division [(NOAA)](https://www.esrl.noaa.gov/gmd/ccgg/trends/)
+- National Oceanic & Atmospheric Administration - National Climatic Data Center - Integrated Surface Hourly (ISH) [(NOAA)](https://www1.ncdc.noaa.gov/pub/data/noaa/)
+
+## Functions 
+
+The **climate** package consists of ten main functions - three for meteorological data, one for hydrological data and six auxiliary functions and datasets:
+  
+### Meteorological data
+  
+- **meteo_ogimet()** - Downloading hourly and daily meteorological data from the SYNOP stations available in the ogimet.com collection.
+Any meteorological (aka SYNOP) station working under the World Meteorological Organizaton framework after year 2000 should be accessible.
+
+- **meteo_imgw()** - Downloading hourly, daily, and monthly meteorological data from the SYNOP/CLIMATE/PRECIP stations available in the dane.imgw.pl collection. 
+It is a wrapper for `meteo_monthly()`, `meteo_daily()`, and `meteo_hourly()` from [the **imgw** package](https://github.com/bczernecki/imgw).
+
+- **meteo_noaa_hourly()** - Downloading hourly NOAA Integrated Surface Hourly (ISH) meteorological data - Some stations have > 100 years long history of observations
+
+
+- **sounding_wyoming()** - Downloading measurements of the vertical profile of atmosphere (aka rawinsonde data)
+
+### Hydrological data
+
+- **hydro_imgw()** - Downloading hourly, daily, and monthly hydrological data from the SYNOP / CLIMATE / PRECIP stations available in the
+danepubliczne.imgw.pl collection.
+It is a wrapper for `hydro_annual()`, `hydro_monthly()`, and `hydro_daily()` from [the **imgw** package](https://github.com/bczernecki/imgw).
+
+### Auxiliary functions and datasets
+
+- **stations_ogimet()** - Downloading information about all stations available in the selected
+country in the Ogimet repository
+- **nearest_stations_ogimet()** - Downloading information about nearest stations to the selected point
+available for the selected country in the Ogimet repository
+- **imgw_meteo_stations** - Built-in   metadata from the IMGW-PIB repository for   meteorological   stations,   their   geographical
+coordinates, and ID numbers
+- **imgw_hydro_stations** - Built-in metadata from the IMGW-PIB repository for   hydrological   stations,    their   geographical
+coordinates, and ID numbers
+- **imgw_meteo_abbrev** - Dictionary explaining variables available for meteorological stations (from the IMGW-PIB repository)
+- **imgw_hydro_abbrev** - Dictionary explaining variables available for hydrological stations (from the IMGW-PIB repository)
+
+## Examples
+
+Examples shows aplication of climate package with additional use of tools that help with processing the data to increase legible of downloaded data.  
+
+- [dplyr](https://CRAN.R-project.org/package=dplyr)
+- [tidyr](https://CRAN.R-project.org/package=tidyr)
+
+### Example 1
+
+Finding a 50 nearest meteorological stations in a given country:
+
+``` {r stations , eval=T, fig.width=7,fig.height=7, fig.fullwidth=TRUE}
+library(climate)
+ns = nearest_stations_ogimet(country ="United+Kingdom",
+                             point = c(-4, 56),
+                             no_of_stations = 50, 
+                             add_map = TRUE)
+head(ns)
+#>    wmo_id       station_names       lon       lat alt  distance [km]
+#> 29  03144         Strathallan  -3.733348 56.31667  35      46.44794
+#> 32  03155           Drumalbin  -3.733348 55.61668 245      52.38975
+#> 30  03148           Glen Ogle  -4.316673 56.41667 564      58.71862
+#> 27  03134   Glasgow Bishopton  -4.533344 55.90002  59      60.88179
+#> 35  03166 Edinburgh Gogarbank  -3.350007 55.93335  57      73.30942
+#> 28  03136      Prestwick RNAS  -4.583345 55.51668  26      84.99537
+```
+
+### Example 2
+
+Summary of stations available in Ogimet repository for a selected country:
+
+``` {r stations, eval=T, fig.width=7, fig.height=7, fig.fullwidth=T}
+library(climate)
+PL = stations_ogimet(country ="Poland", add_map = TRUE)
+head(PL)
+```
+
+### Example 3
+Downlading hourly meteorological data Svalbard in a random year from Ogimet
+  
+``` {r windrose,eval=T}
+# downloading data with NOAA service:
+df = meteo_noaa_hourly(station = "010080-99999", 
+                       year = sample(2000:2020, 1))
+
+# downloading the same data with Ogimet.com (example for 2019):
+# df <- meteo_ogimet(interval = "hourly", date = c("2019-01-01", "2019-12-31"),
+#                   station = c("01008"))
+```
+
+```{r windrose2, echo=FALSE}
+library(knitr)
+kable(head(df[,c(-2:-5)],10), caption = "Examplary data frame of meteorological data.")
+```
+
+### Example 4
+Downloading atmospheric (sounding) profile for Łeba, PL rawinsonde  station:
+
+```{r sonda,eval=T, fig.width=7, fig.height=7, fig.fullwidth=TRUE}
+library(climate)
+data("profile_demo")
+# same as:
+# profile_demo <- sounding_wyoming(wmo_id = 12120,
+#                                  yy = 2000,
+#                                  mm = 3,
+#                                  dd = 23,
+#                                  hh = 0)
+df2 <- profile_demo[[1]] 
+colnames(df2)[c(1, 3:4)] = c("PRESS", "TEMP", "DEWPT") # changing column names
+```
+
+
+```{r sonda2, echo=FALSE}
+library(knitr)
+kable(head(df2,10), caption = "Examplary data frame of sounding preprocessing")
+```
+
+### Example 5
+Preparing an annual summary of air temperature and precipitation, processing with **dplyr** 
+
+```{r imgw_meteo, fig.width=7, fig.height=7, fig.fullwidth=TRUE}
+library(climate)
+library(dplyr)
+
+df = meteo_imgw(interval = 'monthly', rank='synop', year = 1991:2019, station = "ŁEBA") 
+# please note that sometimes 2 names are used for the same station in different years
+
+df2 = select(df, station:t2m_mean_mon, rr_monthly)
+
+monthly_summary = df2 %>% 
+  group_by(mm) %>% 
+  summarise(tmax = mean(tmax_abs, na.rm = TRUE), 
+            tmin = mean(tmin_abs, na.rm = TRUE),
+            tavg = mean(t2m_mean_mon, na.rm = TRUE), 
+            precip = sum(rr_monthly) / n_distinct(yy))            
+
+monthly_summary = as.data.frame(t(monthly_summary[, c(5,2,3,4)])) 
+monthly_summary = round(monthly_summary, 1)
+colnames(monthly_summary) = month.abb
+
+```
+
+```{r imgw_meto2, echo=FALSE}
+library(knitr)
+kable(head(monthly_summary), caption = "Examplary data frame of meteorological preprocessing.")
+```
+
+### Example 6
+Calculate the mean maximum value of the flow on the stations in each year with **dplyr**'s `summarise()`, and spread data by year using **tidyr**'s `spread()` to get the annual means of maximum flow in the consecutive columns.
+
+```{r data}
+library(climate)
+library(dplyr)
+library(tidyr)
+h = hydro_imgw(interval = "monthly", year = 2001:2005, coords = TRUE)
+head(h)
+```
+
+
+```{r filtering, eval=TRUE, include=TRUE}
+h2 = h %>%
+  filter(idex == 3) %>%
+  select(id, station, X, Y, hyy, Q) %>%
+  group_by(hyy, id, station, X, Y) %>%
+  summarise(annual_mean_Q = round(mean(Q, na.rm = TRUE), 1)) %>% 
+  pivot_wider(names_from = hyy, values_from = annual_mean_Q)
+```
+
+```{r filtering2, echo=FALSE}
+library(knitr)
+kable(head(h2), caption = "Examplary data frame of hydrological preprocesssing.")
+```
+
+## Acknowledgment
+
+Ogimet.com, University of Wyoming, and Institute of Meteorology and Water Management - National Research Institute (IMGW-PIB), National Oceanic & Atmospheric Administration (NOAA) - Earth System Research Laboratory, Global Monitoring Division and Integrated Surface Hourly (NOAA ISH) are the sources of the data.
+
+## Contribution
+
+Contributions to this package are welcome. 
+The preferred method of contribution is through a GitHub pull request. 
+Feel also free to contact us by creating [an issue](https://github.com/bczernecki/climate/issues).
+
+## Citation
+
+To cite the `climate` package in publications, please use [this paper](https://www.mdpi.com/2071-1050/12/1/394):
+  
+  Czernecki, B.; Głogowski, A.; Nowosad, J. Climate: An R Package to Access Free In-Situ Meteorological and Hydrological Datasets for Environmental Assessment. Sustainability 2020, 12, 394. https://doi.org/10.3390/su12010394"
+
+LaTeX version can be obtained with:
+```
+library(climate)
+citation("climate")
+```
+<!-- ![Mean maximum annual flow](../../docs/articles/articles/pl_files/figure-html/unnamed-chunk-1-1.png) -->
