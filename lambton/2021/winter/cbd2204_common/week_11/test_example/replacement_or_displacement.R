@@ -1,3 +1,7 @@
+# Name: Takis Zourntos
+# Student ID: C01872364293108471829437
+# preferred salad: arugula pear with walnuts
+#
 # signature
 system("whoami")
 Sys.time()
