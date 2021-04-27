@@ -2,10 +2,11 @@
 library(tidyverse)
 
 # reading CSV file
-setwd("/home/takis/Identities/takiszourntos/teaching/lambton/2021/winter/cbd2204_common/week_13/data")
-df_child_mortality <- read.csv("GAPMINDER_child_mortality.csv", sep = ",", dec= ".")
-df_income <- read.csv("GAPMINDER_income_per_person.csv", sep = ",", dec= ".")
-df_CO2 <- read.csv("GAPMINDER_CO2_per_person.csv", sep = ",", dec= ".")
+  # set the working directory (this is the directory in which the loader.R program is located)
+  setwd("/home/takis/Identities/takiszourntos/teaching/lambton/2021/winter/cbd2204_common/week_14/data")
+  df_child_mortality <- read.csv("GAPMINDER_child_mortality.csv", sep = ",", dec= ".")
+  df_income <- read.csv("GAPMINDER_income_per_person.csv", sep = ",", dec= ".")
+  df_CO2 <- read.csv("GAPMINDER_CO2_per_person.csv", sep = ",", dec= ".")
 
 ###############################################################################
 ## Some preliminary visualizations
