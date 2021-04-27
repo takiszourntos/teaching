@@ -23,7 +23,7 @@ data_MainlineProt <- base::data.frame() # initialize a dataframe/tibble
   }
   colnames(data_MainlineProt) <- c("bracket", "count")
 # generate plot
-ggplot(data = data_MainlineProt) + geom_line(mapping = aes(x = bracket, y= count)) + ggtitle("Mainline Protestant Religion") +
+ggplot(data = data_MainlineProt) + geom_step(mapping = aes(x = bracket, y= count)) + ggtitle("Mainline Protestant Religion") +
     xlab("income bracket (< $10k to > $150k )") + ylab("number surveyed")
 
 #########################################
@@ -40,7 +40,7 @@ data_Orthodox <- base::data.frame() # initialize a dataframe/tibble
   }
   colnames(data_Orthodox) <- c("bracket", "count")
 # generate plot
-ggplot(data = data_Orthodox) + geom_line(mapping = aes(x = bracket, y= count)) + ggtitle("Orthodox Religion") +
+ggplot(data = data_Orthodox) + geom_step(mapping = aes(x = bracket, y= count)) + ggtitle("Orthodox Religion") +
   xlab("income bracket (< $10k to > $150k )") + ylab("number surveyed")
 
 #########################################
@@ -57,7 +57,7 @@ data_Jewish <- base::data.frame() # initialize a dataframe/tibble
   }
   colnames(data_Jewish) <- c("bracket", "count")
 # generate plot
-ggplot(data = data_Jewish) + geom_line(mapping = aes(x = bracket, y= count)) + ggtitle("Jewish Religion") +
+ggplot(data = data_Jewish) + geom_step(mapping = aes(x = bracket, y= count)) + ggtitle("Jewish Religion") +
   xlab("income bracket (< $10k to > $150k )") + ylab("number surveyed")
 
 #########################################
@@ -74,5 +74,5 @@ data_Hindu <- base::data.frame() # initialize a dataframe/tibble
   }
   colnames(data_Hindu) <- c("bracket", "count")
 # generate plot
-ggplot(data = data_Hindu) + geom_line(mapping = aes(x = bracket, y= count)) + ggtitle("Hindu Religion") +
+ggplot(data = data_Hindu) + geom_step(mapping = aes(x = bracket, y= count)) + ggtitle("Hindu Religion") +
   xlab("income bracket (< $10k to > $150k )") + ylab("number surveyed")
